@@ -6,6 +6,7 @@ import { useState } from "react";
 import {
   ExternalLink,
   FileText,
+  Newspaper,
   Image as ImageIcon,
   LayoutDashboard,
   LogOut,
@@ -22,6 +23,7 @@ import { cx } from "./ui";
 const ICONS = {
   dashboard: LayoutDashboard,
   pages: FileText,
+  blog: Newspaper,
   media: ImageIcon,
   settings: Settings,
   redirects: Shuffle,

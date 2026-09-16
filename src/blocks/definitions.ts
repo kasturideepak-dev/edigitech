@@ -425,8 +425,21 @@ export const BLOCKS: BlockDefinition[] = [
       { type: "text", name: "title", label: "Heading", width: "half" },
       { type: "textarea", name: "intro", label: "Intro copy", rows: 3, help: TEXT_HELP },
       {
+        type: "select",
+        name: "source",
+        label: "Articles to show",
+        width: "half",
+        help: "“Latest posts” keeps this section up to date automatically.",
+        options: [
+          { label: "Latest posts from the blog", value: "latest" },
+          { label: "Chosen manually", value: "manual" },
+        ],
+      },
+      { type: "number", name: "count", label: "How many (latest posts)", width: "half", min: 1, max: 6 },
+      {
         type: "list",
         name: "posts",
+        help: "Only used when “Chosen manually” is selected.",
         label: "Articles",
         itemLabel: "title",
         max: 6,
@@ -443,6 +456,8 @@ export const BLOCKS: BlockDefinition[] = [
       eyebrow: "Latest Insights",
       title: "From Our Blog",
       intro: "Tips and insights from our team.",
+      source: "latest",
+      count: 3,
       posts: [1, 2, 3].map((n) => ({
         image: img(`/assets/img/blog/thumb${n === 1 ? "" : `-${n}`}.jpg`),
         title: `Article title ${n}`,

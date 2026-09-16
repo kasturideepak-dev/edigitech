@@ -10,7 +10,7 @@ import {
   index,
   uniqueIndex,
 } from "drizzle-orm/mysql-core";
-import type { PageContent } from "@/lib/types";
+import type { PageContent, SeoFields } from "@/lib/types";
 
 // JSON column that also works on MariaDB (Hostinger), where JSON is stored as LONGTEXT
 // and returned to the driver as a string.
@@ -120,3 +120,42 @@ export type User = typeof users.$inferSelect;
 export type Page = typeof pages.$inferSelect;
 export type Media = typeof media.$inferSelect;
 export type Redirect = typeof redirects.$inferSelect;
+
+export const categories = mysqlTable(
+  "categories",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    name: varchar("name", { length: 120 }).notNull(),
+    slug: varchar("slug", { length: 140 }).notNull(),
+    description: varchar("description", { length: 300 }).notNull().default(""),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex("categories_slug_uq").on(t.slug)],
+);
+
+export const posts = mysqlTable(
+  "posts",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    title: varchar("title", { length: 220 }).notNull(),
+    slug: varchar("slug", { length: 190 }).notNull(),
+    excerpt: varchar("excerpt", { length: 400 }).notNull().default(""),
+    coverImage: json<{ url: string; alt?: string } | null>("cover_image"),
+    /** Rich text HTML from the editor */
+    body: text("body").notNull(),
+    categoryId: int("category_id"),
+    authorId: int("author_id"),
+    authorName: varchar("author_name", { length: 120 }).notNull().default(""),
+    status: mysqlEnum("status", ["draft", "published"]).notNull().default("draft"),
+    publishedAt: timestamp("published_at"),
+    readMinutes: int("read_minutes").notNull().default(0),
+    seo: json<SeoFields>("seo").notNull(),
+    deletedAt: timestamp("deleted_at"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow().onUpdateNow(),
+  },
+  (t) => [uniqueIndex("posts_slug_uq").on(t.slug), index("posts_status_idx").on(t.status), index("posts_cat_idx").on(t.categoryId)],
+);
+
+export type Post = typeof posts.$inferSelect;
+export type Category = typeof categories.$inferSelect;

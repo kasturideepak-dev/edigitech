@@ -1,19 +1,36 @@
 import type { ImageValue } from "@/lib/types";
 import { Icon } from "@/components/site/Icon";
 import { Text } from "@/components/site/Text";
+import { formatPostDate, latestPosts } from "@/lib/blog";
 import { type BlockProps, resolveUrl, src } from "./shared";
+
+type BlogPostItem = { image?: ImageValue | null; title?: string; url?: string; category?: string; date?: string };
 
 type BlogData = {
   eyebrow?: string;
   title?: string;
   intro?: string;
-  posts?: { image?: ImageValue; title?: string; url?: string; category?: string; date?: string }[];
+  /** "latest" pulls from the blog automatically; "manual" uses the list below. */
+  source?: "latest" | "manual";
+  count?: number;
+  posts?: BlogPostItem[];
 };
 
 const FADE_FROM = ["left", "bottom", "right"];
 
-export default function Blog({ data, ctx, anchor }: BlockProps<BlogData>) {
-  const posts = data.posts ?? [];
+export default async function Blog({ data, ctx, anchor }: BlockProps<BlogData>) {
+  const posts: BlogPostItem[] =
+    data.source === "manual"
+      ? (data.posts ?? [])
+      : (await latestPosts(Number(data.count) || 3)).map((p) => ({
+          image: p.coverImage,
+          title: p.title,
+          url: `/blog/${p.slug}`,
+          category: p.category?.name ?? "",
+          date: formatPostDate(p.publishedAt),
+        }));
+  // Nothing to show yet: hide the section rather than render empty cards.
+  if (posts.length === 0) return null;
   return (
     <div id={anchor} className="tp-blog-area pt-140 pb-95">
       <div className="container">

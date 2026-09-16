@@ -6,6 +6,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
   const nav = [
     { href: "/admin", label: "Dashboard", icon: "dashboard" },
     { href: "/admin/pages", label: "Pages", icon: "pages" },
+    { href: "/admin/blog", label: "Blog", icon: "blog" },
     { href: "/admin/media", label: "Media Library", icon: "media", show: can(user.role, "media.manage") },
     { href: "/admin/settings", label: "Site Settings", icon: "settings", show: can(user.role, "settings.manage") || can(user.role, "seo.manage") },
     { href: "/admin/redirects", label: "Redirects", icon: "redirects", show: can(user.role, "redirects.manage") },

@@ -12,6 +12,7 @@ Next.js 16 site built on the Aleric template (light theme) with a custom CMS das
 | Section blocks (template markup) | `src/blocks/components/*.tsx` |
 | Page templates (Homepage, Landing, Blank) | `src/templates/` |
 | Global settings schema | `src/lib/settings-schema.ts` |
+| Blog (listing, post, category) | `src/app/(site)/blog/**`, `src/lib/blog.ts` |
 | Dashboard | `src/app/admin/**` |
 | Database schema (MySQL/MariaDB) | `src/db/schema.ts`, SQL in `drizzle/` |
 | Template CSS/JS/images (licensed, **not in Git**) | `public/assets/` |
@@ -21,6 +22,7 @@ Next.js 16 site built on the Aleric template (light theme) with a custom CMS das
 - **Pages**: create by page type (Service, Product/WhatsApp, Location SEO, Generic) and template; draft → preview → publish; unpublish; duplicate; trash/restore; set homepage; version history (restore any published version).
 - **Section builder**: add from the block library, drag to reorder, show/hide, duplicate, delete, anchor IDs, live preview panel, ⌘/Ctrl+S to save.
 - **Auto-generated forms**: text, textarea (new line = `<br>`, `**bold**`), number, toggle, select, link (text + URL + new tab), image (media picker + alt text), groups and repeatable lists.
+- **Blog**: posts with a rich-text editor (headings, lists, quotes, code, links, images from the Media Library), cover image, excerpt, category, author, publish date, draft/publish, trash/restore, and the same SEO panel as pages. Public pages at `/blog`, `/blog/<post>` and `/blog/category/<category>` with paging, related posts, share links, reading time, BlogPosting + Breadcrumb schema and sitemap entries. The homepage blog section shows the latest posts automatically (or a manual selection).
 - **Media library**: drag-and-drop upload, automatic WebP conversion and resizing (max 2400px), alt text, folders, search.
 - **SEO per page**: meta title/description, focus keyword, canonical, noindex/nofollow, Open Graph image, custom JSON-LD, Google preview and SEO checklist score. Organization, WebSite, WebPage and Breadcrumb schema are added automatically. `sitemap.xml` and `robots.txt` are generated.
 - **Redirects**: 301/302 manager with hit counts. A 301 is added automatically when a live page's URL changes. Old `*.php` URLs redirect to clean URLs.

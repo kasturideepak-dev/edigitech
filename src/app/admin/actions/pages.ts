@@ -11,7 +11,7 @@ import { buildContentFromTemplate, newSectionId } from "@/templates";
 
 type Result<T = object> = ({ ok: true } & T) | { ok: false; error: string };
 
-const RESERVED = ["admin", "uploads", "preview", "api", "sitemap.xml", "robots.txt", "_next", "assets", "css"];
+const RESERVED = ["admin", "uploads", "preview", "api", "blog", "sitemap.xml", "robots.txt", "_next", "assets", "css", "images"];
 const MAX_REVISIONS = 30;
 
 async function run<T extends object>(fn: () => Promise<T>): Promise<Result<T>> {
