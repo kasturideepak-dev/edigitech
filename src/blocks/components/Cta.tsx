@@ -40,7 +40,7 @@ export default function Cta({ data, ctx, anchor }: BlockProps<CtaData>) {
               <Text value={data.title} />
             </h2>
             {data.text && (
-              <p className={`fs-20 lh-28 mb-45 tp_fade_anim ${onDark ? "tp-text-grey-2" : "tp-text-grey-1"}`} data-delay=".5">
+              <p className={`fs-20 lh-28 mb-45 tp_fade_anim ${theme === "primary" ? "ed-text-on-brand" : onDark ? "tp-text-grey-2" : "tp-text-grey-1"}`} data-delay=".5">
                 {data.text}
               </p>
             )}

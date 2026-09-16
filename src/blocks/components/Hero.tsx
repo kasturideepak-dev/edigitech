@@ -62,7 +62,8 @@ export default function Hero({ data, ctx, anchor }: BlockProps<HeroData>) {
                 <Text value={data.title} />
               </h1>
               <div className="tp-hero-bottom-content">
-                <div className="row align-items-center">
+                {/* Top-aligned: the stats block is much shorter than the text column. */}
+                <div className="row align-items-start">
                   <div className="col-lg-6">
                     {stats.length > 0 && (
                       <div className="tp-hero-customer d-flex align-items-center mb-50">

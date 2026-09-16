@@ -14,10 +14,13 @@
 .tp_text_invert.invert-primary > div {
   background-image: linear-gradient(to right, var(--tp-theme-primary) 50%, #fff 50%);
 }
-/* Buttons and chips on the brand colour: white text reads better on blue than black. */
-.tp-bg-theme-primary,
+/* Filled buttons use the deeper blue so white label text clears 4.5:1
+   (white on the bright blue is only 3.8:1). Flat areas such as the scrolling
+   strip keep the bright blue with the template's black text at 5.1:1.        */
 .tp-btn-lg.tp-bg-theme-primary,
-.tp-btn-xl.tp-bg-theme-primary {
+.tp-btn-xl.tp-bg-theme-primary,
+.tp-btn-sm.tp-bg-theme-primary {
+  background-color: var(--ed-blue-dark);
   color: #fff;
 }
 .tp-btn-lg.tp-bg-theme-primary .btn-text,
@@ -25,10 +28,9 @@
 .tp-btn-lg.tp-bg-theme-primary svg,
 .tp-btn-xl.tp-bg-theme-primary svg {
   color: #fff;
-  fill: currentColor;
 }
-.tp-text-common-black.tp-bg-theme-primary,
-.hover-text-black.tp-bg-theme-primary:hover {
+.tp-btn-lg.tp-bg-theme-primary.hover-text-white:hover,
+.tp-btn-xl.tp-bg-theme-primary.hover-text-white:hover {
   color: #fff;
 }
 
@@ -110,7 +112,8 @@
   letter-spacing: 0.04em;
   padding: 4px 14px;
   border-radius: 30px;
-  background: var(--tp-theme-primary, #1289cf);
+  /* Deeper blue keeps white label text above the 4.5:1 contrast minimum. */
+  background: var(--ed-blue-dark, #005b91);
   color: #fff;
   margin-bottom: 20px;
 }
@@ -248,4 +251,35 @@
 .ed-cta-primary .ed-btn-outline:hover {
   background: #fff;
   color: var(--ed-blue-dark);
+}
+
+/* Supporting text on the deep-blue CTA (grey would drop below 4.5:1). */
+.ed-text-on-brand {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Hero: the template's 200px top padding leaves a large empty band under the
+   header now that the headline runs to three lines. */
+@media (min-width: 992px) {
+  .tp-hero-area.tp-hero-spacing {
+    padding-top: 150px;
+  }
+  .tp-hero-content .tp-hero-customer {
+    margin-bottom: 30px;
+  }
+  /* The template pulls this block up 35px, which collides with a three-line headline. */
+  .tp-hero-content .tp-hero-bottom-content {
+    margin-top: 25px;
+  }
+}
+
+/* Phones: the template's hero headline size overflows a 375px screen. */
+@media (max-width: 575px) {
+  .tp-hero-title {
+    font-size: 40px;
+    line-height: 1.05;
+  }
+  .tp-hero-title .tp-hero-title-sm {
+    margin-bottom: 8px;
+  }
 }
