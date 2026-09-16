@@ -1,5 +1,37 @@
 /* eDigiTech additions on top of the Aleric template (main.css). */
 
+/* ---------------------------------------------------------------- Brand colours
+   Taken from the logo: bright blue (#1289cf), deep blue (#005b91) and its greys.
+   The template's lime accent is driven by --tp-theme-primary, so overriding it
+   recolours buttons, badges, the scrolling strip and every accent on the site.
+   Black text on this blue passes WCAG AA (5.1:1), as the template expects.      */
+:root {
+  --tp-theme-primary: #1289cf;
+  --ed-blue-dark: #005b91;
+  --ed-blue-light: #29a7e0;
+  --ed-grey: #505050;
+}
+.tp_text_invert.invert-primary > div {
+  background-image: linear-gradient(to right, var(--tp-theme-primary) 50%, #fff 50%);
+}
+/* Buttons and chips on the brand colour: white text reads better on blue than black. */
+.tp-bg-theme-primary,
+.tp-btn-lg.tp-bg-theme-primary,
+.tp-btn-xl.tp-bg-theme-primary {
+  color: #fff;
+}
+.tp-btn-lg.tp-bg-theme-primary .btn-text,
+.tp-btn-xl.tp-bg-theme-primary .btn-text,
+.tp-btn-lg.tp-bg-theme-primary svg,
+.tp-btn-xl.tp-bg-theme-primary svg {
+  color: #fff;
+  fill: currentColor;
+}
+.tp-text-common-black.tp-bg-theme-primary,
+.hover-text-black.tp-bg-theme-primary:hover {
+  color: #fff;
+}
+
 .ed-btn-group {
   display: flex;
   flex-wrap: wrap;
@@ -78,8 +110,8 @@
   letter-spacing: 0.04em;
   padding: 4px 14px;
   border-radius: 30px;
-  background: var(--tp-theme-primary, #c4ee18);
-  color: #000;
+  background: var(--tp-theme-primary, #1289cf);
+  color: #fff;
   margin-bottom: 20px;
 }
 
@@ -148,7 +180,7 @@
   align-items: center;
 }
 .ed-preview-bar a {
-  color: #c4ee18;
+  color: #29a7e0;
 }
 
 /* Testimonials: keep the slide counter below the quote (quotes vary in length). */
@@ -204,4 +236,16 @@
 }
 .ed-footer-links li {
   margin-bottom: 6px;
+}
+
+/* Call-to-action on the brand colour: deeper blue so white text stays readable. */
+.ed-bg-brand-deep {
+  background-color: var(--ed-blue-dark);
+}
+.ed-btn-white {
+  background-color: #fff;
+}
+.ed-cta-primary .ed-btn-outline:hover {
+  background: #fff;
+  color: var(--ed-blue-dark);
 }

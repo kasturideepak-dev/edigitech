@@ -14,9 +14,10 @@ type CtaData = {
 
 export default function Cta({ data, ctx, anchor }: BlockProps<CtaData>) {
   const theme = data.theme ?? "dark";
-  const dark = theme === "dark";
-  const bg = dark ? "tp-bg-common-black" : theme === "primary" ? "tp-bg-theme-primary" : "";
-  const heading = dark ? "tp-text-common-white" : "tp-text-common-black";
+  // "primary" uses the deeper logo blue so white text keeps a strong contrast ratio.
+  const onDark = theme === "dark" || theme === "primary";
+  const bg = theme === "dark" ? "tp-bg-common-black" : theme === "primary" ? "ed-bg-brand-deep" : "";
+  const heading = onDark ? "tp-text-common-white" : "tp-text-common-black";
   const primary = linkProps(data.primaryCta, ctx);
   const secondary = linkProps(data.secondaryCta, ctx);
 
@@ -28,7 +29,7 @@ export default function Cta({ data, ctx, anchor }: BlockProps<CtaData>) {
             {data.eyebrow && (
               <span
                 className={`tp-section-subtitle tp-ff-heading fw-500 fs-16 mb-30 d-inline-block ${
-                  dark ? "tp-section-subtitle-white tp-text-common-white" : "tp-text-common-black"
+                  onDark ? "tp-section-subtitle-white tp-text-common-white" : "tp-text-common-black"
                 }`}
               >
                 <span className="borders d-inline-block"></span>
@@ -39,7 +40,7 @@ export default function Cta({ data, ctx, anchor }: BlockProps<CtaData>) {
               <Text value={data.title} />
             </h2>
             {data.text && (
-              <p className={`fs-20 lh-28 mb-45 tp_fade_anim ${dark ? "tp-text-grey-2" : "tp-text-grey-1"}`} data-delay=".5">
+              <p className={`fs-20 lh-28 mb-45 tp_fade_anim ${onDark ? "tp-text-grey-2" : "tp-text-grey-1"}`} data-delay=".5">
                 {data.text}
               </p>
             )}
@@ -51,8 +52,8 @@ export default function Cta({ data, ctx, anchor }: BlockProps<CtaData>) {
                   label={data.primaryCta.label}
                   className={`tp-btn-lg d-inline-block lh-0 tp-round-26 fs-15 text-uppercase ls-0 tp-btn-switch-animation tp-ff-heading fw-500 ${
                     theme === "primary"
-                      ? "tp-bg-common-black tp-text-common-white hover-text-white"
-                      : "tp-bg-theme-primary tp-text-common-black hover-text-black"
+                      ? "ed-btn-white tp-text-common-black hover-text-black"
+                      : "tp-bg-theme-primary tp-text-common-white hover-text-white"
                   }`}
                 />
               )}
@@ -62,7 +63,7 @@ export default function Cta({ data, ctx, anchor }: BlockProps<CtaData>) {
                   newTab={secondary.newTab}
                   label={data.secondaryCta.label}
                   className={`tp-btn-lg d-inline-block lh-0 tp-round-26 fs-15 text-uppercase ls-0 tp-btn-switch-animation tp-ff-heading fw-500 ed-btn-outline ${
-                    dark ? "tp-text-common-white hover-text-white" : "tp-text-common-black hover-text-black"
+                    onDark ? "tp-text-common-white hover-text-white" : "tp-text-common-black hover-text-black"
                   }`}
                 />
               )}

@@ -54,7 +54,7 @@ export function Sidebar({ nav, user }: { nav: NavItem[]; user: { name: string; e
       >
         <div className="flex items-center justify-between px-5 py-5">
           <Link href="/admin" className="flex items-center gap-2.5">
-            <span className="flex size-8 items-center justify-center rounded-lg bg-brand font-bold text-zinc-900">e</span>
+            <span className="flex size-8 items-center justify-center rounded-lg bg-brand font-bold text-white">e</span>
             <span className="font-semibold text-white">eDigiTech CMS</span>
           </Link>
           <button type="button" className="lg:hidden" onClick={() => setOpen(false)} aria-label="Close navigation">

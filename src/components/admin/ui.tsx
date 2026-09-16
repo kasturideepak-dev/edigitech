@@ -20,7 +20,7 @@ export const cx = (...c: (string | false | null | undefined)[]) => c.filter(Bool
 type Variant = "primary" | "secondary" | "ghost" | "danger" | "brand";
 const VARIANTS: Record<Variant, string> = {
   primary: "bg-zinc-900 text-white hover:bg-zinc-700 disabled:bg-zinc-400",
-  brand: "bg-brand text-zinc-900 hover:bg-brand-dark disabled:opacity-50",
+  brand: "bg-brand text-white hover:bg-brand-dark disabled:opacity-50",
   secondary: "bg-white text-zinc-800 border border-zinc-300 hover:bg-zinc-50 disabled:opacity-50",
   ghost: "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-900 disabled:opacity-40",
   danger: "bg-red-600 text-white hover:bg-red-500 disabled:opacity-50",
