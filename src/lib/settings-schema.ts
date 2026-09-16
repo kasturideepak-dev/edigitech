@@ -11,6 +11,8 @@ type MenuItem = {
   children?: MenuLink[];
   /** Mega menu: grouped columns (takes precedence over children) */
   columns?: { title: string; links: MenuLink[] }[];
+  /** Optional promo image shown as the last mega menu column */
+  megaImage?: ImageValue | null;
 };
 type FooterColumn = { title: string; links: MenuLink[] };
 
@@ -127,13 +129,14 @@ export const SETTINGS_TABS: { key: SettingsKey; label: string; description: stri
               { type: "url", name: "url", label: "Link", width: "half" },
             ],
           },
+          { type: "image", name: "megaImage", label: "Mega menu promo image (optional)", help: "Shown as a tall image in the last column, e.g. 660×980." },
           {
             type: "list",
             name: "columns",
             label: "Mega menu columns",
             help: "Grouped columns shown in a wide dropdown (max 4). Overrides the simple dropdown.",
             itemLabel: "title",
-            max: 4,
+            max: 5,
             fields: [
               { type: "text", name: "title", label: "Column title" },
               {

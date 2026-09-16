@@ -217,8 +217,10 @@ export function Header({ settings }: Props) {
                       const columns = (item.columns ?? []).filter((c) => (c.links ?? []).length || c.title);
                       const children = (item.children ?? []).filter((c) => c.label);
                       const hasDrop = columns.length > 0 || children.length > 0;
-                      // Bootstrap column width for the mega menu (4 columns -> col-xl-3).
-                      const colClass = `col-xl-${Math.max(3, Math.floor(12 / Math.max(columns.length, 1)))}`;
+                      const megaImage = item.megaImage?.url ? item.megaImage : null;
+                      // Bootstrap widths: the promo image takes the last 2 of 12 columns.
+                      const linkSpan = megaImage ? 10 : 12;
+                      const colClass = `col-xl-${Math.max(2, Math.floor(linkSpan / Math.max(columns.length, 1)))}`;
                       return (
                         <li key={i} className={columns.length ? "has-dropdown p-inherit" : children.length ? "has-dropdown" : undefined}>
                           <a href={resolveUrl(item.url, ctx)}>
@@ -246,6 +248,15 @@ export function Header({ settings }: Props) {
                                     </div>
                                   </div>
                                 ))}
+                                {megaImage && (
+                                  <div className="col-xl-2 d-none d-xxl-block">
+                                    <div className="tp-megamenu-list">
+                                      <div className="tp-megamenu-thumb">
+                                        <img src={megaImage.url} alt={megaImage.alt || ""} loading="lazy" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             </div>
                           ) : children.length > 0 ? (
