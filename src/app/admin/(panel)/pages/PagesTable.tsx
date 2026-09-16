@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Copy, ExternalLink, Home, MoreHorizontal, Pencil, RotateCcw, Search, Trash2, FileText } from "lucide-react";
 import {
   deletePageForeverAction,
@@ -40,7 +40,19 @@ export function PagesTable({
   const router = useRouter();
   const toast = useToast();
   const [q, setQ] = useState(filters.q);
-  const [menu, setMenu] = useState<number | null>(null);
+  // The table scrolls horizontally, which would clip a normally positioned dropdown,
+  // so the row menu is positioned against the viewport instead.
+  const [menu, setMenu] = useState<{ id: number; top: number; right: number } | null>(null);
+  useEffect(() => {
+    if (!menu) return;
+    const close = () => setMenu(null);
+    window.addEventListener("scroll", close, true);
+    window.addEventListener("resize", close);
+    return () => {
+      window.removeEventListener("scroll", close, true);
+      window.removeEventListener("resize", close);
+    };
+  }, [menu]);
   const [pending, start] = useTransition();
   const trash = filters.status === "trash";
 
@@ -145,14 +157,19 @@ export function PagesTable({
                       <button
                         type="button"
                         className="rounded p-1 text-zinc-500 hover:bg-zinc-100"
-                        onClick={() => setMenu(menu === p.id ? null : p.id)}
+                        onClick={(e) => {
+                          if (menu?.id === p.id) return setMenu(null);
+                          const r = e.currentTarget.getBoundingClientRect();
+                          setMenu({ id: p.id, top: r.bottom + 4, right: window.innerWidth - r.right });
+                        }}
                         aria-label="Actions"
                       >
                         <MoreHorizontal className="size-4" />
                       </button>
-                      {menu === p.id && (
+                      {menu?.id === p.id && (
                         <div
-                          className="absolute right-3 top-10 z-20 w-52 rounded-lg border border-zinc-200 bg-white py-1 text-left shadow-lg"
+                          style={{ position: "fixed", top: menu.top, right: menu.right }}
+                          className="z-50 w-52 rounded-lg border border-zinc-200 bg-white py-1 text-left shadow-lg"
                           onMouseLeave={() => setMenu(null)}
                         >
                           {trash ? (

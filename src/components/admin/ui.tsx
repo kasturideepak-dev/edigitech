@@ -81,11 +81,10 @@ export function Toggle({ checked, onChange, label }: { checked: boolean; onChang
           checked ? "bg-zinc-900" : "bg-zinc-300",
         )}
       >
+        {/* Positioned with an explicit offset: mixing translate + inset utilities shifted it twice. */}
         <span
-          className={cx(
-            "absolute top-0.5 size-4 rounded-full bg-white shadow transition-transform",
-            checked ? "translate-x-4.5" : "translate-x-0.5",
-          )}
+          className="absolute top-0.5 size-4 rounded-full bg-white shadow transition-all"
+          style={{ left: checked ? 18 : 2 }}
         />
       </button>
       {label && <span className="text-sm text-zinc-700">{label}</span>}
