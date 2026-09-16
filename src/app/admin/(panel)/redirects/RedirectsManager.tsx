@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Pencil, Plus, Shuffle, Trash2 } from "lucide-react";
 import { deleteRedirectAction, saveRedirectAction } from "../../actions/redirects";
-import { Badge, Button, Card, EmptyState, Input, Label, Modal, Select, useToast } from "@/components/admin/ui";
+import { Badge, Button, Card, EmptyState, IconAction, Input, Label, Modal, RowActions, Select, useToast } from "@/components/admin/ui";
 
 type Row = { id: number; fromPath: string; toPath: string; statusCode: number; hits: number; note: string };
 const EMPTY = { fromPath: "", toPath: "", statusCode: 301, note: "" };
@@ -48,7 +48,7 @@ export function RedirectsManager({ rows }: { rows: Row[] }) {
                 <th className="px-3 py-2.5 font-medium">To</th>
                 <th className="px-3 py-2.5 font-medium">Type</th>
                 <th className="px-3 py-2.5 font-medium">Hits</th>
-                <th className="w-24" />
+                <th className="w-24 px-3 py-2.5 text-right font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
@@ -63,23 +63,24 @@ export function RedirectsManager({ rows }: { rows: Row[] }) {
                     <Badge tone={r.statusCode === 301 || r.statusCode === 308 ? "green" : "zinc"}>{r.statusCode}</Badge>
                   </td>
                   <td className="px-3 py-3 tabular-nums text-zinc-500">{r.hits}</td>
-                  <td className="px-3 py-3 text-right">
-                    <button type="button" className="rounded p-1.5 text-zinc-500 hover:bg-zinc-100" onClick={() => setEditing(r)} aria-label="Edit">
-                      <Pencil className="size-4" />
-                    </button>
-                    <button
-                      type="button"
-                      className="rounded p-1.5 text-zinc-500 hover:bg-red-50 hover:text-red-600"
-                      aria-label="Delete"
-                      onClick={async () => {
-                        if (!confirm(`Delete redirect ${r.fromPath}?`)) return;
-                        await deleteRedirectAction(r.id);
-                        toast("success", "Redirect deleted");
-                        router.refresh();
-                      }}
-                    >
-                      <Trash2 className="size-4" />
-                    </button>
+                  <td className="px-3 py-3">
+                    <RowActions>
+                      <IconAction label="Edit" onClick={() => setEditing(r)}>
+                        <Pencil className="size-4" />
+                      </IconAction>
+                      <IconAction
+                        label="Delete"
+                        danger
+                        onClick={async () => {
+                          if (!confirm(`Delete redirect ${r.fromPath}?`)) return;
+                          await deleteRedirectAction(r.id);
+                          toast("success", "Redirect deleted");
+                          router.refresh();
+                        }}
+                      >
+                        <Trash2 className="size-4" />
+                      </IconAction>
+                    </RowActions>
                   </td>
                 </tr>
               ))}

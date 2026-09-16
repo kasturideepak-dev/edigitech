@@ -1,11 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { ExternalLink, Newspaper, Pencil, RotateCcw, Search, Trash2 } from "lucide-react";
 import { deletePostAction, deletePostForeverAction, restorePostAction } from "../../actions/blog";
-import { Badge, Card, EmptyState, Input, Select, cx, useToast } from "@/components/admin/ui";
+import { Badge, Card, EmptyState, IconAction, Input, RowActions, Select, cx, useToast } from "@/components/admin/ui";
 
 type Row = {
   id: number;
@@ -82,7 +81,7 @@ export function PostsTable({
                 <th className="px-3 py-2.5 font-medium">Category</th>
                 <th className="px-3 py-2.5 font-medium">Status</th>
                 <th className="px-3 py-2.5 font-medium">Date</th>
-                <th className="w-28 px-3 py-2.5" />
+                <th className="w-32 px-3 py-2.5 text-right font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
@@ -92,9 +91,9 @@ export function PostsTable({
                     {trash ? (
                       <span className="font-medium">{p.title}</span>
                     ) : (
-                      <Link href={`/admin/blog/${p.id}`} className="font-medium hover:underline">
+                      <a href={`/admin/blog/${p.id}`} className="font-medium hover:underline">
                         {p.title}
-                      </Link>
+                      </a>
                     )}
                     <p className="text-xs text-zinc-500">
                       /blog/{p.slug} · {p.authorName}
@@ -107,58 +106,49 @@ export function PostsTable({
                   <td className="whitespace-nowrap px-3 py-3 text-zinc-500">
                     {new Date(p.publishedAt ?? p.updatedAt).toLocaleDateString()}
                   </td>
-                  <td className="px-3 py-3 text-right">
-                    {trash ? (
-                      <>
-                        <button
-                          type="button"
-                          className="rounded p-1.5 text-zinc-500 hover:bg-zinc-100"
-                          title="Restore"
-                          onClick={() => act(() => restorePostAction(p.id), "Post restored")}
-                        >
-                          <RotateCcw className="size-4" />
-                        </button>
-                        {canDelete && (
-                          <button
-                            type="button"
-                            className="rounded p-1.5 text-zinc-500 hover:bg-red-50 hover:text-red-600"
-                            title="Delete permanently"
+                  <td className="px-3 py-3">
+                    <RowActions>
+                      {trash ? (
+                        <>
+                          <IconAction label="Restore" onClick={() => act(() => restorePostAction(p.id), "Post restored")}>
+                            <RotateCcw className="size-4" />
+                          </IconAction>
+                          <IconAction
+                            label="Delete permanently"
+                            danger
+                            disabled={!canDelete}
                             onClick={() =>
                               confirm(`Permanently delete “${p.title}”? This cannot be undone.`) &&
                               act(() => deletePostForeverAction(p.id), "Post deleted permanently")
                             }
                           >
                             <Trash2 className="size-4" />
-                          </button>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        <Link href={`/admin/blog/${p.id}`} className="inline-block rounded p-1.5 text-zinc-500 hover:bg-zinc-100" title="Edit">
-                          <Pencil className="size-4" />
-                        </Link>
-                        {p.status === "published" && (
-                          <a
-                            href={`/blog/${p.slug}`}
-                            target="_blank"
-                            className="inline-block rounded p-1.5 text-zinc-500 hover:bg-zinc-100"
-                            title="View live"
+                          </IconAction>
+                        </>
+                      ) : (
+                        <>
+                          <IconAction label="Edit" href={`/admin/blog/${p.id}`}>
+                            <Pencil className="size-4" />
+                          </IconAction>
+                          <IconAction
+                            label="View live"
+                            href={p.status === "published" ? `/blog/${p.slug}` : undefined}
+                            newTab
+                            disabled={p.status !== "published"}
                           >
                             <ExternalLink className="size-4" />
-                          </a>
-                        )}
-                        {canDelete && (
-                          <button
-                            type="button"
-                            className="rounded p-1.5 text-zinc-500 hover:bg-red-50 hover:text-red-600"
-                            title="Move to trash"
+                          </IconAction>
+                          <IconAction
+                            label="Move to trash"
+                            danger
+                            disabled={!canDelete}
                             onClick={() => confirm(`Move “${p.title}” to trash?`) && act(() => deletePostAction(p.id), "Post moved to trash")}
                           >
                             <Trash2 className="size-4" />
-                          </button>
-                        )}
-                      </>
-                    )}
+                          </IconAction>
+                        </>
+                      )}
+                    </RowActions>
                   </td>
                 </tr>
               ))}

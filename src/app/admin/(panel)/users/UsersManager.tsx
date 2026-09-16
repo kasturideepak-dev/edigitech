@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { deleteUserAction, saveUserAction } from "../../actions/users";
 import type { Role } from "@/lib/session";
-import { Badge, Button, Card, Input, Label, Modal, Select, Toggle, useToast } from "@/components/admin/ui";
+import { Badge, Button, Card, IconAction, Input, Label, Modal, RowActions, Select, Toggle, useToast } from "@/components/admin/ui";
 
 type Row = { id: number; name: string; email: string; role: Role; active: boolean; lastLoginAt: string | null };
 type Draft = { id?: number; name: string; email: string; role: Role; active: boolean; password: string };
@@ -51,14 +51,14 @@ export function UsersManager({ rows, meId }: { rows: Row[]; meId: number }) {
             </div>
             {!u.active && <Badge tone="red">Disabled</Badge>}
             <Badge tone={u.role === "admin" ? "blue" : "zinc"}>{ROLE_LABEL[u.role]}</Badge>
-            <button type="button" className="rounded p-1.5 text-zinc-500 hover:bg-zinc-100" aria-label="Edit" onClick={() => setEditing({ ...u, password: "" })}>
-              <Pencil className="size-4" />
-            </button>
-            {u.id !== meId && (
-              <button
-                type="button"
-                className="rounded p-1.5 text-zinc-500 hover:bg-red-50 hover:text-red-600"
-                aria-label="Delete"
+            <RowActions>
+              <IconAction label="Edit" onClick={() => setEditing({ ...u, password: "" })}>
+                <Pencil className="size-4" />
+              </IconAction>
+              <IconAction
+                label={u.id === meId ? "You can't delete your own account" : "Delete"}
+                danger
+                disabled={u.id === meId}
                 onClick={async () => {
                   if (!confirm(`Delete ${u.name}?`)) return;
                   const res = await deleteUserAction(u.id);
@@ -68,8 +68,8 @@ export function UsersManager({ rows, meId }: { rows: Row[]; meId: number }) {
                 }}
               >
                 <Trash2 className="size-4" />
-              </button>
-            )}
+              </IconAction>
+            </RowActions>
           </li>
         ))}
       </ul>

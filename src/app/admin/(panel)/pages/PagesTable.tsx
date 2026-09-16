@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
-import { Copy, ExternalLink, Home, MoreHorizontal, Pencil, RotateCcw, Search, Trash2, FileText } from "lucide-react";
+import { useState, useTransition } from "react";
+import { Copy, ExternalLink, Home, Pencil, RotateCcw, Search, Trash2, FileText } from "lucide-react";
 import {
   deletePageForeverAction,
   duplicatePageAction,
@@ -12,7 +12,7 @@ import {
   trashPageAction,
 } from "../../actions/pages";
 import { PAGE_TYPES, pageTypeLabel } from "@/templates";
-import { Badge, Card, EmptyState, Input, Select, cx, useToast } from "@/components/admin/ui";
+import { Badge, Card, EmptyState, IconAction, Input, RowActions, Select, cx, useToast } from "@/components/admin/ui";
 
 type Row = {
   id: number;
@@ -40,19 +40,6 @@ export function PagesTable({
   const router = useRouter();
   const toast = useToast();
   const [q, setQ] = useState(filters.q);
-  // The table scrolls horizontally, which would clip a normally positioned dropdown,
-  // so the row menu is positioned against the viewport instead.
-  const [menu, setMenu] = useState<{ id: number; top: number; right: number } | null>(null);
-  useEffect(() => {
-    if (!menu) return;
-    const close = () => setMenu(null);
-    window.addEventListener("scroll", close, true);
-    window.addEventListener("resize", close);
-    return () => {
-      window.removeEventListener("scroll", close, true);
-      window.removeEventListener("resize", close);
-    };
-  }, [menu]);
   const [pending, start] = useTransition();
   const trash = filters.status === "trash";
 
@@ -65,7 +52,6 @@ export function PagesTable({
   const act = (fn: () => Promise<{ ok: boolean; error?: string }>, success: string) =>
     start(async () => {
       const res = await fn();
-      setMenu(null);
       if (res.ok) {
         toast("success", success);
         router.refresh();
@@ -115,7 +101,7 @@ export function PagesTable({
                 <th className="px-3 py-2.5 font-medium">Type</th>
                 <th className="px-3 py-2.5 font-medium">Status</th>
                 <th className="px-3 py-2.5 font-medium">Updated</th>
-                <th className="w-12 px-3 py-2.5" />
+                <th className="w-44 px-3 py-2.5 text-right font-medium">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
@@ -153,91 +139,68 @@ export function PagesTable({
                       )}
                     </td>
                     <td className="whitespace-nowrap px-3 py-3 text-zinc-500">{new Date(p.updatedAt).toLocaleDateString()}</td>
-                    <td className="relative px-3 py-3 text-right">
-                      <button
-                        type="button"
-                        className="rounded p-1 text-zinc-500 hover:bg-zinc-100"
-                        onClick={(e) => {
-                          if (menu?.id === p.id) return setMenu(null);
-                          const r = e.currentTarget.getBoundingClientRect();
-                          setMenu({ id: p.id, top: r.bottom + 4, right: window.innerWidth - r.right });
-                        }}
-                        aria-label="Actions"
-                      >
-                        <MoreHorizontal className="size-4" />
-                      </button>
-                      {menu?.id === p.id && (
-                        <div
-                          style={{ position: "fixed", top: menu.top, right: menu.right }}
-                          className="z-50 w-52 rounded-lg border border-zinc-200 bg-white py-1 text-left shadow-lg"
-                          onMouseLeave={() => setMenu(null)}
-                        >
-                          {trash ? (
-                            <>
-                              <Item icon={<RotateCcw className="size-4" />} onClick={() => act(() => restorePageAction(p.id), "Page restored as draft")}>
-                                Restore
-                              </Item>
-                              {canDelete && (
-                                <Item
-                                  danger
-                                  icon={<Trash2 className="size-4" />}
-                                  onClick={() =>
-                                    confirm(`Permanently delete “${p.title}”? This cannot be undone.`) &&
-                                    act(() => deletePageForeverAction(p.id), "Page deleted permanently")
-                                  }
-                                >
-                                  Delete permanently
-                                </Item>
-                              )}
-                            </>
-                          ) : (
-                            <>
-                              <Item icon={<Pencil className="size-4" />} onClick={() => router.push(`/admin/pages/${p.id}`)}>
-                                Edit
-                              </Item>
-                              {p.status === "published" && (
-                                <Item icon={<ExternalLink className="size-4" />} onClick={() => window.open(path, "_blank")}>
-                                  View live
-                                </Item>
-                              )}
-                              <Item
-                                icon={<Copy className="size-4" />}
-                                onClick={() =>
-                                  start(async () => {
-                                    const res = await duplicatePageAction(p.id);
-                                    if (res.ok) router.push(`/admin/pages/${res.id}`);
-                                    else toast("error", res.error);
-                                  })
-                                }
+                    <td className="px-3 py-3">
+                      <RowActions>
+                        {trash ? (
+                          <>
+                            <IconAction label="Restore" onClick={() => act(() => restorePageAction(p.id), "Page restored as draft")}>
+                              <RotateCcw className="size-4" />
+                            </IconAction>
+                            <IconAction
+                              label="Delete permanently"
+                              danger
+                              disabled={!canDelete}
+                              onClick={() =>
+                                confirm(`Permanently delete “${p.title}”? This cannot be undone.`) &&
+                                act(() => deletePageForeverAction(p.id), "Page deleted permanently")
+                              }
+                            >
+                              <Trash2 className="size-4" />
+                            </IconAction>
+                          </>
+                        ) : (
+                          <>
+                            <IconAction label="Edit" onClick={() => router.push(`/admin/pages/${p.id}`)}>
+                              <Pencil className="size-4" />
+                            </IconAction>
+                            <IconAction label="View live" href={p.status === "published" ? path : undefined} newTab disabled={p.status !== "published"}>
+                              <ExternalLink className="size-4" />
+                            </IconAction>
+                            <IconAction
+                              label="Duplicate"
+                              onClick={() =>
+                                start(async () => {
+                                  const res = await duplicatePageAction(p.id);
+                                  if (res.ok) router.push(`/admin/pages/${res.id}`);
+                                  else toast("error", res.error);
+                                })
+                              }
+                            >
+                              <Copy className="size-4" />
+                            </IconAction>
+                            {canSetHome && (
+                              <IconAction
+                                label={p.isHome ? "Already the homepage" : "Set as homepage"}
+                                disabled={p.isHome || p.status !== "published"}
+                                onClick={() => confirm(`Make “${p.title}” the homepage?`) && act(() => setHomePageAction(p.id), "Homepage updated")}
                               >
-                                Duplicate
-                              </Item>
-                              {canSetHome && !p.isHome && p.status === "published" && (
-                                <Item
-                                  icon={<Home className="size-4" />}
-                                  onClick={() =>
-                                    confirm(`Make “${p.title}” the homepage?`) && act(() => setHomePageAction(p.id), "Homepage updated")
-                                  }
-                                >
-                                  Set as homepage
-                                </Item>
-                              )}
-                              {canDelete && !p.isHome && (
-                                <Item
-                                  danger
-                                  icon={<Trash2 className="size-4" />}
-                                  onClick={() =>
-                                    confirm(`Move “${p.title}” to trash? It will be unpublished.`) &&
-                                    act(() => trashPageAction(p.id), "Page moved to trash")
-                                  }
-                                >
-                                  Move to trash
-                                </Item>
-                              )}
-                            </>
-                          )}
-                        </div>
-                      )}
+                                <Home className="size-4" />
+                              </IconAction>
+                            )}
+                            <IconAction
+                              label={p.isHome ? "The homepage can't be deleted" : "Move to trash"}
+                              danger
+                              disabled={!canDelete || p.isHome}
+                              onClick={() =>
+                                confirm(`Move “${p.title}” to trash? It will be unpublished.`) &&
+                                act(() => trashPageAction(p.id), "Page moved to trash")
+                              }
+                            >
+                              <Trash2 className="size-4" />
+                            </IconAction>
+                          </>
+                        )}
+                      </RowActions>
                     </td>
                   </tr>
                 );
@@ -247,18 +210,5 @@ export function PagesTable({
         </div>
       )}
     </Card>
-  );
-}
-
-function Item({ icon, children, onClick, danger }: { icon: React.ReactNode; children: React.ReactNode; onClick: () => void; danger?: boolean }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cx("flex w-full items-center gap-2 px-3 py-2 text-sm", danger ? "text-red-600 hover:bg-red-50" : "text-zinc-700 hover:bg-zinc-50")}
-    >
-      {icon}
-      {children}
-    </button>
   );
 }

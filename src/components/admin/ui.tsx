@@ -92,6 +92,53 @@ export function Toggle({ checked, onChange, label }: { checked: boolean; onChang
   );
 }
 
+/**
+ * Row action icon, used in every dashboard table so actions look and behave the same.
+ * Renders a link when `href` is given, otherwise a button.
+ */
+export function IconAction({
+  label,
+  onClick,
+  href,
+  newTab,
+  danger,
+  disabled,
+  children,
+}: {
+  label: string;
+  onClick?: () => void;
+  href?: string;
+  newTab?: boolean;
+  danger?: boolean;
+  disabled?: boolean;
+  children: ReactNode;
+}) {
+  const className = cx(
+    "inline-flex size-8 items-center justify-center rounded-md transition-colors",
+    disabled
+      ? "text-zinc-300 cursor-not-allowed"
+      : danger
+        ? "text-zinc-500 hover:bg-red-50 hover:text-red-600"
+        : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-900",
+  );
+  if (href && !disabled) {
+    return (
+      <a href={href} title={label} aria-label={label} className={className} {...(newTab ? { target: "_blank", rel: "noopener" } : {})}>
+        {children}
+      </a>
+    );
+  }
+  return (
+    <button type="button" title={label} aria-label={label} disabled={disabled} onClick={onClick} className={className}>
+      {children}
+    </button>
+  );
+}
+
+export function RowActions({ children }: { children: ReactNode }) {
+  return <div className="flex items-center justify-end gap-0.5">{children}</div>;
+}
+
 export function Label({ children, required, help }: { children: ReactNode; required?: boolean; help?: ReactNode }) {
   return (
     <div className="mb-1.5">

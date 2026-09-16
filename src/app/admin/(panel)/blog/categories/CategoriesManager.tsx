@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Pencil, Plus, Tags, Trash2 } from "lucide-react";
+import { ExternalLink, Pencil, Plus, Tags, Trash2 } from "lucide-react";
 import { deleteCategoryAction, saveCategoryAction } from "../../../actions/blog";
-import { Badge, Button, Card, EmptyState, Input, Label, Modal, Textarea, useToast } from "@/components/admin/ui";
+import { Badge, Button, Card, EmptyState, IconAction, Input, Label, Modal, RowActions, Textarea, useToast } from "@/components/admin/ui";
 
 type Row = { id: number; name: string; slug: string; description: string; total: number };
 const EMPTY = { name: "", slug: "", description: "" };
@@ -54,28 +54,28 @@ export function CategoriesManager({ rows }: { rows: Row[] }) {
                 </p>
               </div>
               <Badge>{c.total} post{c.total === 1 ? "" : "s"}</Badge>
-              <button
-                type="button"
-                className="rounded p-1.5 text-zinc-500 hover:bg-zinc-100"
-                aria-label="Edit"
-                onClick={() => setEditing({ id: c.id, name: c.name, slug: c.slug, description: c.description })}
-              >
-                <Pencil className="size-4" />
-              </button>
-              <button
-                type="button"
-                className="rounded p-1.5 text-zinc-500 hover:bg-red-50 hover:text-red-600"
-                aria-label="Delete"
-                onClick={async () => {
-                  if (!confirm(`Delete category “${c.name}”?`)) return;
-                  const res = await deleteCategoryAction(c.id);
-                  if (!res.ok) return toast("error", res.error);
-                  toast("success", "Category deleted");
-                  router.refresh();
-                }}
-              >
-                <Trash2 className="size-4" />
-              </button>
+              <RowActions>
+                <IconAction label="Edit" onClick={() => setEditing({ id: c.id, name: c.name, slug: c.slug, description: c.description })}>
+                  <Pencil className="size-4" />
+                </IconAction>
+                <IconAction label="View posts" href={c.total > 0 ? `/blog/category/${c.slug}` : undefined} newTab disabled={c.total === 0}>
+                  <ExternalLink className="size-4" />
+                </IconAction>
+                <IconAction
+                  label={c.total > 0 ? "Move its posts to another category first" : "Delete"}
+                  danger
+                  disabled={c.total > 0}
+                  onClick={async () => {
+                    if (!confirm(`Delete category “${c.name}”?`)) return;
+                    const res = await deleteCategoryAction(c.id);
+                    if (!res.ok) return toast("error", res.error);
+                    toast("success", "Category deleted");
+                    router.refresh();
+                  }}
+                >
+                  <Trash2 className="size-4" />
+                </IconAction>
+              </RowActions>
             </li>
           ))}
         </ul>
