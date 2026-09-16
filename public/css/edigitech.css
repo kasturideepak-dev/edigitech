@@ -283,3 +283,34 @@
     margin-bottom: 8px;
   }
 }
+
+/* Hero headline pill: the template fixes it at 151x65px for the word “We’re”,
+   which squashes longer text and pushes the arrow onto a second line.
+   Size it to its content and keep the arrow inline. */
+.tp-hero-title-sm {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 14px;
+  width: auto;
+  height: auto;
+  padding: 14px 28px;
+  line-height: 1;
+  background: var(--ed-blue-dark);
+  color: #fff;
+}
+.tp-hero-title-sm > span {
+  display: inline-block;
+  line-height: 1;
+}
+.tp-hero-title-sm svg {
+  flex-shrink: 0;
+}
+.tp-hero-title-sm svg path {
+  fill: currentColor;
+}
+@media (max-width: 575px) {
+  .tp-hero-title-sm {
+    padding: 10px 20px;
+    gap: 10px;
+  }
+}
