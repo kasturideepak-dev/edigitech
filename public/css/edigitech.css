@@ -195,3 +195,13 @@
 .ed-text-logo-white {
   color: var(--tp-common-white);
 }
+
+/* Footer link columns */
+.ed-footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.ed-footer-links li {
+  margin-bottom: 6px;
+}

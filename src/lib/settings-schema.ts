@@ -3,7 +3,16 @@ import type { Field, ImageValue, Link } from "./types";
 import { socialsField } from "@/blocks/common-fields";
 
 type Social = { platform: string; url: string };
-type MenuItem = { label: string; url: string; children?: { label: string; url: string }[] };
+type MenuLink = { label: string; url: string };
+type MenuItem = {
+  label: string;
+  url: string;
+  /** Simple dropdown */
+  children?: MenuLink[];
+  /** Mega menu: grouped columns (takes precedence over children) */
+  columns?: { title: string; links: MenuLink[] }[];
+};
+type FooterColumn = { title: string; links: MenuLink[] };
 
 export type SiteSettings = {
   general: {
@@ -36,6 +45,7 @@ export type SiteSettings = {
     ctaUrl: string;
     button: Link;
     aboutText: string;
+    columns: FooterColumn[];
     offices: { title: string; address: string; url: string }[];
     showNewsletter: boolean;
     newsletterTitle: string;
@@ -110,10 +120,32 @@ export const SETTINGS_TABS: { key: SettingsKey; label: string; description: stri
             type: "list",
             name: "children",
             label: "Dropdown items",
+            help: "Simple dropdown. Leave empty if you use mega menu columns below.",
             itemLabel: "label",
             fields: [
               { type: "text", name: "label", label: "Label", width: "half" },
               { type: "url", name: "url", label: "Link", width: "half" },
+            ],
+          },
+          {
+            type: "list",
+            name: "columns",
+            label: "Mega menu columns",
+            help: "Grouped columns shown in a wide dropdown (max 4). Overrides the simple dropdown.",
+            itemLabel: "title",
+            max: 4,
+            fields: [
+              { type: "text", name: "title", label: "Column title" },
+              {
+                type: "list",
+                name: "links",
+                label: "Links",
+                itemLabel: "label",
+                fields: [
+                  { type: "text", name: "label", label: "Label", width: "half" },
+                  { type: "url", name: "url", label: "Link", width: "half" },
+                ],
+              },
             ],
           },
         ],
@@ -141,6 +173,26 @@ export const SETTINGS_TABS: { key: SettingsKey; label: string; description: stri
       { type: "url", name: "ctaUrl", label: "CTA link", width: "half" },
       { type: "link", name: "button", label: "Round button", width: "half" },
       { type: "textarea", name: "aboutText", label: "About text (under logo)", rows: 3 },
+      {
+        type: "list",
+        name: "columns",
+        label: "Link columns",
+        itemLabel: "title",
+        max: 3,
+        fields: [
+          { type: "text", name: "title", label: "Column title" },
+          {
+            type: "list",
+            name: "links",
+            label: "Links",
+            itemLabel: "label",
+            fields: [
+              { type: "text", name: "label", label: "Label", width: "half" },
+              { type: "url", name: "url", label: "Link", width: "half" },
+            ],
+          },
+        ],
+      },
       {
         type: "list",
         name: "offices",
@@ -264,6 +316,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     ctaUrl: "/contact-us",
     button: { label: "Start the Journey", url: "/contact-us" },
     aboutText: "Technology and digital marketing partner for growing businesses across India and beyond.",
+    columns: [],
     offices: [],
     showNewsletter: false,
     newsletterTitle: "Newsletter",

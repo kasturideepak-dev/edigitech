@@ -214,18 +214,41 @@ export function Header({ settings }: Props) {
                 <nav className="tp-mobile-menu-active">
                   <ul>
                     {header.menu.map((item, i) => {
+                      const columns = (item.columns ?? []).filter((c) => (c.links ?? []).length || c.title);
                       const children = (item.children ?? []).filter((c) => c.label);
+                      const hasDrop = columns.length > 0 || children.length > 0;
+                      // Bootstrap column width for the mega menu (4 columns -> col-xl-3).
+                      const colClass = `col-xl-${Math.max(3, Math.floor(12 / Math.max(columns.length, 1)))}`;
                       return (
-                        <li key={i} className={children.length ? "has-dropdown" : undefined}>
+                        <li key={i} className={columns.length ? "has-dropdown p-inherit" : children.length ? "has-dropdown" : undefined}>
                           <a href={resolveUrl(item.url, ctx)}>
                             {item.label}
-                            {children.length > 0 && (
+                            {hasDrop && (
                               <span>
                                 <Icon name="caret" />
                               </span>
                             )}
                           </a>
-                          {children.length > 0 && (
+                          {columns.length > 0 ? (
+                            <div className="tp-megamenu-wrapper mega-menu megamenu-white-bg">
+                              <div className="row gx-0">
+                                {columns.map((col, j) => (
+                                  <div className={colClass} key={j}>
+                                    <div className="tp-megamenu-list">
+                                      <h4 className="tp-megamenu-title">{col.title}</h4>
+                                      <ul>
+                                        {(col.links ?? []).map((l, k) => (
+                                          <li key={k}>
+                                            <a href={resolveUrl(l.url, ctx)}>{l.label}</a>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ) : children.length > 0 ? (
                             <ul className="tp-submenu submenu">
                               {children.map((c, j) => (
                                 <li key={j}>
@@ -233,7 +256,7 @@ export function Header({ settings }: Props) {
                                 </li>
                               ))}
                             </ul>
-                          )}
+                          ) : null}
                         </li>
                       );
                     })}
@@ -279,7 +302,10 @@ export function Footer({ settings }: Props) {
   const { footer: f, general: g } = settings;
   const socials = (g.socials ?? []).filter((s) => s.url);
   const offices = (f.offices ?? []).filter((o) => o.title || o.address);
-  const officeCol = offices.length > 1 ? "col-lg-6 col-md-6 col-sm-6" : "col-lg-12";
+  const columns = (f.columns ?? []).filter((c) => c.title || (c.links ?? []).length);
+  const widgets = columns.length + offices.length;
+  const columnClass = widgets >= 3 ? "col-lg-4 col-md-4 col-sm-6" : widgets === 2 ? "col-lg-6 col-md-6 col-sm-6" : "col-lg-12";
+  const officeCol = columnClass;
   return (
     <footer>
       <div className="tp-footer-area tp-bg-common-black p-relative z-index-1 pt-105">
@@ -362,8 +388,24 @@ export function Footer({ settings }: Props) {
               </div>
               <div className="col-lg-7">
                 <div className="row">
+                  {columns.map((col, i) => (
+                    <div className={columnClass} key={`c${i}`}>
+                      <div className="tp-footer-widget mb-60 tp_fade_anim" data-delay={`.${4 + i * 2}`}>
+                        <h3 className="tp-footer-widget-title tp-ff-heading fs-25 mb-15 text-uppercase tp-text-common-white">{col.title}</h3>
+                        <ul className="ed-footer-links">
+                          {(col.links ?? []).map((l, j) => (
+                            <li key={j}>
+                              <a className="fw-500 fs-18 tp-text-grey-2 lh-28 hover-text-white" href={resolveUrl(l.url, ctx)}>
+                                {l.label}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ))}
                   {offices.map((o, i) => (
-                    <div className={officeCol} key={i}>
+                    <div className={officeCol} key={`o${i}`}>
                       <div className="tp-footer-widget mb-60 tp_fade_anim" data-delay={`.${5 + i * 2}`}>
                         <h3 className="tp-footer-widget-title tp-ff-heading fs-25 mb-15 text-uppercase tp-text-common-white">{o.title}</h3>
                         <a
