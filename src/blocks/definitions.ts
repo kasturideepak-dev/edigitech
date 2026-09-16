@@ -54,8 +54,8 @@ export const BLOCKS: BlockDefinition[] = [
       { type: "url", name: "videoUrl", label: "Video URL (YouTube)", width: "half", help: "Leave empty to hide the play button." },
       { type: "textarea", name: "videoText", label: "Text next to play button", rows: 2, width: "half" },
       { type: "textarea", name: "sideText", label: "Right side text", rows: 3, width: "half", help: TEXT_HELP },
-      socialsField(),
-      { type: "text", name: "socialLabel", label: "Social label", width: "half" },
+      { type: "text", name: "socialLabel", label: "Social label", width: "half", help: "Shown beside the vertical social icons." },
+      { ...socialsField("socials", "Social links (leave empty to use Site Settings)"), width: "full" },
       { type: "image", name: "image", label: "Wide banner image", required: true },
       {
         type: "group",

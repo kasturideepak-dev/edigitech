@@ -22,7 +22,10 @@ type HeroData = {
 };
 
 export default function Hero({ data, ctx, anchor }: BlockProps<HeroData>) {
-  const socials = (data.socials ?? []).filter((s) => s.url);
+  // Falls back to the site-wide social links when the hero has none of its own.
+  const socials = ((data.socials ?? []).filter((s) => s.url).length ? data.socials! : ctx.settings.general.socials ?? []).filter(
+    (s) => s.url,
+  );
   const stats = (data.stats ?? []).filter((s) => s.value || s.label);
   const hl = data.highlight ?? {};
   const primary = linkProps(data.primaryCta, ctx);
