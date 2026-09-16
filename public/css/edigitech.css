@@ -1,0 +1,197 @@
+/* eDigiTech additions on top of the Aleric template (main.css). */
+
+.ed-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+/* Hero: small headline prefix pill may hold longer text than the template's “We’re”. */
+.tp-hero-title-sm > span {
+  white-space: nowrap;
+}
+.ed-hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+}
+.ed-hero-customer-icon {
+  flex-shrink: 0;
+}
+
+/* Four service columns: tighter cards so long service names fit and wrap cleanly. */
+.ed-service-compact {
+  padding: 25px 22px 40px 30px;
+  height: calc(100% - 30px);
+}
+.ed-service-compact .tp-service-item-title {
+  font-size: 28px;
+}
+.tp-service-item-title a {
+  color: inherit;
+}
+.tp-service-item ul li a,
+.tp-service-item ul li span {
+  display: inline-block;
+}
+.tp-service-item ul li span {
+  font-family: var(--tp-ff-heading);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 140%;
+  padding-left: 15px;
+  position: relative;
+}
+.tp-service-item ul li span::before {
+  position: absolute;
+  content: "";
+  left: 0;
+  width: 6px;
+  height: 6px;
+  background: var(--tp-common-black);
+  border-radius: 40px;
+}
+.tp-service-item ul li a::before,
+.tp-service-item ul li span::before {
+  top: 0.7em;
+  transform: translateY(-50%);
+}
+.ed-service-compact ul li a,
+.ed-service-compact ul li span {
+  font-size: 18px;
+}
+
+.ed-award-emoji {
+  font-size: 34px;
+  line-height: 1;
+  width: 48px;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.ed-testimonial-tag {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 14px;
+  border-radius: 30px;
+  background: var(--tp-theme-primary, #c4ee18);
+  color: #000;
+  margin-bottom: 20px;
+}
+
+/* Call-to-action section */
+.ed-cta-area .tp-section-title {
+  line-height: 1.05;
+}
+.ed-cta-area .tp-section-subtitle {
+  justify-content: center;
+}
+.ed-btn-outline {
+  background: transparent;
+  border: 1px solid currentColor;
+}
+.ed-cta-dark .ed-btn-outline:hover {
+  background: #fff;
+  color: #000;
+}
+.ed-cta-light .ed-btn-outline:hover,
+.ed-cta-primary .ed-btn-outline:hover {
+  background: #000;
+  color: #fff;
+}
+
+.ed-footer-contact a {
+  display: inline-block;
+}
+
+/* Floating WhatsApp button */
+.ed-whatsapp-float {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 99;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transition: transform 0.2s ease;
+}
+.ed-whatsapp-float:hover {
+  color: #fff;
+  transform: scale(1.08);
+}
+
+/* Draft preview banner */
+.ed-preview-bar {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  background: #111;
+  color: #fff;
+  font: 500 13px/1 system-ui, sans-serif;
+  padding: 8px 14px;
+  border-radius: 0 0 10px 10px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.ed-preview-bar a {
+  color: #c4ee18;
+}
+
+/* Testimonials: keep the slide counter below the quote (quotes vary in length). */
+.tp-testimonial-area .fraction-wrapper {
+  position: relative;
+  bottom: auto;
+  margin-top: 40px;
+}
+.tp-testimonial-area .tp-testimonial-slider-item p {
+  min-height: 0;
+}
+
+/* CMS images replace pre-sized template images: lock them to the template's slot sizes. */
+.tp-testimonial-thumb img {
+  width: 312px;
+  max-width: 100%;
+  height: 412px;
+  object-fit: cover;
+}
+.tp-testimonial-thumb-2 img {
+  width: 164px;
+  height: 180px;
+  object-fit: cover;
+}
+.tp-awards-item > img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+}
+.tp-brand-item img {
+  max-height: 48px;
+  width: auto;
+}
+
+/* Text logo, used until a logo image is uploaded in Site Settings. */
+.ed-text-logo {
+  font-family: var(--tp-ff-heading);
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  color: var(--tp-common-black);
+  line-height: 1;
+}
+.ed-text-logo-white {
+  color: var(--tp-common-white);
+}
