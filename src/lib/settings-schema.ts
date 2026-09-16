@@ -31,6 +31,9 @@ export type SiteSettings = {
     whatsappNumber: string;
     whatsappMessage: string;
     showWhatsappButton: boolean;
+    showCallButton: boolean;
+    showEmailButton: boolean;
+    floatingPosition: "left" | "right";
     socials: Social[];
   };
   header: {
@@ -101,7 +104,25 @@ export const SETTINGS_TABS: { key: SettingsKey; label: string; description: stri
         help: "With country code, e.g. 919876543210. Use the link value “whatsapp” anywhere to link here.",
       },
       { type: "text", name: "whatsappMessage", label: "WhatsApp pre-filled message", width: "half" },
-      { type: "toggle", name: "showWhatsappButton", label: "Show floating WhatsApp button" },
+      {
+        type: "toggle",
+        name: "showWhatsappButton",
+        label: "Floating WhatsApp button",
+        width: "third",
+        help: "Small round buttons that follow the visitor down the page, using the details above.",
+      },
+      { type: "toggle", name: "showCallButton", label: "Floating call button", width: "third" },
+      { type: "toggle", name: "showEmailButton", label: "Floating email button", width: "third" },
+      {
+        type: "select",
+        name: "floatingPosition",
+        label: "Floating buttons position",
+        width: "half",
+        options: [
+          { label: "Bottom left", value: "left" },
+          { label: "Bottom right", value: "right" },
+        ],
+      },
       socialsField(),
     ],
   },
@@ -290,6 +311,9 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     whatsappNumber: "",
     whatsappMessage: "Hi eDigiTech, I'd like to know more about your services.",
     showWhatsappButton: true,
+    showCallButton: true,
+    showEmailButton: false,
+    floatingPosition: "left",
     socials: [],
   },
   header: {

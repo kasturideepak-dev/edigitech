@@ -481,11 +481,37 @@ export function Footer({ settings }: Props) {
   );
 }
 
-export function WhatsAppButton({ settings }: Props) {
-  if (!settings.general.showWhatsappButton || !settings.general.whatsappNumber) return null;
+/** Round contact buttons that follow the visitor down the page. */
+export function FloatingActions({ settings }: Props) {
+  const g = settings.general;
+  const buttons = [
+    g.showWhatsappButton && g.whatsappNumber
+      ? { key: "whatsapp", href: whatsappUrl(settings), icon: "fa-brands fa-whatsapp", label: "Chat on WhatsApp", newTab: true }
+      : null,
+    g.showCallButton && g.phone
+      ? { key: "call", href: `tel:${g.phone.replace(/[^\d+]/g, "")}`, icon: "fa-solid fa-phone", label: `Call ${g.phone}` }
+      : null,
+    g.showEmailButton && g.email
+      ? { key: "email", href: `mailto:${g.email}`, icon: "fa-solid fa-envelope", label: `Email ${g.email}` }
+      : null,
+  ].filter((b): b is { key: string; href: string; icon: string; label: string; newTab?: boolean } => !!b);
+
+  if (!buttons.length) return null;
+
   return (
-    <a className="ed-whatsapp-float" href={whatsappUrl(settings)} target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-      <i className="fa-brands fa-whatsapp"></i>
-    </a>
+    <div className={`ed-floating ed-floating-${g.floatingPosition === "right" ? "right" : "left"}`}>
+      {buttons.map((b) => (
+        <a
+          key={b.key}
+          className={`ed-floating-btn ed-floating-${b.key}`}
+          href={b.href}
+          aria-label={b.label}
+          {...(b.newTab ? { target: "_blank", rel: "noopener" } : {})}
+        >
+          <i className={b.icon} aria-hidden="true"></i>
+          <span className="ed-floating-label">{b.label}</span>
+        </a>
+      ))}
+    </div>
   );
 }

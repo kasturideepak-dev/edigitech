@@ -2,7 +2,7 @@ import type { Viewport } from "next";
 import { getSettings } from "@/lib/settings";
 import TemplateScripts from "@/components/site/TemplateScripts";
 import TrackingScripts from "@/components/site/TrackingScripts";
-import { BackToTop, Footer, Header, Offcanvas, Preloader, SearchOverlay, WhatsAppButton } from "@/components/site/SiteChrome";
+import { BackToTop, FloatingActions, Footer, Header, Offcanvas, Preloader, SearchOverlay } from "@/components/site/SiteChrome";
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1 };
 
@@ -42,7 +42,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
             <Footer settings={settings} />
           </div>
         </div>
-        <WhatsAppButton settings={settings} />
+        <FloatingActions settings={settings} />
         <TemplateScripts />
       </body>
     </html>
