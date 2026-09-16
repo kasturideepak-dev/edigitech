@@ -159,6 +159,8 @@
 .ed-floating-right {
   right: 24px;
   align-items: flex-end;
+  /* Sit above the back-to-top button, which is fixed at bottom right. */
+  bottom: 92px;
 }
 .ed-floating-btn {
   display: inline-flex;
@@ -219,6 +221,7 @@
   }
   .ed-floating-right {
     right: 16px;
+    bottom: 84px;
   }
   .ed-floating-btn {
     height: 46px;
