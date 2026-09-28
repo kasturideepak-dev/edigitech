@@ -7,15 +7,25 @@ import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { eq } from "drizzle-orm";
 import * as schema from "../src/db/schema";
+import { pgConnection, pgSsl } from "../src/db/connection";
 import { DEFAULT_SETTINGS } from "../src/lib/settings-schema";
 import { buildContentFromTemplate } from "../src/templates";
 import { BUILT_IN_TYPES } from "../src/lib/content-type-defaults";
 
 async function main() {
-  const client = postgres(process.env.DATABASE_URL!, {
-    max: 1,
-    ssl: process.env.DATABASE_SSL === "false" ? false : "prefer",
-  });
+  const conn = pgConnection();
+  const client =
+    conn.kind === "url"
+      ? postgres(conn.url, { max: 1, ssl: pgSsl() })
+      : postgres({
+          host: conn.host,
+          port: conn.port,
+          database: conn.database,
+          username: conn.username,
+          password: conn.password,
+          max: 1,
+          ssl: pgSsl(),
+        });
   const db = drizzle(client, { schema });
   const resetHome = process.argv.includes("--reset-home");
 
