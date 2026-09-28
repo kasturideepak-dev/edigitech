@@ -80,14 +80,26 @@ If the host only offers Node 16/18, ask them to provision Node 20 or 22, or inst
 3. **Environment variables** (from `.env.example`):
    - `DATABASE_URL` = `postgres://USER:PASSWORD@localhost:5432/DBNAME`
    - `DATABASE_SSL` = `false` for a local Postgres on the same server; omit it for managed Postgres (TLS required)
+   - `NEXT_PUBLIC_ASSET_VERSION` = any string (e.g. a deploy timestamp). Change it and rebuild to force browsers to re-fetch `/assets/*`.
    - `AUTH_SECRET` = long random string (`openssl rand -base64 48`)
    - `NEXT_PUBLIC_SITE_URL` = `https://www.yourdomain.com`
    - `UPLOAD_DIR` = an absolute path **outside** the app folder, e.g. `/home/uXXXXXXXX/edigitech-uploads`, so uploads survive redeploys
    - `SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD` (only used by the seed script)
 4. Deploy (build + start).
-5. **Upload the template assets** (they are licensed and kept out of Git): copy the local `web/public/assets`
-   folder to `public/assets` in the app directory on the server, using the hPanel File Manager or SFTP.
-   Without it the site renders without styling. Repeat only if the theme files change.
+5. **Upload the template assets** (licensed, kept out of Git). Copy the local `public/assets`
+   folder to `public/assets` in the app directory on the server, e.g.
+
+   ```bash
+   rsync -az --delete public/assets/ USER@SERVER:apps/edigitech/public/assets/
+   ```
+
+   Then **rebuild** — Next.js only serves `public/` files that existed when the build ran.
+
+   > **Important:** upload the assets *before* the site is first visited. `/assets/*` is served with a
+   > 30-day `Cache-Control`, and that header is applied to 404s too — so any browser that loads the site
+   > while the assets are missing caches the failures for 30 days and keeps showing an unstyled page.
+   > If that happens, bump `NEXT_PUBLIC_ASSET_VERSION` (see below) and rebuild; every asset URL changes
+   > and clients fetch fresh copies immediately.
 6. **First-time setup over SSH** (hPanel → *Advanced → SSH Access*), in the app directory:
    ```bash
    npm run db:push     # skip if you imported the SQL file

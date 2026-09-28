@@ -3,6 +3,7 @@ import { getSettings } from "@/lib/settings";
 import TemplateScripts from "@/components/site/TemplateScripts";
 import TrackingScripts from "@/components/site/TrackingScripts";
 import { BackToTop, FloatingActions, Footer, Header, Offcanvas, Preloader, SearchOverlay } from "@/components/site/SiteChrome";
+import { asset } from "@/lib/asset-version";
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1 };
 
@@ -23,7 +24,7 @@ export default async function SiteLayout({ children }: LayoutProps<"/">) {
       <head>
         {STYLES.map((href) => (
           // Template CSS is served as-is from /public so its relative font/image URLs keep working.
-          <link key={href} rel="stylesheet" href={href} precedence="default" />
+          <link key={href} rel="stylesheet" href={asset(href)} precedence="default" />
         ))}
       </head>
       <body className="tp-magic-cursor loaded">

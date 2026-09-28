@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { asset } from "@/lib/asset-version";
 
 // The Aleric template's scripts, in the same order as the original HTML.
 const SCRIPTS = [
@@ -22,7 +23,7 @@ const SCRIPTS = [
   "slider-init.js",
   "main.js",
   "tp-cursor.js",
-].map((f) => `/assets/js/${f}`);
+].map((f) => asset(`/assets/js/${f}`));
 
 declare global {
   interface Window {
