@@ -61,10 +61,25 @@ export const homeSections = (): Omit<Section, "id">[] => [
     visible: true,
     label: "Client logos",
     data: {
-      title: "Trusted by Businesses Across India & 25+ Countries",
-      logos: ["logo", "logo-2", "logo-3", "logo-4", "logo-5"].map((f, i) => ({
-        image: img(`/assets/img/brands/${f}.png`, `Client logo ${i + 1}`),
-        name: `Client ${i + 1}`,
+      title: "Trusted by 500+ businesses across India — from startups to enterprises",
+      // Real client logos, taken from the live eDigiTech site.
+      logos: [
+        ["puraniks", "png", "Puraniks"],
+        ["ultra", "png", "Ultra"],
+        ["editec", "png", "Editec"],
+        ["brightdiva", "png", "BrightDiva"],
+        ["apollo-valves", "png", "Apollo Valves"],
+        ["bluestar-logistics", "png", "BlueStar Logistics"],
+        ["prosumia", "png", "Prosumia"],
+        ["emaar", "png", "Emaar"],
+        ["naukrigulf", "png", "NaukriGulf"],
+        ["idea", "png", "Idea"],
+        ["anmol", "png", "Anmol"],
+        ["technymon", "jpg", "Technymon"],
+        ["mentor-india", "jpg", "Mentor India"],
+      ].map(([file, ext, name]) => ({
+        image: img(`/images/clients/${file}.${ext}`, name),
+        name,
         url: "",
       })),
     },
@@ -166,14 +181,15 @@ export const homeSections = (): Omit<Section, "id">[] => [
   },
   {
     type: "counters",
-    visible: false,
-    label: "Counters (enable once numbers are confirmed)",
+    visible: true,
+    label: "Counters",
     data: {
+      // Figures taken from the live eDigiTech site.
       items: [
-        { value: 0, suffix: "+", label: "Projects Delivered" },
-        { value: 0, suffix: "+", label: "Happy Clients" },
-        { value: 25, suffix: "+", label: "Countries Reached" },
-        { value: 0, suffix: "+", label: "Years of Experience" },
+        { value: 1000, suffix: "+", label: "Projects Delivered" },
+        { value: 500, suffix: "+", label: "Happy Clients" },
+        { value: 10, suffix: "+", label: "Years of Experience" },
+        { value: 37, suffix: "+", label: "Expert Professionals" },
       ],
     },
   },
@@ -254,8 +270,8 @@ export const homeSections = (): Omit<Section, "id">[] => [
   },
   {
     type: "blog",
-    visible: false,
-    label: "Blog (hidden until articles exist)",
+    visible: true,
+    label: "Blog (hides itself until articles exist)",
     data: {
       eyebrow: "Latest Insights",
       title: "From Our Blog",
@@ -270,6 +286,47 @@ export const homeSections = (): Omit<Section, "id">[] => [
     },
   },
   // Section 8 — Final CTA
+  {
+    type: "faq",
+    visible: true,
+    label: "FAQ",
+    data: {
+      eyebrow: "General Questions",
+      title: "Frequently Asked Questions",
+      items: [
+        {
+          question: "What services does eDigiTech provide?",
+          answer:
+            "Website and mobile app development, eCommerce, digital marketing and SEO, WhatsApp Business API and marketing, cloud hosting and business email, AI automation, and industry software such as GST billing, hospital, transport and HR/payroll systems.",
+        },
+        {
+          question: "How long does a website take to build?",
+          answer:
+            "A standard business website typically takes 3 to 5 weeks, and an eCommerce store 6 to 10 weeks, depending on how many pages are needed and how quickly content and approvals come through. We confirm a timeline in writing before starting.",
+        },
+        {
+          question: "Do you work with businesses outside Pune?",
+          answer:
+            "Yes. We are based in Pune and work with clients across India — Mumbai, Delhi, Bangalore, Hyderabad, Chennai, Ahmedabad and Kolkata — as well as internationally.",
+        },
+        {
+          question: "Will my website rank on Google?",
+          answer:
+            "Every site we build is technically SEO-ready: clean URLs, fast loading, mobile-first, structured data and a generated sitemap. Ranking for competitive terms also needs ongoing SEO work, which we offer separately.",
+        },
+        {
+          question: "Do you provide support after the website goes live?",
+          answer:
+            "Yes. Every project includes a support period after launch, and we offer ongoing maintenance covering updates, backups, security and content changes. Support is India-based and reachable on WhatsApp.",
+        },
+        {
+          question: "How do I get a quote?",
+          answer:
+            "Send us a message on WhatsApp or use the contact form with a short description of what you need. We will come back with scope, timeline and a fixed price — usually within one working day.",
+        },
+      ],
+    },
+  },
   {
     type: "cta",
     visible: true,

@@ -6,6 +6,7 @@ import Blog from "./components/Blog";
 import Brands from "./components/Brands";
 import Counters from "./components/Counters";
 import Cta from "./components/Cta";
+import Faq from "./components/Faq";
 import Hero from "./components/Hero";
 import ImageBanner from "./components/ImageBanner";
 import Portfolio from "./components/Portfolio";
@@ -30,6 +31,7 @@ const COMPONENTS: Record<string, ComponentType<BlockProps<any>>> = {
   imageBanner: ImageBanner,
   blog: Blog,
   cta: Cta,
+  faq: Faq,
 };
 
 export function RenderSections({ sections, ctx }: { sections: Section[]; ctx: BlockContext }) {

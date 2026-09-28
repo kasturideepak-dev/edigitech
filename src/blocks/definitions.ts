@@ -502,6 +502,34 @@ export const BLOCKS: BlockDefinition[] = [
       secondaryCta: { label: "", url: "" },
     }),
   },
+
+  // ------------------------------------------------------------------ FAQ
+  {
+    type: "faq",
+    name: "FAQ Accordion",
+    description: "Common questions in an expandable accordion. Good for SEO and for cutting repeat enquiries.",
+    category: "Content",
+    icon: "HelpCircle",
+    fields: [
+      eyebrowField,
+      { type: "text", name: "title", label: "Heading" },
+      {
+        type: "list",
+        name: "items",
+        label: "Questions",
+        itemLabel: "question",
+        fields: [
+          { type: "text", name: "question", label: "Question", required: true },
+          { type: "textarea", name: "answer", label: "Answer", rows: 4, help: TEXT_HELP },
+        ],
+      },
+    ],
+    defaults: () => ({
+      eyebrow: "General Questions",
+      title: "Frequently Asked Questions",
+      items: [{ question: "Your question here?", answer: "The answer." }],
+    }),
+  },
 ];
 
 export const BLOCK_MAP: Record<string, BlockDefinition> = Object.fromEntries(BLOCKS.map((b) => [b.type, b]));
