@@ -50,3 +50,9 @@ next-env.d.ts
 # Paid Aleric template files (licensed, not redistributable in a public repo).
 # Upload the assets/ folder to the server's public/assets after deploying — see README.
 /public/assets
+
+# AI assistant instruction files — kept local, not shipped to the client repo.
+# (next dev re-creates AGENTS.md automatically; it stays untracked.)
+/CLAUDE.md
+/AGENTS.md
+/.claude
