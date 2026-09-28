@@ -22,11 +22,6 @@ const slugFrom = async (params: Props["params"]) => {
   return (slug ?? []).map((s) => decodeURIComponent(s)).join("/");
 };
 
-const pageNumber = async (searchParams: Props["searchParams"]) => {
-  const sp = await searchParams;
-  return Math.max(1, Number(typeof sp.page === "string" ? sp.page : 1) || 1);
-};
-
 /** Wraps SEO fields so content-type routes reuse the page metadata builder. */
 const asContent = (seo: PageContent["seo"] | null | undefined, description = ""): PageContent => ({
   sections: [],
@@ -40,7 +35,7 @@ async function resolve(slug: string) {
   return { page: null, route: slug ? await resolveContentRoute(slug) : null };
 }
 
-export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = normalizeSlug(await slugFrom(params));
   const [{ page, route }, settings] = await Promise.all([resolve(slug), getSettings()]);
 
@@ -61,14 +56,13 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   }
 
   if (route?.kind === "archive") {
-    const n = await pageNumber(searchParams);
     return buildMetadata({
       title: route.type.archiveTitle || route.type.namePlural,
       path: archivePath(route.type),
       content: asContent(null, route.type.archiveIntro),
       settings,
       // Deeper listing pages are thin duplicates of page 1.
-      forceNoindex: n > 1,
+      forceNoindex: route.page > 1,
     });
   }
 
@@ -86,7 +80,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
   return { title: "Page not found", robots: { index: false } };
 }
 
-export default async function CmsPage({ params, searchParams }: Props) {
+export default async function CmsPage({ params }: Props) {
   const raw = await slugFrom(params);
   const slug = normalizeSlug(raw);
   const { page, route } = await resolve(slug);
@@ -109,12 +103,14 @@ export default async function CmsPage({ params, searchParams }: Props) {
 
   // ---- Content type: archive
   if (route?.kind === "archive") {
-    const n = await pageNumber(searchParams);
+    const n = route.page;
     const tax = primaryTaxonomy(route.type);
     const [{ entries, pages }, terms] = await Promise.all([
       listEntries({ type: route.type, page: n }),
       tax ? listTermsWithCounts(route.type, tax.key) : Promise.resolve([]),
     ]);
+    // Out-of-range listing pages would otherwise render empty and be indexed as soft 404s.
+    if (n > pages) notFound();
     return <ArchiveView type={route.type} entries={entries} page={n} pages={pages} terms={terms} />;
   }
 
@@ -122,11 +118,12 @@ export default async function CmsPage({ params, searchParams }: Props) {
   if (route?.kind === "term") {
     const term = await getTerm(route.type, route.taxonomy.key, route.termSlug);
     if (term) {
-      const n = await pageNumber(searchParams);
+      const n = route.page;
       const [{ entries, pages }, terms] = await Promise.all([
         listEntries({ type: route.type, page: n, taxonomy: route.taxonomy.key, term: term.slug }),
         listTermsWithCounts(route.type, route.taxonomy.key),
       ]);
+      if (n > pages) notFound();
       return (
         <ArchiveView
           type={route.type}

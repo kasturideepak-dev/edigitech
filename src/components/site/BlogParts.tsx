@@ -148,7 +148,8 @@ export function CategoryNav({
 
 export function Pagination({ page, pages, basePath }: { page: number; pages: number; basePath: string }) {
   if (pages <= 1) return null;
-  const href = (n: number) => (n === 1 ? basePath : `${basePath}?page=${n}`);
+  // Path-based (/blog/page/2) so listing pages stay statically renderable.
+  const href = (n: number) => (n === 1 ? basePath : `${basePath}/page/${n}`);
   return (
     <nav className="ed-pagination" aria-label="Blog pages">
       {page > 1 && (
