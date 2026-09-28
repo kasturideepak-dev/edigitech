@@ -1,7 +1,8 @@
 import type { ImageValue } from "@/lib/types";
 import { Icon } from "@/components/site/Icon";
 import { Text } from "@/components/site/Text";
-import { formatPostDate, latestPosts } from "@/lib/blog";
+import { entryPath, getTypeByKey, latestEntries, listTerms } from "@/lib/content-types";
+import { formatPostDate } from "@/components/site/BlogParts";
 import { type BlockProps, resolveUrl, src } from "./shared";
 
 type BlogPostItem = { image?: ImageValue | null; title?: string; url?: string; category?: string; date?: string };
@@ -10,25 +11,37 @@ type BlogData = {
   eyebrow?: string;
   title?: string;
   intro?: string;
-  /** "latest" pulls from the blog automatically; "manual" uses the list below. */
+  /** "latest" pulls from a content type automatically; "manual" uses the list below. */
   source?: "latest" | "manual";
+  /** Content type key to pull from when source is "latest". Defaults to blog posts. */
+  contentType?: string;
   count?: number;
   posts?: BlogPostItem[];
 };
 
 const FADE_FROM = ["left", "bottom", "right"];
 
+/** Newest entries of a content type as cards; links honour the type's editable URL prefix. */
+async function latestFromType(data: BlogData): Promise<BlogPostItem[]> {
+  const type = await getTypeByKey(data.contentType || "post");
+  if (!type) return [];
+  const entries = await latestEntries(type, Number(data.count) || 3);
+  const tax = (type.taxonomies ?? [])[0];
+  const names = tax ? new Map((await listTerms(type.id, tax.key)).map((t) => [t.slug, t.name])) : new Map<string, string>();
+  return entries.map((e) => {
+    const termSlug = tax ? e.terms?.[tax.key]?.[0] : undefined;
+    return {
+      image: e.coverImage ?? ((e.data?.image as ImageValue | undefined) || null),
+      title: e.title,
+      url: entryPath(type, e.slug),
+      category: termSlug ? (names.get(termSlug) ?? termSlug) : "",
+      date: type.supports?.publishDate ? formatPostDate(e.publishedAt) : "",
+    };
+  });
+}
+
 export default async function Blog({ data, ctx, anchor }: BlockProps<BlogData>) {
-  const posts: BlogPostItem[] =
-    data.source === "manual"
-      ? (data.posts ?? [])
-      : (await latestPosts(Number(data.count) || 3)).map((p) => ({
-          image: p.coverImage,
-          title: p.title,
-          url: `/blog/${p.slug}`,
-          category: p.category?.name ?? "",
-          date: formatPostDate(p.publishedAt),
-        }));
+  const posts: BlogPostItem[] = data.source === "manual" ? (data.posts ?? []) : await latestFromType(data);
   // Nothing to show yet: hide the section rather than render empty cards.
   if (posts.length === 0) return null;
   return (

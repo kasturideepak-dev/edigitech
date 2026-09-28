@@ -3,16 +3,20 @@
 //        npm run db:seed -- --reset-home   (rebuilds the homepage draft + published copy from the template)
 import "dotenv/config";
 import bcrypt from "bcryptjs";
-import mysql from "mysql2/promise";
-import { drizzle } from "drizzle-orm/mysql2";
+import postgres from "postgres";
+import { drizzle } from "drizzle-orm/postgres-js";
 import { eq } from "drizzle-orm";
 import * as schema from "../src/db/schema";
 import { DEFAULT_SETTINGS } from "../src/lib/settings-schema";
 import { buildContentFromTemplate } from "../src/templates";
+import { BUILT_IN_TYPES } from "../src/lib/content-type-defaults";
 
 async function main() {
-  const pool = mysql.createPool({ uri: process.env.DATABASE_URL });
-  const db = drizzle(pool, { schema, mode: "default" });
+  const client = postgres(process.env.DATABASE_URL!, {
+    max: 1,
+    ssl: process.env.DATABASE_SSL === "false" ? false : "prefer",
+  });
+  const db = drizzle(client, { schema });
   const resetHome = process.argv.includes("--reset-home");
 
   // 1. Admin user
@@ -26,8 +30,8 @@ async function main() {
       email,
       passwordHash: await bcrypt.hash(password, 12),
       role: "admin",
-    });
-    adminId = res.insertId;
+    }).returning({ id: schema.users.id });
+    adminId = res.id;
     console.log(`✔ Admin user created: ${email}`);
   } else {
     console.log(`• Admin user exists: ${email}`);
@@ -42,7 +46,22 @@ async function main() {
     }
   }
 
-  // 3. Homepage
+  // 3. Built-in content types (created once; the client owns them after that)
+  for (const t of BUILT_IN_TYPES) {
+    const [row] = await db
+      .select({ id: schema.contentTypes.id })
+      .from(schema.contentTypes)
+      .where(eq(schema.contentTypes.key, t.key))
+      .limit(1);
+    if (!row) {
+      await db.insert(schema.contentTypes).values({ ...t, isSystem: true, active: true });
+      console.log(`✔ Content type “${t.namePlural}” created at /${t.slug}`);
+    } else {
+      console.log(`• Content type “${t.namePlural}” exists`);
+    }
+  }
+
+  // 4. Homepage
   const [home] = await db.select().from(schema.pages).where(eq(schema.pages.isHome, true)).limit(1);
   const content = buildContentFromTemplate("home-agency", "Home");
   if (!home) {
@@ -71,7 +90,7 @@ async function main() {
     console.log("• Homepage exists (use --reset-home to rebuild it)");
   }
 
-  await pool.end();
+  await client.end();
 }
 
 main().catch((err) => {

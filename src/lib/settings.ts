@@ -28,5 +28,5 @@ export async function saveSettings<K extends SettingsKey>(key: K, value: SiteSet
   await db
     .insert(settingsTable)
     .values({ key, value })
-    .onDuplicateKeyUpdate({ set: { value } });
+    .onConflictDoUpdate({ target: settingsTable.key, set: { value } });
 }

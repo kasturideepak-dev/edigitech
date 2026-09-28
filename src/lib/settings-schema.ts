@@ -314,7 +314,14 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     showCallButton: true,
     showEmailButton: false,
     floatingPosition: "left",
-    socials: [],
+    // Real eDigiTech accounts. The hero, header and footer all fall back to these
+    // when a section has no social links of its own.
+    socials: [
+      { platform: "facebook", url: "https://www.facebook.com/eDigiTech.in/" },
+      { platform: "instagram", url: "https://www.instagram.com/edigitech/" },
+      { platform: "linkedin", url: "https://www.linkedin.com/company/edigitech" },
+      { platform: "youtube", url: "https://www.youtube.com/@edigitech" },
+    ],
   },
   header: {
     menu: [

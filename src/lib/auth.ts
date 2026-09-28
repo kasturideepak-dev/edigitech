@@ -50,6 +50,8 @@ export const PERMISSIONS = {
   "seo.manage": ["admin", "seo", "editor"],
   "redirects.manage": ["admin", "seo"],
   "users.manage": ["admin"],
+  /** Create content types, edit their fields and change their URL prefix. */
+  "types.manage": ["admin"],
 } as const satisfies Record<string, readonly Role[]>;
 
 export type Permission = keyof typeof PERMISSIONS;

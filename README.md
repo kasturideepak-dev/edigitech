@@ -14,7 +14,7 @@ Next.js 16 site built on the Aleric template (light theme) with a custom CMS das
 | Global settings schema | `src/lib/settings-schema.ts` |
 | Blog (listing, post, category) | `src/app/(site)/blog/**`, `src/lib/blog.ts` |
 | Dashboard | `src/app/admin/**` |
-| Database schema (MySQL/MariaDB) | `src/db/schema.ts`, SQL in `drizzle/` |
+| Database schema (PostgreSQL) | `src/db/schema.ts`, SQL in `drizzle/` |
 | Template CSS/JS/images (licensed, **not in Git**) | `public/assets/` |
 | eDigiTech CSS additions | `public/css/edigitech.css` |
 
@@ -55,16 +55,31 @@ npm run dev                 # http://localhost:3000  (dashboard: /admin)
 > After `npm install`, move the new `node_modules` folder back into `node_modules.nosync` and recreate the symlink.
 > Moving the project out of iCloud avoids all of this.
 
-## Deploying to Hostinger (Business plan, Node.js Web App)
+## Deploying (OVIPanel / any Node host)
 
-1. **Database**: in hPanel → *Databases → MySQL Databases*, create a database and user.
-   Either import `drizzle/0000_init.sql` in phpMyAdmin, or run `npm run db:push` over SSH (step 6).
+### Server requirements (verified against the installed packages)
+
+| Requirement | Minimum | Why |
+|---|---|---|
+| **Node.js** | **20.9 LTS** (22 LTS fine) | `next@16` and `sharp` both declare `engines.node >= 20.9.0`. Next.js 16 dropped Node 18; Node 16 is end-of-life (Sept 2023) and **cannot run this app** — `npm install` fails on engines and the build will not start. |
+| **PostgreSQL** | **14** | Audited: the CMS only uses `jsonb`, GIN indexes, `@>`, `jsonb_set`/`jsonb_agg`/`jsonb_array_elements`, `ON CONFLICT`, `serial`, `timestamptz` — all available in 14. Nothing requires 15+. |
+| npm install scripts | allowed | `sharp` needs its native binary for image uploads/WebP conversion. If the host blocks postinstall scripts, uploads will fail. |
+
+If the host only offers Node 16/18, ask them to provision Node 20 or 22, or install it per-account with `nvm` and point the app's start command at that binary. Do not downgrade Next.js: the last release supporting Node 16 is 13.x, which this codebase is not built on.
+
+
+1. **Database**: create a PostgreSQL database and user in the hosting panel.
+   Either import the SQL file in `drizzle/` via the panel's DB tool, or run `npm run db:push` over SSH (step 6).
+
+   > **Check first:** confirm the plan actually offers PostgreSQL — many shared panels ship MySQL/MariaDB only.
+   > If it doesn't, point `DATABASE_URL` at managed Postgres (Neon or Supabase, free tier); no code change is needed.
 2. **Create the app**: hPanel → *Websites → Add website → Node.js Apps*, then connect the GitHub repo (or upload a ZIP of this `web` folder without `node_modules`/`.next`).
    - Node version: 20 or newer
    - Build command: `npm run build`
    - Start command: `npm run start`
 3. **Environment variables** (from `.env.example`):
-   - `DATABASE_URL` = `mysql://USER:PASSWORD@localhost:3306/DBNAME`
+   - `DATABASE_URL` = `postgres://USER:PASSWORD@localhost:5432/DBNAME`
+   - `DATABASE_SSL` = `false` for a local Postgres on the same server; omit it for managed Postgres (TLS required)
    - `AUTH_SECRET` = long random string (`openssl rand -base64 48`)
    - `NEXT_PUBLIC_SITE_URL` = `https://www.yourdomain.com`
    - `UPLOAD_DIR` = an absolute path **outside** the app folder, e.g. `/home/uXXXXXXXX/edigitech-uploads`, so uploads survive redeploys

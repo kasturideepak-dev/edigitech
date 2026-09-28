@@ -12,6 +12,7 @@ import {
   LogOut,
   Menu,
   Settings,
+  Shapes,
   Shuffle,
   UserCircle,
   Users,
@@ -19,6 +20,7 @@ import {
 } from "lucide-react";
 import { logoutAction } from "@/app/admin/actions/auth";
 import { cx } from "./ui";
+import { typeIcon } from "./type-icons";
 
 const ICONS = {
   dashboard: LayoutDashboard,
@@ -28,11 +30,13 @@ const ICONS = {
   settings: Settings,
   redirects: Shuffle,
   users: Users,
+  types: Shapes,
 };
 
-type NavItem = { href: string; label: string; icon: string };
+export type NavItem = { href: string; label: string; icon: string; typeIcon?: string; show?: boolean };
+export type NavGroup = { title?: string; items: NavItem[] };
 
-export function Sidebar({ nav, user }: { nav: NavItem[]; user: { name: string; email: string; role: string } }) {
+export function Sidebar({ groups, user }: { groups: NavGroup[]; user: { name: string; email: string; role: string } }) {
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const isActive = (href: string) => (href === "/admin" ? path === "/admin" : path.startsWith(href));
@@ -63,28 +67,39 @@ export function Sidebar({ nav, user }: { nav: NavItem[]; user: { name: string; e
             <X className="size-5" />
           </button>
         </div>
-        <nav className="flex-1 space-y-0.5 px-3">
-          {nav.map((n) => {
-            const Icon = ICONS[n.icon as keyof typeof ICONS] ?? FileText;
+        <nav className="flex-1 space-y-5 overflow-y-auto px-3 pb-4">
+          {groups.map((g, gi) => {
+            const items = g.items.filter((n) => n.show !== false);
+            if (!items.length) return null;
             return (
-              <Link
-                key={n.href}
-                href={n.href}
-                onClick={() => setOpen(false)}
-                className={cx(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition",
-                  isActive(n.href) ? "bg-white/10 text-white" : "hover:bg-white/5 hover:text-white",
+              <div key={gi} className="space-y-0.5">
+                {g.title && (
+                  <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">{g.title}</p>
                 )}
-              >
-                <Icon className={cx("size-4", isActive(n.href) && "text-brand")} />
-                {n.label}
-              </Link>
+                {items.map((n) => {
+                  const Icon = n.typeIcon ? typeIcon(n.typeIcon) : (ICONS[n.icon as keyof typeof ICONS] ?? FileText);
+                  return (
+                    <Link
+                      key={n.href}
+                      href={n.href}
+                      onClick={() => setOpen(false)}
+                      className={cx(
+                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition",
+                        isActive(n.href) ? "bg-white/10 text-white" : "hover:bg-white/5 hover:text-white",
+                      )}
+                    >
+                      <Icon className={cx("size-4", isActive(n.href) && "text-brand")} />
+                      <span className="truncate">{n.label}</span>
+                    </Link>
+                  );
+                })}
+              </div>
             );
           })}
           <a
             href="/"
             target="_blank"
-            className="mt-4 flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/5 hover:text-white"
+            className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-white/5 hover:text-white"
           >
             <ExternalLink className="size-4" /> View website
           </a>

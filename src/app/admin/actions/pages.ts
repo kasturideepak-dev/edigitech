@@ -8,10 +8,11 @@ import { assertUser, can } from "@/lib/auth";
 import { PAGES_TAG, normalizeSlug, pagePath, pageTag } from "@/lib/pages";
 import type { PageContent } from "@/lib/types";
 import { buildContentFromTemplate, newSectionId } from "@/templates";
+import { isStaticReserved } from "@/lib/reserved";
+import { reservedTypePrefixes } from "@/lib/route";
 
 type Result<T = object> = ({ ok: true } & T) | { ok: false; error: string };
 
-const RESERVED = ["admin", "uploads", "preview", "api", "blog", "sitemap.xml", "robots.txt", "_next", "assets", "css", "images"];
 const MAX_REVISIONS = 30;
 
 async function run<T extends object>(fn: () => Promise<T>): Promise<Result<T>> {
@@ -24,7 +25,10 @@ async function run<T extends object>(fn: () => Promise<T>): Promise<Result<T>> {
 
 async function validateSlug(slug: string, pageId?: number) {
   if (!slug) throw new Error("URL slug is required.");
-  if (RESERVED.includes(slug.split("/")[0])) throw new Error(`“/${slug}” is reserved. Choose another URL.`);
+  const first = slug.split("/")[0];
+  if (isStaticReserved(first)) throw new Error(`“/${slug}” is reserved. Choose another URL.`);
+  if ((await reservedTypePrefixes()).includes(first))
+    throw new Error(`“/${first}” belongs to a content type. Choose another URL, or rename that type's prefix.`);
   const where = pageId ? and(eq(pages.slug, slug), ne(pages.id, pageId)) : eq(pages.slug, slug);
   const [clash] = await db.select({ id: pages.id }).from(pages).where(where).limit(1);
   if (clash) throw new Error(`Another page already uses “/${slug}”.`);
@@ -77,8 +81,8 @@ export async function createPageAction(input: { title: string; slug: string; pag
       draft: content,
       createdBy: user.id,
       updatedBy: user.id,
-    });
-    return { id: res.insertId };
+    }).returning({ id: pages.id });
+    return { id: res.id };
   });
 }
 
@@ -126,7 +130,7 @@ export async function savePageAction(input: SavePageInput, opts: { publish?: boo
       await db
         .insert(redirects)
         .values({ fromPath: `/${page.slug}`, toPath: `/${slug}`, statusCode: 301, note: "Auto: page URL changed" })
-        .onDuplicateKeyUpdate({ set: { toPath: `/${slug}` } });
+        .onConflictDoUpdate({ target: redirects.fromPath, set: { toPath: `/${slug}` } });
       await db.delete(redirects).where(eq(redirects.fromPath, `/${slug}`));
     }
 
@@ -184,8 +188,8 @@ export async function duplicatePageAction(id: number) {
       draft,
       createdBy: user.id,
       updatedBy: user.id,
-    });
-    return { id: res.insertId };
+    }).returning({ id: pages.id });
+    return { id: res.id };
   });
 }
 

@@ -1,10 +1,33 @@
-import type { PostCard } from "@/lib/blog";
-import { formatPostDate } from "@/lib/blog";
-
 const FADE_FROM = ["left", "bottom", "right"];
 
-/** Article card used on the blog listing, category pages and related posts. */
-export function PostCardItem({ post, index = 0 }: { post: PostCard; index?: number }) {
+/** Minimal shape a card needs — satisfied by both PostCard and EntryCard. */
+export type CardLike = {
+  id: number;
+  title: string;
+  slug: string;
+  coverImage: { url: string; alt?: string } | null;
+  publishedAt: string | null;
+  category?: { name: string; slug: string } | null;
+};
+
+/** Kept here (rather than imported from a server-only lib) so these stay reusable. */
+export const formatPostDate = (iso: string | null) =>
+  iso ? new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "";
+
+/**
+ * Card used on archives, taxonomy pages and related lists.
+ * `basePath` is the owning content type's editable URL prefix.
+ */
+export function PostCardItem({
+  post,
+  index = 0,
+  basePath = "/blog",
+}: {
+  post: CardLike;
+  index?: number;
+  basePath?: string;
+}) {
+  const href = `${basePath}/${post.slug}`;
   return (
     <div
       className="tp-blog-item tp--hover-item mb-60 tp_fade_anim"
@@ -12,7 +35,7 @@ export function PostCardItem({ post, index = 0 }: { post: PostCard; index?: numb
       data-fade-from={FADE_FROM[index % 3]}
       data-ease="bounce"
     >
-      <a href={`/blog/${post.slug}`} className="tp-blog-thumb d-block mb-30 p-relative fix d-inline-block">
+      <a href={href} className="tp-blog-thumb d-block mb-30 p-relative fix d-inline-block">
         <div
           className="tp--hover-img"
           data-displacement="/assets/img/imghover/strip.png"
@@ -34,7 +57,7 @@ export function PostCardItem({ post, index = 0 }: { post: PostCard; index?: numb
           {post.publishedAt && <span>{formatPostDate(post.publishedAt)}</span>}
         </div>
         <h3 className="fs-25">
-          <a className="underline-black" href={`/blog/${post.slug}`}>
+          <a className="underline-black" href={href}>
             {post.title}
           </a>
         </h3>
@@ -96,21 +119,25 @@ export function BlogHero({
 export function CategoryNav({
   categories,
   active,
+  basePath = "/blog",
+  taxonomySlug = "category",
 }: {
   categories: { name: string; slug: string; total: number }[];
   active?: string;
+  basePath?: string;
+  taxonomySlug?: string;
 }) {
   if (!categories.length) return null;
   return (
     <div className="ed-category-nav mb-50">
-      <a className={`ed-category-pill${active ? "" : " is-active"}`} href="/blog">
+      <a className={`ed-category-pill${active ? "" : " is-active"}`} href={basePath}>
         All
       </a>
       {categories.map((c) => (
         <a
           key={c.slug}
           className={`ed-category-pill${active === c.slug ? " is-active" : ""}`}
-          href={`/blog/category/${c.slug}`}
+          href={`${basePath}/${taxonomySlug}/${c.slug}`}
         >
           {c.name} <span>{c.total}</span>
         </a>
