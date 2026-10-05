@@ -530,6 +530,65 @@ export const BLOCKS: BlockDefinition[] = [
       items: [{ question: "Your question here?", answer: "The answer." }],
     }),
   },
+
+  // ------------------------------------------------------------------ RICH TEXT
+  {
+    type: "richText",
+    name: "Rich Text",
+    description: "A written section — heading, intro and optional titled columns. Good for About, Terms and Privacy pages.",
+    category: "Content",
+    icon: "AlignLeft",
+    fields: [
+      eyebrowField,
+      { type: "text", name: "title", label: "Heading" },
+      { type: "textarea", name: "intro", label: "Intro paragraph", rows: 4, help: TEXT_HELP },
+      {
+        type: "list",
+        name: "items",
+        label: "Columns",
+        itemLabel: "title",
+        max: 4,
+        help: "Optional. Use for things like Vision / Mission / Values.",
+        fields: [
+          { type: "text", name: "title", label: "Title" },
+          { type: "textarea", name: "body", label: "Text", rows: 4, help: TEXT_HELP },
+        ],
+      },
+    ],
+    defaults: () => ({ eyebrow: "", title: "Section heading", intro: "Your text here.", items: [] }),
+  },
+
+  // ------------------------------------------------------------------ TEAM
+  {
+    type: "team",
+    name: "Team Members",
+    description: "People cards with photo, name, role and a short bio.",
+    category: "Social Proof",
+    icon: "Users",
+    fields: [
+      eyebrowField,
+      { type: "text", name: "title", label: "Heading" },
+      { type: "textarea", name: "intro", label: "Intro", rows: 3, help: TEXT_HELP },
+      {
+        type: "list",
+        name: "members",
+        label: "People",
+        itemLabel: "name",
+        fields: [
+          { type: "image", name: "photo", label: "Photo" },
+          { type: "text", name: "name", label: "Name", width: "half", required: true },
+          { type: "text", name: "role", label: "Role", width: "half" },
+          { type: "textarea", name: "bio", label: "Short bio", rows: 4, help: TEXT_HELP },
+        ],
+      },
+    ],
+    defaults: () => ({
+      eyebrow: "Our Team",
+      title: "Meet the team",
+      intro: "",
+      members: [{ photo: null, name: "Name", role: "Role", bio: "" }],
+    }),
+  },
 ];
 
 export const BLOCK_MAP: Record<string, BlockDefinition> = Object.fromEntries(BLOCKS.map((b) => [b.type, b]));

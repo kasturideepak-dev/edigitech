@@ -12,7 +12,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx scripts/seed.ts",
     "typecheck": "tsc --noEmit",
-    "db:import-legacy": "tsx scripts/import-legacy.ts"
+    "db:import-legacy": "tsx scripts/import-legacy.ts",
+    "db:apply-page": "tsx scripts/apply-page.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
