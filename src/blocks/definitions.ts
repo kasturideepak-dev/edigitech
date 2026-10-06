@@ -589,6 +589,57 @@ export const BLOCKS: BlockDefinition[] = [
       members: [{ photo: null, name: "Name", role: "Role", bio: "" }],
     }),
   },
+
+  // ------------------------------------------------------------------ FEATURE
+  {
+    type: "feature",
+    name: "Image + Panel",
+    description: "Half image, half colour panel with a heading, text and a tick list. Alternate the image side to build a sequence.",
+    category: "Content",
+    icon: "Columns2",
+    fields: [
+      { type: "image", name: "image", label: "Image", required: true },
+      {
+        type: "select",
+        name: "imageSide",
+        label: "Image on",
+        width: "half",
+        options: [
+          { label: "Left", value: "left" },
+          { label: "Right", value: "right" },
+        ],
+      },
+      {
+        type: "select",
+        name: "theme",
+        label: "Panel colour",
+        width: "half",
+        options: [
+          { label: "Dark", value: "dark" },
+          { label: "White", value: "light" },
+        ],
+      },
+      { type: "text", name: "title", label: "Heading" },
+      { type: "textarea", name: "text", label: "Text", rows: 4, help: TEXT_HELP },
+      {
+        type: "list",
+        name: "points",
+        label: "Tick list",
+        itemLabel: "label",
+        fields: [{ type: "text", name: "label", label: "Point" }],
+      },
+      linkField("button", "Button", "full"),
+    ],
+    defaults: () => ({
+      image: img("/images/home/digital-agency-team-meeting.webp"),
+      imageSide: "left",
+      theme: "dark",
+      title: "Section heading",
+      text: "A short supporting paragraph.",
+      points: [{ label: "First point" }],
+      button: { label: "", url: "" },
+    }),
+  },
 ];
 
 export const BLOCK_MAP: Record<string, BlockDefinition> = Object.fromEntries(BLOCKS.map((b) => [b.type, b]));

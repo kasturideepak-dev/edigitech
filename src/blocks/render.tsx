@@ -7,6 +7,7 @@ import Brands from "./components/Brands";
 import Counters from "./components/Counters";
 import Cta from "./components/Cta";
 import Faq from "./components/Faq";
+import Feature from "./components/Feature";
 import Prose from "./components/Prose";
 import Team from "./components/Team";
 import Hero from "./components/Hero";
@@ -34,6 +35,7 @@ const COMPONENTS: Record<string, ComponentType<BlockProps<any>>> = {
   blog: Blog,
   cta: Cta,
   faq: Faq,
+  feature: Feature,
   richText: Prose,
   team: Team,
 };
