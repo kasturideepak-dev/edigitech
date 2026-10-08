@@ -9,13 +9,21 @@ type ContactData = {
   subjects?: { label?: string }[];
 };
 
-/** Extracts the src from a pasted Google Maps <iframe>, or accepts a bare URL. */
+/**
+ * Extracts the src from a pasted Google Maps <iframe>, or accepts a bare URL.
+ * Both embed styles are allowed: the "Share → Embed a map" iframe
+ * (google.com/maps/embed?pb=…) and the keyless maps.google.com/maps?…&output=embed
+ * form, which needs no API key.
+ */
 function mapSrc(value?: string): string | null {
   const v = (value ?? "").trim();
   if (!v) return null;
   const m = v.match(/src=["']([^"']+)["']/i);
-  const url = m ? m[1] : v;
-  return /^https:\/\/(www\.)?google\.[a-z.]+\/maps\/embed/i.test(url) ? url : null;
+  const url = (m ? m[1] : v).replace(/&amp;/g, "&");
+  const ok =
+    /^https:\/\/(www\.)?google\.[a-z.]+\/maps\/embed/i.test(url) ||
+    /^https:\/\/maps\.google\.[a-z.]+\/maps\?[^"']*output=embed/i.test(url);
+  return ok ? url : null;
 }
 
 /** Map beside a contact form — the template's contact-us-form section. */
