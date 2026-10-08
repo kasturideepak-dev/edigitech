@@ -300,8 +300,8 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   general: {
     siteName: "eDigiTech",
     tagline: "Web Development & Digital Marketing Company",
-    logo: { url: "/images/brand/edigitech-logo.png", alt: "eDigiTech – make IT happen" },
-    logoWhite: { url: "/images/brand/edigitech-logo-white.png", alt: "eDigiTech – make IT happen" },
+    logo: { url: "/images/brand/edigitech-logo.png", alt: "eDigiTech Global — Scaling Businesses Globally With Digital & AI" },
+    logoWhite: { url: "/images/brand/edigitech-logo-white.png", alt: "eDigiTech Global — Scaling Businesses Globally With Digital & AI" },
     favicon: { url: "/images/brand/edigitech-favicon.png", alt: "eDigiTech" },
     showPreloader: true,
     preloaderText: "eDigiTech",
