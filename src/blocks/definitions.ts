@@ -651,8 +651,9 @@ export const BLOCKS: BlockDefinition[] = [
     fields: [
       { type: "text", name: "title", label: "Heading", required: true },
       { type: "textarea", name: "intro", label: "Supporting text", rows: 3, help: TEXT_HELP },
+      { type: "toggle", name: "shape", label: "Show the decorative squiggle" },
     ],
-    defaults: () => ({ title: "Page heading", intro: "" }),
+    defaults: () => ({ title: "Page heading", intro: "", shape: true }),
   },
 
   // ------------------------------------------------------------------ CONTACT
@@ -695,10 +696,12 @@ export const BLOCKS: BlockDefinition[] = [
   {
     type: "offices",
     name: "Office Locations",
-    description: "Location cards with photo, address, email and phone.",
+    description: "Location cards with photo, address, email and phone, with an optional textured note above them.",
     category: "Content",
     icon: "Building2",
     fields: [
+      { type: "textarea", name: "note", label: "Note above the cards", rows: 2, help: "Shown in the template's textured panel. Leave empty to hide it." },
+      { type: "image", name: "noteBackground", label: "Note texture", help: "Defaults to the template's contact shape." },
       {
         type: "list",
         name: "items",
@@ -715,7 +718,11 @@ export const BLOCKS: BlockDefinition[] = [
         ],
       },
     ],
-    defaults: () => ({ items: [{ image: null, title: "Office", address: "", email: "", phone: "", mapUrl: "", buttonLabel: "View Location" }] }),
+    defaults: () => ({
+      note: "",
+      noteBackground: null,
+      items: [{ image: null, title: "Office", address: "", email: "", phone: "", mapUrl: "", buttonLabel: "View Location" }],
+    }),
   },
 ];
 
