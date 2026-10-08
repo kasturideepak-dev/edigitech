@@ -640,6 +640,83 @@ export const BLOCKS: BlockDefinition[] = [
       button: { label: "", url: "" },
     }),
   },
+
+  // ------------------------------------------------------------------ PAGE HEADER
+  {
+    type: "pageHeader",
+    name: "Page Header",
+    description: "Inner-page heading with supporting text beside it. Use at the top of contact, service and info pages.",
+    category: "Hero & Banners",
+    icon: "Heading1",
+    fields: [
+      { type: "text", name: "title", label: "Heading", required: true },
+      { type: "textarea", name: "intro", label: "Supporting text", rows: 3, help: TEXT_HELP },
+    ],
+    defaults: () => ({ title: "Page heading", intro: "" }),
+  },
+
+  // ------------------------------------------------------------------ CONTACT
+  {
+    type: "contact",
+    name: "Contact Form + Map",
+    description: "Google map beside a contact form. Submissions are saved and listed under Enquiries — nothing depends on email delivery.",
+    category: "Call to Action",
+    icon: "Mail",
+    fields: [
+      {
+        type: "textarea",
+        name: "mapEmbed",
+        label: "Google Maps embed",
+        rows: 3,
+        help: "Google Maps → Share → Embed a map → copy the whole <iframe>, or just its src URL. Leave empty to hide the map.",
+      },
+      { type: "text", name: "formTitle", label: "Form heading", width: "half" },
+      { type: "text", name: "buttonLabel", label: "Button text", width: "half" },
+      {
+        type: "list",
+        name: "subjects",
+        label: "“I’m interested in” options",
+        itemLabel: "label",
+        help: "Leave empty for a free-text box instead of a dropdown.",
+        fields: [{ type: "text", name: "label", label: "Option" }],
+      },
+      { type: "textarea", name: "successMessage", label: "Thank-you message", rows: 2 },
+    ],
+    defaults: () => ({
+      mapEmbed: "",
+      formTitle: "Send a Message",
+      buttonLabel: "Send Message",
+      successMessage: "",
+      subjects: [],
+    }),
+  },
+
+  // ------------------------------------------------------------------ OFFICES
+  {
+    type: "offices",
+    name: "Office Locations",
+    description: "Location cards with photo, address, email and phone.",
+    category: "Content",
+    icon: "Building2",
+    fields: [
+      {
+        type: "list",
+        name: "items",
+        label: "Locations",
+        itemLabel: "title",
+        fields: [
+          { type: "image", name: "image", label: "Photo" },
+          { type: "text", name: "title", label: "Location name", width: "half", required: true },
+          { type: "text", name: "address", label: "Address", width: "half" },
+          { type: "text", name: "email", label: "Email", width: "half" },
+          { type: "text", name: "phone", label: "Phone", width: "half" },
+          { type: "url", name: "mapUrl", label: "Google Maps link", width: "half" },
+          { type: "text", name: "buttonLabel", label: "Button text", width: "half" },
+        ],
+      },
+    ],
+    defaults: () => ({ items: [{ image: null, title: "Office", address: "", email: "", phone: "", mapUrl: "", buttonLabel: "View Location" }] }),
+  },
 ];
 
 export const BLOCK_MAP: Record<string, BlockDefinition> = Object.fromEntries(BLOCKS.map((b) => [b.type, b]));

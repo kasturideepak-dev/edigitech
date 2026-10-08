@@ -23,6 +23,7 @@ export default async function PanelLayout({ children }: LayoutProps<"/admin">) {
         { href: "/admin/pages", label: "Pages", icon: "pages" },
         ...types.map((t) => ({ href: `/admin/content/${t.key}`, label: t.namePlural, icon: "type", typeIcon: t.icon })),
         { href: "/admin/media", label: "Media Library", icon: "media", show: can(user.role, "media.manage") },
+        { href: "/admin/enquiries", label: "Enquiries", icon: "enquiries" },
       ],
     },
     {

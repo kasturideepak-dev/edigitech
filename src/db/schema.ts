@@ -238,3 +238,25 @@ export const contentTerms = pgTable(
 export type ContentType = typeof contentTypes.$inferSelect;
 export type ContentEntry = typeof contentEntries.$inferSelect;
 export type ContentTerm = typeof contentTerms.$inferSelect;
+
+export const enquiryStatus = pgEnum("enquiry_status", ["new", "read", "archived"]);
+
+/** Contact form submissions. Stored here so nothing is lost if email delivery fails. */
+export const enquiries = pgTable(
+  "enquiries",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 160 }).notNull(),
+    email: varchar("email", { length: 190 }).notNull(),
+    phone: varchar("phone", { length: 40 }).notNull().default(""),
+    subject: varchar("subject", { length: 200 }).notNull().default(""),
+    message: text("message").notNull(),
+    /** Page the form was submitted from. */
+    source: varchar("source", { length: 250 }).notNull().default(""),
+    status: enquiryStatus("status").notNull().default("new"),
+    createdAt: createdAt(),
+  },
+  (t) => [index("enquiries_status_idx").on(t.status), index("enquiries_created_idx").on(t.createdAt)],
+);
+
+export type Enquiry = typeof enquiries.$inferSelect;

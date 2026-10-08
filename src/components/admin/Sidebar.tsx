@@ -8,6 +8,7 @@ import {
   FileText,
   Newspaper,
   Image as ImageIcon,
+  Inbox,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -31,6 +32,7 @@ const ICONS = {
   redirects: Shuffle,
   users: Users,
   types: Shapes,
+  enquiries: Inbox,
 };
 
 export type NavItem = { href: string; label: string; icon: string; typeIcon?: string; show?: boolean };
