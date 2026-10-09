@@ -696,6 +696,121 @@
   }
 }
 
+/* ----------------------------------------------------------- Service cards
+   Tag pills and copy on a tinted panel, a photo filling the lower half, and a
+   pill button over the photo's bottom-left corner.
+
+   The reference alternates pastel mint and peach. The brief is to build from
+   the logo blue, so the tints are brand-blue washes against a cool neutral
+   rather than a second colour family. */
+.ed-scard {
+  display: flex;
+  flex-direction: column;
+  padding: 26px 24px 24px;
+  border-radius: 18px;
+  overflow: hidden;
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+.ed-scard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 22px 46px rgba(3, 3, 3, 0.1);
+}
+.ed-scard-blue { background: rgba(6, 85, 237, 0.1); }
+.ed-scard-soft { background: #f1f3f7; }
+.ed-scard-navy { background: rgba(5, 20, 46, 0.07); }
+
+.ed-scard-top { flex: 1 1 auto; }
+.ed-scard-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.ed-scard-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ed-scard-tag {
+  padding: 5px 14px;
+  border-radius: 20px;
+  background: #fff;
+  color: var(--ed-blue-dark);
+  font-family: var(--tp-ff-heading);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+/* Solid on the lead card, ringed on the rest. */
+.ed-scard-dot {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  margin-left: auto;
+  border-radius: 50%;
+  border: 2px solid rgba(6, 85, 237, 0.45);
+}
+.ed-scard-dot.is-filled {
+  background: var(--tp-theme-primary);
+  border-color: var(--tp-theme-primary);
+  box-shadow: 0 0 0 4px rgba(6, 85, 237, 0.18);
+}
+.ed-scard-title {
+  font-family: var(--tp-ff-dm);
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.18;
+  margin: 0 0 14px;
+  color: var(--ed-blue-dark);
+}
+.ed-scard-title a { color: inherit; }
+.ed-scard-title a:hover { color: var(--tp-theme-primary); }
+.ed-scard-text {
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 500;
+  color: #3b3f47;
+  margin: 0 0 22px;
+}
+.ed-scard-media {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  /* Fixed ratio so every card's photo lines up across the row. */
+  aspect-ratio: 4 / 3;
+}
+.ed-scard-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ed-scard-btn {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 16px;
+  border-radius: 24px;
+  background: #fff;
+  color: var(--ed-blue-dark);
+  font-family: var(--tp-ff-heading);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1;
+  transition: background-color 0.22s ease, color 0.22s ease;
+}
+.ed-scard-btn:hover {
+  background: var(--tp-theme-primary);
+  color: #fff;
+}
+@media (max-width: 1199.98px) {
+  .ed-scard-title { font-size: 23px; }
+}
+
 /* ------------------------------------------------------- Testimonial cards
    Equal-height cards, three across. Avatars fall back to initials because the
    source testimonials have no photographs - a generic stock face would imply

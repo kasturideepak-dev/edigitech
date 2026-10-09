@@ -1,13 +1,20 @@
 import { type BlockProps, resolveUrl } from "./shared";
+import ServiceCards, { type ServiceColumn } from "./ServiceCards";
 
 type ServicesData = {
   eyebrow?: string;
   title?: string;
   intro?: string;
-  columns?: { title?: string; url?: string; items?: { label?: string; url?: string }[] }[];
+  layout?: "cards" | "list";
+  columns?: ServiceColumn[];
 };
 
-export default function Services({ data, ctx, anchor }: BlockProps<ServicesData>) {
+export default function Services(props: BlockProps<ServicesData>) {
+  if ((props.data.layout ?? "cards") === "cards") return <ServiceCards {...props} />;
+  return <ServiceList {...props} />;
+}
+
+function ServiceList({ data, ctx, anchor }: BlockProps<ServicesData>) {
   const columns = data.columns ?? [];
   const colClass = columns.length >= 4 ? "col-xl-3 col-lg-6 col-md-6" : "col-lg-4 col-md-6";
 

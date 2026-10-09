@@ -163,8 +163,18 @@ export const BLOCKS: BlockDefinition[] = [
     category: "Content",
     icon: "LayoutGrid",
     fields: [
+      {
+        type: "select",
+        name: "layout",
+        label: "Layout",
+        width: "half",
+        options: [
+          { label: "Cards (photo, tags, button)", value: "cards" },
+          { label: "List (columns of links)", value: "list" },
+        ],
+      },
       eyebrowField,
-      { type: "text", name: "title", label: "Heading", width: "half", required: true },
+      { type: "text", name: "title", label: "Heading", width: "half", required: true, help: "**Asterisks** paint a word in the brand blue." },
       { type: "textarea", name: "intro", label: "Intro copy", rows: 3 },
       {
         type: "list",
@@ -175,10 +185,32 @@ export const BLOCKS: BlockDefinition[] = [
         fields: [
           { type: "text", name: "title", label: "Column title", width: "half" },
           { type: "url", name: "url", label: "Column link (optional)", width: "half" },
+          { type: "textarea", name: "description", label: "Short description (cards)", rows: 2, help: "Two lines reads best." },
+          { type: "image", name: "image", label: "Card photo (cards)", width: "half" },
+          {
+            type: "select",
+            name: "tint",
+            label: "Card tint (cards)",
+            width: "half",
+            options: [
+              { label: "Brand blue", value: "blue" },
+              { label: "Soft grey", value: "soft" },
+              { label: "Navy wash", value: "navy" },
+            ],
+          },
+          { type: "text", name: "buttonLabel", label: "Button label (cards)", width: "half" },
+          {
+            type: "list",
+            name: "tags",
+            label: "Tag pills (cards)",
+            itemLabel: "label",
+            max: 2,
+            fields: [{ type: "text", name: "label", label: "Tag" }],
+          },
           {
             type: "list",
             name: "items",
-            label: "Services",
+            label: "Services (list layout, and the fallback for tags)",
             itemLabel: "label",
             fields: [
               { type: "text", name: "label", label: "Service", width: "half" },
@@ -189,6 +221,7 @@ export const BLOCKS: BlockDefinition[] = [
       },
     ],
     defaults: () => ({
+      layout: "cards",
       eyebrow: "Smart Solutions",
       title: "Our Services",
       intro: "Describe the services you deliver.",
