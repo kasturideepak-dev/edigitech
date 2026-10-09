@@ -732,14 +732,19 @@
 .ed-faq-dark .tp-section-subtitle .borders {
   background: var(--ed-blue-light);
 }
+/* The panels are mostly opaque, not a 3% white veil. The mosaic's brightest
+   cells reach rgb(13,62,157), and the open question's blue sitting straight on
+   one of those measures 2.52:1. At 0.8 the worst backdrop behind any text is
+   rgb(6,18,43): blue 4.89:1, white 18.6:1, answer grey 11.65:1 — and the
+   mosaic still reads through the remaining fifth. */
 .ed-faq-dark .tp-faq-wrap .accordion-item,
 .ed-faq-dark .tp-faq-wrap .accordion-item:not(:first-of-type) {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(4, 7, 15, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
 }
 .ed-faq-dark .tp-faq-wrap .tp-faq-active {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(9, 17, 38, 0.86);
   border-color: rgba(61, 127, 242, 0.45);
 }
 .ed-faq-dark .tp-faq-wrap .tp-faq-btn {
