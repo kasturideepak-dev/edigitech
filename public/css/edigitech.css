@@ -1,39 +1,47 @@
 /* eDigiTech additions on top of the Aleric template (main.css). */
 
 /* ---------------------------------------------------------------- Brand colours
-   Taken from the logo: bright blue (#1289cf), deep blue (#005b91) and its greys.
-   The template's lime accent is driven by --tp-theme-primary, so overriding it
-   recolours buttons, badges, the scrolling strip and every accent on the site.
-   Black text on this blue passes WCAG AA (5.1:1), as the template expects.      */
+   From the eDigiTech Global brand sheet: primary blue #0655ED, deep navy
+   #05142E, slate grey #828690.
+
+   The template's accent is a light lime, so it pairs the accent with BLACK
+   text everywhere. Our blue inverts that:
+     white on #0655ED = 5.95:1  (passes AA for body text)
+     black on #0655ED = 3.53:1  (fails AA for body text)
+   So anything sitting on the accent is forced to white below, and the hover
+   state darkens rather than lightens.                                        */
 :root {
-  --tp-theme-primary: #1289cf;
-  --ed-blue-dark: #005b91;
-  --ed-blue-light: #29a7e0;
-  --ed-grey: #505050;
+  --tp-theme-primary: #0655ED;
+  --ed-blue-dark: #05142E;
+  --ed-blue-deep: #0443bb;
+  --ed-blue-light: #3d7ff2;
+  --ed-grey: #828690;
 }
+
+/* Text sitting on the accent must be white - black would fail AA. */
+.tp-bg-theme-primary,
+.tp-bg-theme-primary .btn-text,
+.tp-bg-theme-primary svg,
+.tp-bg-theme-primary.tp-text-common-black,
+.tp-bg-theme-primary .tp-text-common-black {
+  color: #fff;
+}
+.tp-bg-theme-primary.hover-text-black:hover,
+.tp-bg-theme-primary.hover-text-white:hover,
+.tp-bg-theme-primary:hover .btn-text,
+.tp-bg-theme-primary:hover svg {
+  color: #fff;
+}
+/* Darken on hover; the template lightens, which weakens contrast here. */
+.tp-btn-lg.tp-bg-theme-primary:hover,
+.tp-btn-xl.tp-bg-theme-primary:hover,
+.tp-btn-sm.tp-bg-theme-primary:hover {
+  background-color: var(--ed-blue-deep);
+}
+
 .tp_text_invert.invert-primary > div {
   background-image: linear-gradient(to right, var(--tp-theme-primary) 50%, #fff 50%);
 }
-/* Filled buttons use the deeper blue so white label text clears 4.5:1
-   (white on the bright blue is only 3.8:1). Flat areas such as the scrolling
-   strip keep the bright blue with the template's black text at 5.1:1.        */
-.tp-btn-lg.tp-bg-theme-primary,
-.tp-btn-xl.tp-bg-theme-primary,
-.tp-btn-sm.tp-bg-theme-primary {
-  background-color: var(--ed-blue-dark);
-  color: #fff;
-}
-.tp-btn-lg.tp-bg-theme-primary .btn-text,
-.tp-btn-xl.tp-bg-theme-primary .btn-text,
-.tp-btn-lg.tp-bg-theme-primary svg,
-.tp-btn-xl.tp-bg-theme-primary svg {
-  color: #fff;
-}
-.tp-btn-lg.tp-bg-theme-primary.hover-text-white:hover,
-.tp-btn-xl.tp-bg-theme-primary.hover-text-white:hover {
-  color: #fff;
-}
-
 .ed-btn-group {
   display: flex;
   flex-wrap: wrap;

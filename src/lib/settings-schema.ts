@@ -349,8 +349,38 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     ctaTitle: "Let’s Talk",
     ctaUrl: "/contact-us",
     button: { label: "Start the Journey", url: "/contact-us" },
-    aboutText: "Technology and digital marketing partner for growing businesses across India and beyond.",
-    columns: [],
+    aboutText: "We’re a global digital agency since 2017, providing web, marketing and AI automation solutions to businesses across India and beyond.",
+    columns: [
+      {
+        title: "Company",
+        links: [
+          { label: "About Us", url: "/about-us" },
+          { label: "Services", url: "/web-app-development-india" },
+          { label: "Blog", url: "/blog" },
+          { label: "Contact", url: "/contact-us" },
+        ],
+      },
+      {
+        title: "Solutions",
+        links: [
+          { label: "Website Development", url: "/website-development-company-india" },
+          { label: "eCommerce Development", url: "/ecommerce-development-company-india" },
+          { label: "Mobile App Development", url: "/mobile-app-development-company-india" },
+          { label: "SEO Services", url: "/seo-services-india" },
+          { label: "Digital Marketing", url: "/digital-marketing-services-india" },
+        ],
+      },
+      {
+        title: "Industry Software",
+        links: [
+          { label: "GST Billing & Inventory", url: "/gst-billing-inventory-software-india" },
+          { label: "Hospital Management", url: "/hospital-management-software-india" },
+          { label: "Transport Management", url: "/transport-management-software-india" },
+          { label: "HR & Payroll", url: "/hr-payroll-software-india" },
+          { label: "Enterprise Software", url: "/enterprise-software-solutions-india" },
+        ],
+      },
+    ],
     offices: [],
     showNewsletter: false,
     newsletterTitle: "Newsletter",
