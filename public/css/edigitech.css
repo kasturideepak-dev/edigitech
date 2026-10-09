@@ -743,7 +743,10 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
 }
-.ed-faq-dark .tp-faq-wrap .tp-faq-active {
+/* Matching :not(:first-of-type) above, so the open state wins on items 2-n
+   instead of losing the border to the inactive rule's higher specificity. */
+.ed-faq-dark .tp-faq-wrap .accordion-item.tp-faq-active,
+.ed-faq-dark .tp-faq-wrap .accordion-item.tp-faq-active:not(:first-of-type) {
   background: rgba(9, 17, 38, 0.86);
   border-color: rgba(61, 127, 242, 0.45);
 }
