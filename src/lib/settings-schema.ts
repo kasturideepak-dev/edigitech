@@ -326,17 +326,55 @@ export const DEFAULT_SETTINGS: SiteSettings = {
   },
   header: {
     menu: [
-      { label: "Home", url: "/" },
-      { label: "About Us", url: "/about-us" },
       {
         label: "Services",
         url: "/web-app-development-india",
+        columns: [
+          {
+            title: "Web Development",
+            links: [
+              { label: "Website Development", url: "/website-development-company-india" },
+              { label: "eCommerce Development", url: "/ecommerce-development-company-india" },
+              { label: "Mobile App Development", url: "/mobile-app-development-company-india" },
+            ],
+          },
+          {
+            title: "Digital Marketing",
+            links: [
+              { label: "SEO Services", url: "/seo-services-india" },
+              { label: "Social Media Marketing", url: "/social-media-marketing-services-india" },
+              { label: "WhatsApp Marketing", url: "/whatsapp-marketing-services-india" },
+              { label: "WhatsApp Business API", url: "/whatsapp-business-api-provider-india" },
+            ],
+          },
+          {
+            title: "IT Solutions",
+            links: [
+              { label: "Enterprise Software Solutions", url: "/enterprise-software-solutions-india" },
+              { label: "Business Email Services", url: "/business-email-services-india" },
+              { label: "Cloud Hosting Services", url: "/cloud-hosting-services-india" },
+            ],
+          },
+          {
+            title: "Automation",
+            links: [{ label: "AI & Automation Solutions", url: "/ai-automation-solutions-india" }],
+          },
+        ],
+        megaImage: { url: "/images/brand/menu-promo-team.webp", alt: "The eDigiTech team" },
+      },
+      {
+        label: "Industry Solutions",
+        url: "/it-solutions-india",
         children: [
-          { label: "Web & App Development", url: "/web-app-development-india" },
-          { label: "Digital Marketing", url: "/digital-marketing-services-india" },
-          { label: "WhatsApp Marketing", url: "/whatsapp-marketing" },
+          { label: "GST Billing & Inventory", url: "/gst-billing-inventory-software-india" },
+          { label: "Hospital Management", url: "/hospital-management-software-india" },
+          { label: "Transport Management", url: "/transport-management-software-india" },
+          { label: "HR & Payroll", url: "/hr-payroll-software-india" },
+          { label: "IT Solutions", url: "/it-solutions-india" },
         ],
       },
+      { label: "About Us", url: "/about-us" },
+      { label: "Blog", url: "/blog" },
       { label: "Contact", url: "/contact-us" },
     ],
     cta: { label: "Let’s Talk", url: "/contact-us" },
