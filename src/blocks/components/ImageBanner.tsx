@@ -45,11 +45,14 @@ export default function ImageBanner({ data, ctx, anchor }: BlockProps<ImageBanne
                     {data.eyebrow}
                   </span>
                 )}
+                {/* No tp_fade_anim on any of this. The template's reveal is driven by
+                    ScrollTrigger, and inside this absolutely-positioned overlay — in a
+                    fixed-height, overflow-hidden container — it computes a trigger that
+                    never fires: the copy sat at opacity 0 permanently, including after
+                    scrolling past and back. A reveal that can silently swallow the
+                    closing CTA isn't worth it; the photo's parallax is motion enough. */}
                 {data.title && (
-                  <h2
-                    className="tp-section-title fs-70 fs-lg-50 fs-xs-35 fw-700 text-uppercase mb-25 tp-text-common-white tp_fade_anim"
-                    data-delay=".3"
-                  >
+                  <h2 className="tp-section-title fs-70 fs-lg-50 fs-xs-35 fw-700 text-uppercase mb-25 tp-text-common-white">
                     <Text value={data.title} />
                   </h2>
                 )}
@@ -57,12 +60,12 @@ export default function ImageBanner({ data, ctx, anchor }: BlockProps<ImageBanne
                   /* White, not the usual muted grey: over a photo even a light
                      grey drops under AA once the scrim is light enough to keep
                      the picture readable. */
-                  <p className="fs-20 lh-28 mb-45 tp-text-common-white tp_fade_anim" data-delay=".5">
+                  <p className="fs-20 lh-28 mb-45 tp-text-common-white">
                     <Text value={data.text} />
                   </p>
                 )}
                 {(hasLink(data.primaryCta) || hasLink(data.secondaryCta)) && (
-                  <div className="ed-btn-group justify-content-center tp_fade_anim" data-delay=".6" data-ease="bounce">
+                  <div className="ed-btn-group justify-content-center">
                     {hasLink(data.primaryCta) && (
                       <SwitchButton
                         href={primary.href}
