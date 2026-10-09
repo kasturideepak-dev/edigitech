@@ -1,6 +1,7 @@
 import type { ImageValue } from "@/lib/types";
 import { Text } from "@/components/site/Text";
 import { type BlockProps, src, alt } from "./shared";
+import { BtnArrow } from "./BtnArrow";
 
 type Office = {
   image?: ImageValue | null;
@@ -97,6 +98,8 @@ export default function Offices({ data, anchor }: BlockProps<OfficesData>) {
                             <span className="btn-text">
                               {o.buttonLabel || "View Location"}
                             </span>
+                            <BtnArrow />
+                            <BtnArrow />
                           </span>
                         </a>
                       </div>
