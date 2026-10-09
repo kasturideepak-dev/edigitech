@@ -678,6 +678,30 @@
   }
 }
 
+/* about-modern: the template ships two tabs, and its 42px margin sits on the
+   last one too. A third tab then needs 477px in a 441px column and wraps to a
+   second line. Move the spacing to a gap so only the gaps between items count. */
+.tp-about-cst-tab ul {
+  gap: 0 36px;
+}
+.tp-about-cst-tab ul li {
+  margin-right: 0;
+}
+
+/* The template's own photos are 1.165 (left) and 0.940 (right); ours are 3:2,
+   which leaves the right column ~180px short of the tab column and tips the
+   row off balance. Hold the template's proportions and crop to fill. */
+.tp-about-cst-thumb img {
+  aspect-ratio: 289 / 248;
+  object-fit: cover;
+  width: 100%;
+}
+.tp-about-cst-list-thumb img {
+  aspect-ratio: 426 / 453;
+  object-fit: cover;
+  width: 100%;
+}
+
 /* about-modern: the template paints these panels green; use the brand blue. */
 .ed-bg-brand {
   background-color: var(--tp-theme-primary);
