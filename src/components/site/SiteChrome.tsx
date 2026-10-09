@@ -218,9 +218,6 @@ export function Header({ settings }: Props) {
                       const children = (item.children ?? []).filter((c) => c.label);
                       const hasDrop = columns.length > 0 || children.length > 0;
                       const megaImage = item.megaImage?.url ? item.megaImage : null;
-                      // Bootstrap widths: the promo image takes the last 2 of 12 columns.
-                      const linkSpan = megaImage ? 10 : 12;
-                      const colClass = `col-xl-${Math.max(2, Math.floor(linkSpan / Math.max(columns.length, 1)))}`;
                       return (
                         <li key={i} className={columns.length ? "has-dropdown p-inherit" : children.length ? "has-dropdown" : undefined}>
                           <a href={resolveUrl(item.url, ctx)}>
@@ -232,30 +229,34 @@ export function Header({ settings }: Props) {
                             )}
                           </a>
                           {columns.length > 0 ? (
-                            <div className="tp-megamenu-wrapper mega-menu megamenu-white-bg">
-                              <div className="row gx-0">
-                                {columns.map((col, j) => (
-                                  <div className={colClass} key={j}>
-                                    <div className="tp-megamenu-list">
-                                      <h4 className="tp-megamenu-title">{col.title}</h4>
-                                      <ul>
-                                        {(col.links ?? []).map((l, k) => (
-                                          <li key={k}>
-                                            <a href={resolveUrl(l.url, ctx)}>{l.label}</a>
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    </div>
-                                  </div>
-                                ))}
-                                {megaImage && (
-                                  <div className="col-xl-2 d-none d-xxl-block">
-                                    <div className="tp-megamenu-list">
-                                      <div className="tp-megamenu-thumb">
-                                        <img src={megaImage.url} alt={megaImage.alt || ""} loading="lazy" />
+                            <div className="tp-megamenu-wrapper mega-menu megamenu-white-bg ed-megamenu">
+                              {/* Flex rather than Bootstrap columns: 4 link columns plus an
+                                  image cannot divide 12 evenly, which left dead space. */}
+                              <div className="ed-megamenu-grid">
+                                <div className="ed-megamenu-cols">
+                                  {columns.map((col, j) => (
+                                    <div className="ed-megamenu-col" key={j}>
+                                      <div className="tp-megamenu-list">
+                                        <h4 className="tp-megamenu-title">{col.title}</h4>
+                                        <ul>
+                                          {(col.links ?? []).map((l, k) => (
+                                            <li key={k}>
+                                              <a href={resolveUrl(l.url, ctx)}>
+                                                <span className="ed-megamenu-dot" aria-hidden="true" />
+                                                {l.label}
+                                              </a>
+                                            </li>
+                                          ))}
+                                        </ul>
                                       </div>
                                     </div>
-                                  </div>
+                                  ))}
+                                </div>
+                                {megaImage && (
+                                  <a className="ed-megamenu-promo d-none d-xxl-block" href={resolveUrl(item.url, ctx)}>
+                                    <img src={megaImage.url} alt={megaImage.alt || ""} loading="lazy" />
+                                    {item.label && <span className="ed-megamenu-promo-label">{item.label}</span>}
+                                  </a>
                                 )}
                               </div>
                             </div>

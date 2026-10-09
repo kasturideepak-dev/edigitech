@@ -543,3 +543,121 @@
 .ed-related {
   border-top: 1px solid var(--tp-border-1, #e5e7eb);
 }
+
+/* ---------------------------------------------------------------- Mega menu
+   The template's mega menu is a flat white panel with hard column rules. This
+   modernises it: one rounded card, soft shadow, hover pills on the links and
+   the promo image treated as a card rather than a stray column.             */
+.ed-megamenu {
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(5, 20, 46, 0.14);
+  border: 1px solid rgba(5, 20, 46, 0.06);
+  overflow: hidden;
+  padding: 0;
+}
+.ed-megamenu-grid {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.ed-megamenu-cols {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 34px 20px 30px;
+  gap: 8px;
+}
+/* Equal columns whatever the count, so nothing is left stranded. */
+.ed-megamenu-col {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0 14px;
+  position: relative;
+}
+.ed-megamenu-col + .ed-megamenu-col::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: rgba(5, 20, 46, 0.07);
+}
+.ed-megamenu .tp-megamenu-title {
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ed-grey, #828690);
+  margin-bottom: 14px;
+  padding-left: 10px;
+}
+.ed-megamenu .tp-megamenu-list ul li {
+  margin: 0;
+}
+.ed-megamenu .tp-megamenu-list ul li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  line-height: 1.35;
+  color: #05142e;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+.ed-megamenu .tp-megamenu-list ul li a:hover {
+  background: rgba(6, 85, 237, 0.07);
+  color: var(--tp-theme-primary);
+}
+/* Small marker that fills in on hover, so the row reads as interactive. */
+.ed-megamenu-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background: rgba(5, 20, 46, 0.18);
+  transition: background-color 0.18s ease, transform 0.18s ease;
+}
+.ed-megamenu .tp-megamenu-list ul li a:hover .ed-megamenu-dot {
+  background: var(--tp-theme-primary);
+  transform: scale(1.35);
+}
+/* Promo image: fills its side of the card, with the section name over it. */
+.ed-megamenu-promo {
+  position: relative;
+  flex: 0 0 240px;
+  align-self: stretch;
+  overflow: hidden;
+}
+.ed-megamenu-promo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ed-megamenu-promo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(5, 20, 46, 0.78), rgba(5, 20, 46, 0) 55%);
+}
+.ed-megamenu-promo-label {
+  position: absolute;
+  left: 20px;
+  bottom: 18px;
+  z-index: 1;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+@media (max-width: 1399.98px) {
+  .ed-megamenu-cols {
+    padding: 26px 12px 22px;
+    flex-wrap: wrap;
+  }
+  .ed-megamenu-col {
+    flex: 1 1 200px;
+  }
+}
