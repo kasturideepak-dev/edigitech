@@ -661,3 +661,18 @@
     flex: 1 1 200px;
   }
 }
+
+/* about-modern: the template paints these panels green; use the brand blue. */
+.ed-bg-brand {
+  background-color: var(--tp-theme-primary);
+  color: #fff;
+}
+.ed-bg-brand .btn-text,
+.ed-bg-brand svg,
+.ed-bg-brand h4,
+.ed-bg-brand li {
+  color: #fff;
+}
+.tp-about-cst-list.ed-bg-brand .tp-about-cst-list-inner ul li {
+  color: rgba(255, 255, 255, 0.92);
+}

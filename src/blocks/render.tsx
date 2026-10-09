@@ -6,6 +6,7 @@ import Blog from "./components/Blog";
 import Brands from "./components/Brands";
 import Counters from "./components/Counters";
 import Cta from "./components/Cta";
+import AboutModern from "./components/AboutModern";
 import Contact from "./components/Contact";
 import Faq from "./components/Faq";
 import Offices from "./components/Offices";
@@ -41,6 +42,7 @@ const COMPONENTS: Record<string, ComponentType<BlockProps<any>>> = {
   pageHeader: PageHeader,
   contact: Contact,
   offices: Offices,
+  aboutModern: AboutModern,
   feature: Feature,
   richText: Prose,
   team: Team,

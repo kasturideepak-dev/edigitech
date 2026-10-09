@@ -724,6 +724,56 @@ export const BLOCKS: BlockDefinition[] = [
       items: [{ image: null, title: "Office", address: "", email: "", phone: "", mapUrl: "", buttonLabel: "View Location" }],
     }),
   },
+
+  // ------------------------------------------------------------------ ABOUT (MODERN)
+  {
+    type: "aboutModern",
+    name: "About – Statement, Tabs & Card",
+    description: "The template's about-modern layout: a large statement, a photo with an experience counter, tabbed copy, and a second photo carrying a highlight card.",
+    category: "Content",
+    icon: "Layers",
+    fields: [
+      { type: "textarea", name: "statement", label: "Opening statement", rows: 4, required: true, help: TEXT_HELP },
+      { type: "image", name: "image", label: "Left photo", width: "half" },
+      { type: "image", name: "image2", label: "Right photo", width: "half" },
+      { type: "text", name: "counterValue", label: "Counter", width: "third" },
+      { type: "text", name: "counterSuffix", label: "Suffix", width: "third" },
+      { type: "textarea", name: "counterLabel", label: "Counter label", rows: 2, width: "third", help: TEXT_HELP },
+      {
+        type: "list",
+        name: "tabs",
+        label: "Tabs",
+        itemLabel: "title",
+        max: 4,
+        fields: [
+          { type: "text", name: "title", label: "Tab title", required: true },
+          { type: "textarea", name: "body", label: "Text", rows: 5, help: TEXT_HELP },
+          linkField("button", "Button", "full"),
+        ],
+      },
+      { type: "image", name: "cardImage", label: "Card image", width: "half", help: "Small graphic at the top of the highlight card." },
+      { type: "text", name: "cardTitle", label: "Card title", width: "half" },
+      {
+        type: "list",
+        name: "cardPoints",
+        label: "Card tick list",
+        itemLabel: "label",
+        fields: [{ type: "text", name: "label", label: "Point" }],
+      },
+    ],
+    defaults: () => ({
+      statement: "A short, bold statement about the company.",
+      image: img("/assets/img/about/cst/thumb.jpg"),
+      image2: img("/assets/img/about/cst/thumb-2.jpg"),
+      counterValue: "10",
+      counterSuffix: "+",
+      counterLabel: "Years of\nExperience",
+      tabs: [{ title: "Our Story", body: "Tell your story here.", button: { label: "", url: "" } }],
+      cardImage: img("/assets/img/about/cst/graph.png"),
+      cardTitle: "Data-driven insights",
+      cardPoints: [{ label: "First point" }],
+    }),
+  },
 ];
 
 export const BLOCK_MAP: Record<string, BlockDefinition> = Object.fromEntries(BLOCKS.map((b) => [b.type, b]));
