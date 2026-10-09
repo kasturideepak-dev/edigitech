@@ -696,6 +696,67 @@
   }
 }
 
+/* -------------------------------------------------------------- FAQ, dark
+   Near-black navy with a blue pixel mosaic blooming from the bottom-left and
+   a fine grid over the whole panel. The mosaic is a generated PNG rather than
+   stacked gradients: the reference's cells vary in both tint and opacity,
+   which CSS can only fake as a smooth ramp.
+
+   Everything inside has to flip to light. The accent is the lighter tint, not
+   the logo blue — #0655ED on this base is 3.5:1, under AA. */
+.ed-faq-dark {
+  position: relative;
+  isolation: isolate;
+  background-color: #04070f;
+  background-image:
+    url("/images/brand/faq-mosaic.png"),
+    radial-gradient(900px 620px at 6% 92%, rgba(6, 85, 237, 0.4), rgba(6, 85, 237, 0) 66%);
+  background-position: left bottom, left bottom;
+  background-size: cover, auto;
+  background-repeat: no-repeat;
+}
+.ed-faq-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(to right, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 25px),
+    repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 25px);
+}
+.ed-faq-dark .tp-section-title,
+.ed-faq-dark .tp-section-subtitle {
+  color: #fff;
+}
+.ed-faq-dark .tp-section-subtitle .borders {
+  background: var(--ed-blue-light);
+}
+.ed-faq-dark .tp-faq-wrap .accordion-item,
+.ed-faq-dark .tp-faq-wrap .accordion-item:not(:first-of-type) {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+}
+.ed-faq-dark .tp-faq-wrap .tp-faq-active {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(61, 127, 242, 0.45);
+}
+.ed-faq-dark .tp-faq-wrap .tp-faq-btn {
+  color: #fff;
+}
+.ed-faq-dark .tp-faq-wrap .tp-faq-active .tp-faq-btn,
+.ed-faq-dark .tp-faq-wrap .tp-faq-active .accordion-btn {
+  color: var(--ed-blue-light);
+}
+.ed-faq-dark .tp-faq-wrap .accordion-btn {
+  color: rgba(255, 255, 255, 0.45);
+}
+.ed-faq-dark .tp-faq-details-para p,
+.ed-faq-dark .tp-faq-details-para ul li {
+  color: #c7cdd8;
+}
+
 /* ----------------------------------------------------------- Service cards
    Tag pills and copy on a tinted panel, a photo filling the lower half, and a
    pill button over the photo's bottom-left corner.

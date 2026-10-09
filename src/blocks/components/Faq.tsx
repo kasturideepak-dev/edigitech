@@ -7,6 +7,7 @@ type FaqData = {
   eyebrow?: string;
   title?: string;
   items?: FaqItem[];
+  background?: "none" | "dark";
 };
 
 /**
@@ -20,7 +21,10 @@ export default function Faq({ data, anchor }: BlockProps<FaqData>) {
   const base = anchor || "faq";
 
   return (
-    <div id={anchor} className="tp-faq-area pre-header tp-faq-spacing pb-140">
+    <div
+      id={anchor}
+      className={`tp-faq-area pre-header tp-faq-spacing pb-140${data.background === "dark" ? " ed-faq-dark" : ""}`}
+    >
       <div className="container containers">
         <div className="row justify-content-center">
           <div className="col-lg-8">

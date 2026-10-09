@@ -586,6 +586,16 @@ export const BLOCKS: BlockDefinition[] = [
     category: "Content",
     icon: "HelpCircle",
     fields: [
+      {
+        type: "select",
+        name: "background",
+        label: "Section background",
+        width: "half",
+        options: [
+          { label: "None (white)", value: "none" },
+          { label: "Dark blue mosaic", value: "dark" },
+        ],
+      },
       eyebrowField,
       { type: "text", name: "title", label: "Heading" },
       {
@@ -600,6 +610,7 @@ export const BLOCKS: BlockDefinition[] = [
       },
     ],
     defaults: () => ({
+      background: "dark",
       eyebrow: "General Questions",
       title: "Frequently Asked Questions",
       items: [{ question: "Your question here?", answer: "The answer." }],
