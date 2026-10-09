@@ -60,7 +60,15 @@ export default function BrandsMarquee({ logos, pxPerSecond = 55 }: { logos: Logo
       const build = () => {
         tween?.kill();
         gsap.set(track, { x: 0 });
-        const setWidth = track.scrollWidth / copies;
+        // Distance from the first cell of one set to the first cell of the next.
+        // Not scrollWidth: the cells overflow a flex container that the marquee
+        // clips, and browsers report the track's scrollWidth as its client width,
+        // which would make the tween travel a fraction of a set and visibly snap.
+        // offsetLeft is layout-based, so it ignores the transform we just reset.
+        const cells = track.children;
+        const firstOfNextSet = cells[logos.length] as HTMLElement | undefined;
+        if (!firstOfNextSet) return;
+        const setWidth = firstOfNextSet.offsetLeft - (cells[0] as HTMLElement).offsetLeft;
         if (!setWidth) return;
         tween = gsap.to(track, {
           x: -setWidth,
