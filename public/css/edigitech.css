@@ -39,6 +39,22 @@
   background-color: var(--ed-blue-deep);
 }
 
+/* The accent as TEXT on a dark panel is the other half of that problem:
+     #0655ED on #030303 = 3.47:1  (fails AA body text)
+     #3d7ff2 on #030303 = 5.42:1  (passes, same 219deg hue)
+   So accent text inside a dark surface steps up to the lighter tint. Only the
+   text colour is remapped - backgrounds keep the true brand blue, so an accent
+   button inside a dark section is unaffected. */
+.tp-bg-common-black .tp-text-theme-primary,
+.tp-bg-common-black-1 .tp-text-theme-primary,
+.ed-bg-brand-deep .tp-text-theme-primary,
+.tp-footer-area .tp-text-theme-primary,
+/* ...and the template's hover states, which also reach for the accent. */
+.tp-footer-area .tp-footer-social ul li a:hover,
+.tp-footer-area .tp-footer-menu ul li a:hover {
+  color: var(--ed-blue-light);
+}
+
 .tp_text_invert.invert-primary > div {
   background-image: linear-gradient(to right, var(--tp-theme-primary) 50%, #fff 50%);
 }
