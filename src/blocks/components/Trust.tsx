@@ -1,5 +1,7 @@
 import type { ImageValue } from "@/lib/types";
 import { Text } from "@/components/site/Text";
+import Reveal from "@/components/site/Reveal";
+import ShaderBackdrop from "@/components/site/ShaderBackdrop";
 import { type BlockProps, src } from "./shared";
 
 type TrustData = {
@@ -14,7 +16,11 @@ type TrustData = {
 export default function Trust({ data, anchor }: BlockProps<TrustData>) {
   const items = data.items ?? [];
   return (
-    <div id={anchor} className="tp-awards-area tp-bg-common-black p-relative z-index-1 pt-110 pb-90">
+    <div id={anchor} className="tp-awards-area tp-bg-common-black p-relative z-index-1 pt-110 pb-90 ed-shader-host">
+      {/* Drifting brand-blue field behind the flat black. Falls back to the
+          section's own background when WebGL is unavailable or motion is
+          reduced, so nothing here depends on it. */}
+      <ShaderBackdrop className="ed-shader-canvas" />
       <img className="tp-awards-bg-shape" src="/assets/img/awards/grid-shape.png" alt="" />
       <div className="container">
         <div className="row">
@@ -36,7 +42,7 @@ export default function Trust({ data, anchor }: BlockProps<TrustData>) {
               <h2 className="fs-50 fw-500 fs-xl-40 fs-lg-35 tp-text-common-white lh-120-per mb-55 tp_text_invert">
                 {data.title}
               </h2>
-              <div className="tp-awards-wrap">
+              <Reveal className="tp-awards-wrap" selector=".tp-awards-item" stagger={0.09} y={24}>
                 {(data.column1 || data.column2) && (
                   <div className="tp-awards-item-top mb-35">
                     <span className="fw-400 fs-22 fs-xs-18 tp-text-grey-2 mr-30">{data.column1}</span>
@@ -58,7 +64,7 @@ export default function Trust({ data, anchor }: BlockProps<TrustData>) {
                     <span className="fw-600 fs-22 fs-xs-18 tp-text-common-white mr-30">{it.meta}</span>
                   </div>
                 ))}
-              </div>
+              </Reveal>
             </div>
           </div>
         </div>

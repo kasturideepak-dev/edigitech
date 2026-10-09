@@ -1,4 +1,5 @@
 import { Text } from "@/components/site/Text";
+import Reveal from "@/components/site/Reveal";
 import type { BlockProps } from "./shared";
 
 type FaqItem = { question?: string; answer?: string };
@@ -39,7 +40,7 @@ export default function Faq({ data, anchor }: BlockProps<FaqData>) {
                 {data.title && <h2 className="tp-section-title fs-70 fs-xl-60 fs-lg-50 fs-xs-40">{data.title}</h2>}
               </div>
               <div className="tp-custom-accordion">
-                <div className="accordion" id={`${base}-accordion`}>
+                <Reveal className="accordion" selector=".accordion-item" stagger={0.08} y={22} id={`${base}-accordion`}>
                   {items.map((item, i) => {
                     const panelId = `${base}-panel-${i}`;
                     const headingId = `${base}-heading-${i}`;
@@ -81,7 +82,7 @@ export default function Faq({ data, anchor }: BlockProps<FaqData>) {
                       </div>
                     );
                   })}
-                </div>
+                </Reveal>
               </div>
             </div>
           </div>

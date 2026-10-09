@@ -1,3 +1,4 @@
+import CountUp from "@/components/site/CountUp";
 import type { BlockProps } from "./shared";
 
 type CountersData = { items?: { value?: number | string; suffix?: string; label?: string }[] };
@@ -14,9 +15,9 @@ export default function Counters({ data, anchor }: BlockProps<CountersData>) {
                 {items.map((c, i) => (
                   <div className="tp-counter-item bounce__anim" key={i}>
                     <h3 className="fw-500 fs-70 fs-md-50 text-uppercase">
-                      <span data-purecounter-duration="1" data-purecounter-end={Number(c.value) || 0} className="purecounter">
-                        {Number(c.value) || 0}
-                      </span>
+                      {/* purecounter is initialised on DOMContentLoaded, before this
+                          content exists, so the figures never animated. */}
+                      <CountUp value={Number(c.value) || 0} />
                       {c.suffix}
                     </h3>
                     <span className="fw-500 fs-18 fs-md-15 lh-22 tp-text-grey-1">{c.label}</span>

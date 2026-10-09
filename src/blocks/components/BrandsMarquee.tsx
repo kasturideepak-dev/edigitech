@@ -7,9 +7,11 @@ import { src } from "./shared";
 type Logo = { image?: ImageValue; name?: string; url?: string };
 
 type Tween = { kill: () => void; pause: () => void; play: () => void };
+/** GSAP takes an element, a list of them, a selector, or a plain object to tween. */
+type GsapTarget = Element | Element[] | string | Record<string, number>;
 type Gsap = {
-  set: (target: Element, vars: Record<string, unknown>) => void;
-  to: (target: Element, vars: Record<string, unknown>) => Tween;
+  set: (target: GsapTarget, vars: Record<string, unknown>) => void;
+  to: (target: GsapTarget, vars: Record<string, unknown>) => Tween;
 };
 
 declare global {

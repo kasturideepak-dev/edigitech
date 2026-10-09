@@ -696,6 +696,32 @@
   }
 }
 
+/* ------------------------------------------------------------- Motion bits
+   The armed class is added by Reveal.tsx after mount and removed once the
+   animation runs or the watchdog fires, so server-rendered and no-JS output
+   is never hidden by it. */
+.ed-reveal-armed > *,
+.ed-reveal-armed .accordion-item,
+.ed-reveal-armed .tp-awards-item {
+  opacity: 0;
+}
+
+/* WebGL field behind a dark section. Sits under the section's own shapes and
+   content; the flat background stays as the fallback beneath it. */
+.ed-shader-host > *:not(.ed-shader-canvas) {
+  position: relative;
+  z-index: 1;
+}
+.ed-shader-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  pointer-events: none;
+}
+
 /* --------------------------------------------------- Image banner with CTA
    The photo has pure white in the middle, where the text sits, so white type
    straight on it is 1:1 — unreadable. Scrim strengths are picked against that
