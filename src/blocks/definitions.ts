@@ -481,11 +481,38 @@ export const BLOCKS: BlockDefinition[] = [
   {
     type: "imageBanner",
     name: "Parallax Image Banner",
-    description: "Full-width image strip with a slow parallax effect.",
+    description: "Full-width image strip with a slow parallax effect. Add a heading or buttons to turn it into a call to action over the photo.",
     category: "Hero & Banners",
     icon: "Image",
-    fields: [{ type: "image", name: "image", label: "Image", required: true }],
-    defaults: () => ({ image: img("/assets/img/banner/thumb.jpg") }),
+    fields: [
+      { type: "image", name: "image", label: "Image", required: true },
+      eyebrowField,
+      { type: "text", name: "title", label: "Heading (optional)", help: "Leave empty for a plain banner with no overlay." },
+      { type: "textarea", name: "text", label: "Supporting text", rows: 2, help: TEXT_HELP },
+      linkField("primaryCta", "Primary button", "half"),
+      linkField("secondaryCta", "Secondary button", "half"),
+      {
+        type: "select",
+        name: "overlay",
+        label: "Photo darkening",
+        width: "half",
+        help: "Medium keeps body text readable on most photos. Use strong for bright or busy ones.",
+        options: [
+          { label: "Soft", value: "soft" },
+          { label: "Medium", value: "medium" },
+          { label: "Strong", value: "strong" },
+        ],
+      },
+    ],
+    defaults: () => ({
+      image: img("/assets/img/banner/thumb.jpg"),
+      eyebrow: "",
+      title: "",
+      text: "",
+      primaryCta: { label: "", url: "" },
+      secondaryCta: { label: "", url: "" },
+      overlay: "medium",
+    }),
   },
 
   // ------------------------------------------------------------------ BLOG

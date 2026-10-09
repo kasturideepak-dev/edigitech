@@ -696,6 +696,45 @@
   }
 }
 
+/* --------------------------------------------------- Image banner with CTA
+   The photo has pure white in the middle, where the text sits, so white type
+   straight on it is 1:1 — unreadable. Scrim strengths are picked against that
+   worst case (white-on-white), not against the photo's average:
+     soft   0.50 -> white 3.84:1   (headings only, 24px+)
+     medium 0.62 -> white 6.00:1   (safe for body copy)
+     strong 0.72 -> white 8.80:1   (busy or very bright photos)
+   The vertical gradient keeps a touch more light at the edges so the picture
+   still reads as a picture rather than a grey panel. */
+.ed-banner-cta {
+  position: relative;
+  isolation: isolate;
+}
+.ed-banner-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.ed-banner-scrim-soft::after {
+  background: linear-gradient(180deg, rgba(4, 7, 15, 0.42) 0%, rgba(4, 7, 15, 0.5) 50%, rgba(4, 7, 15, 0.42) 100%);
+}
+.ed-banner-scrim-medium::after {
+  background: linear-gradient(180deg, rgba(4, 7, 15, 0.54) 0%, rgba(4, 7, 15, 0.62) 50%, rgba(4, 7, 15, 0.54) 100%);
+}
+.ed-banner-scrim-strong::after {
+  background: linear-gradient(180deg, rgba(4, 7, 15, 0.64) 0%, rgba(4, 7, 15, 0.72) 50%, rgba(4, 7, 15, 0.64) 100%);
+}
+.ed-banner-cta-inner {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+}
+
 /* -------------------------------------------------------------- FAQ, dark
    Near-black navy with a blue pixel mosaic blooming from the bottom-left and
    a fine grid over the whole panel. The mosaic is a generated PNG rather than
