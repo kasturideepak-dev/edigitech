@@ -19,6 +19,8 @@ type AboutModernData = {
   cardButton?: Partial<Link>;
   /** The swinging doodle that fills the space under the tab column. */
   shape?: boolean;
+  /** How the entries are presented. Accordion stacks and takes any number. */
+  layout?: "accordion" | "tabs";
 };
 
 /** Arrow on the card's own button — smaller than the page buttons' BtnArrow. */
@@ -30,6 +32,40 @@ const CardArrow = () => (
     />
   </svg>
 );
+
+/** Shared by both layouts: the copy, then the tab's own button. */
+function TabBody({ tab, ctx }: { tab: Tab; ctx: BlockProps<AboutModernData>["ctx"] }) {
+  const link = linkProps(tab.button, ctx);
+  // Blank lines split the copy into real paragraphs, the way the template sets
+  // them - a <br><br> reads as a cramped gap.
+  const paras = (tab.body ?? "")
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  return (
+    <>
+      {paras.map((para, i) => (
+        <p className={`fs-18 tp-ff-dm lh-140-per ${i === paras.length - 1 ? "mb-40" : "mb-30"}`} key={i}>
+          <Text value={para} />
+        </p>
+      ))}
+      {hasLink(tab.button) && (
+        <a
+          href={link.href}
+          {...(link.newTab ? { target: "_blank", rel: "noopener" } : {})}
+          className="tp-btn-cst d-inline-block mr-5 lh-0 tp-round-26 fs-16 ed-bg-brand ls-0 tp-btn-switch-2-animation fw-700 tp-ff-dm"
+        >
+          <span className="d-flex align-items-center justify-content-center">
+            <span className="btn-text">{tab.button?.label}</span>
+            <BtnArrow />
+            <BtnArrow />
+          </span>
+        </a>
+      )}
+    </>
+  );
+}
 
 const Tick = () => (
   <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,6 +86,7 @@ export default function AboutModern({ data, ctx, anchor }: BlockProps<AboutModer
   const points = (data.cardPoints ?? []).filter((p) => p.label?.trim());
   const base = anchor || "about-modern";
   const cardLink = linkProps(data.cardButton, ctx);
+  const accordion = data.layout !== "tabs";
 
   return (
     <div id={anchor} className="tp-about-area pt-150 pb-100">
@@ -88,53 +125,74 @@ export default function AboutModern({ data, ctx, anchor }: BlockProps<AboutModer
           {tabs.length > 0 && (
             <div className="col-xl-4 col-lg-7">
               <div className="tp-about-cst-tab-wrap ml-35 mb-30">
-                <div className="tp-about-cst-tab mb-25">
-                  <ul role="tablist">
-                    {tabs.map((t, i) => (
-                      <li className="nav-tab-item" role="presentation" key={i}>
-                        <a href={`#${base}-tab-${i}`} className={i === 0 ? "active" : undefined} data-bs-toggle="tab">
-                          {`0${i + 1}. `}
-                          {t.title}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="tab-content p-relative mb-45">
-                  {tabs.map((t, i) => {
-                    const link = linkProps(t.button, ctx);
-                    return (
-                      <div className={`tab-pane${i === 0 ? " active show" : ""}`} id={`${base}-tab-${i}`} role="tabpanel" key={i}>
-                        <div className="tp-about-cst-tab-content">
-                          {/* Blank lines split the copy into real paragraphs, the way
-                              the template sets them - a <br><br> reads as a cramped gap. */}
-                          {(t.body ?? "")
-                            .split(/\n\s*\n/)
-                            .map((para) => para.trim())
-                            .filter(Boolean)
-                            .map((para, pi, all) => (
-                              <p className={`fs-18 tp-ff-dm lh-140-per ${pi === all.length - 1 ? "mb-40" : "mb-30"}`} key={pi}>
-                                <Text value={para} />
-                              </p>
-                            ))}
-                          {hasLink(t.button) && (
-                            <a
-                              href={link.href}
-                              {...(link.newTab ? { target: "_blank", rel: "noopener" } : {})}
-                              className="tp-btn-cst d-inline-block mr-5 lh-0 tp-round-26 fs-16 ed-bg-brand ls-0 tp-btn-switch-2-animation fw-700 tp-ff-dm"
+                {accordion ? (
+                  /* One panel open at a time, stacked. The tab strip only fits
+                     two or three titles on a line before it wraps, so this is the
+                     layout that holds up as the client adds entries. */
+                  <div className="ed-about-accordion accordion mb-45" id={`${base}-acc`}>
+                    {tabs.map((t, i) => {
+                      const panelId = `${base}-acc-panel-${i}`;
+                      const headingId = `${base}-acc-heading-${i}`;
+                      const open = i === 0;
+                      return (
+                        <div className="accordion-item" key={i}>
+                          <h3 className="accordion-header" id={headingId}>
+                            <button
+                              className={`accordion-button ed-about-acc-btn${open ? "" : " collapsed"}`}
+                              type="button"
+                              data-bs-toggle="collapse"
+                              data-bs-target={`#${panelId}`}
+                              aria-expanded={open}
+                              aria-controls={panelId}
                             >
-                              <span className="d-flex align-items-center justify-content-center">
-                                <span className="btn-text">{t.button?.label}</span>
-                                <BtnArrow />
-                                <BtnArrow />
+                              <span className="ed-about-acc-num">{`0${i + 1}.`}</span>
+                              <span className="ed-about-acc-title">{t.title}</span>
+                              <span className="ed-about-acc-icon" aria-hidden="true">
+                                <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
                               </span>
-                            </a>
-                          )}
+                            </button>
+                          </h3>
+                          <div
+                            id={panelId}
+                            className={`accordion-collapse collapse${open ? " show" : ""}`}
+                            aria-labelledby={headingId}
+                            data-bs-parent={`#${base}-acc`}
+                          >
+                            <div className="accordion-body ed-about-acc-body">
+                              <TabBody tab={t} ctx={ctx} />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <>
+                    <div className="tp-about-cst-tab mb-25">
+                      <ul role="tablist">
+                        {tabs.map((t, i) => (
+                          <li className="nav-tab-item" role="presentation" key={i}>
+                            <a href={`#${base}-tab-${i}`} className={i === 0 ? "active" : undefined} data-bs-toggle="tab">
+                              {`0${i + 1}. `}
+                              {t.title}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="tab-content p-relative mb-45">
+                      {tabs.map((t, i) => (
+                        <div className={`tab-pane${i === 0 ? " active show" : ""}`} id={`${base}-tab-${i}`} role="tabpanel" key={i}>
+                          <div className="tp-about-cst-tab-content">
+                            <TabBody tab={t} ctx={ctx} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
                 {data.shape !== false && (
                   /* Balances the column: without it the tab copy stops short and
                      the row reads lopsided against the taller card beside it. */

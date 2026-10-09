@@ -55,6 +55,21 @@
   color: var(--ed-blue-light);
 }
 
+/* The scrolling strip: the template puts black on its lime accent, which on our
+   blue is 3.53:1. That clears AA only because the text is 22px bold (large text,
+   3:1) - it still reads poorly. White takes it to 5.95:1. The dot separators and
+   the arrow travel with it. */
+.tp-bg-theme-primary .tp-text-slider-item span {
+  color: #fff;
+}
+/* The arrow carries a hardcoded fill, so colour alone will not reach it. */
+.tp-bg-theme-primary .tp-text-slider-item svg path {
+  fill: #fff;
+}
+.tp-bg-theme-primary .tp-text-slider-item span.borders {
+  background: #fff;
+}
+
 .tp_text_invert.invert-primary > div {
   background-image: linear-gradient(to right, var(--tp-theme-primary) 50%, #fff 50%);
 }
@@ -679,6 +694,56 @@
   .ed-megamenu-col {
     flex: 1 1 200px;
   }
+}
+
+/* about-modern, accordion layout. The tab strip only holds two or three titles
+   before it wraps, so this is the default. Styled to the section's own voice -
+   numbered, underlined rules, brand blue when open - rather than the boxed grey
+   of the FAQ accordion, whose styles are all scoped under .tp-faq-wrap anyway. */
+.ed-about-accordion .accordion-item {
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(3, 3, 3, 0.12);
+}
+.ed-about-accordion .accordion-item:first-child {
+  border-top: 1px solid rgba(3, 3, 3, 0.12);
+}
+.ed-about-acc-btn,
+.ed-about-acc-btn:not(.collapsed) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 18px 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  text-align: left;
+  font-family: var(--tp-ff-dm);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--tp-common-black);
+}
+/* Bootstrap's own caret would sit beside ours. */
+.ed-about-acc-btn::after {
+  display: none;
+}
+.ed-about-acc-btn:not(.collapsed) {
+  color: var(--tp-theme-primary);
+}
+.ed-about-acc-num {
+  opacity: 0.55;
+}
+.ed-about-acc-icon {
+  margin-left: auto;
+  display: inline-flex;
+  transition: transform 0.25s ease;
+}
+.ed-about-acc-btn:not(.collapsed) .ed-about-acc-icon {
+  transform: rotate(180deg);
+}
+.ed-about-acc-body {
+  padding: 0 0 6px;
 }
 
 /* about-modern: the template ships two tabs, and its 42px margin sits on the

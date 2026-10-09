@@ -740,9 +740,19 @@ export const BLOCKS: BlockDefinition[] = [
       { type: "text", name: "counterSuffix", label: "Suffix", width: "third" },
       { type: "textarea", name: "counterLabel", label: "Counter label", rows: 2, width: "third", help: TEXT_HELP },
       {
+        type: "select",
+        name: "layout",
+        label: "Entry layout",
+        width: "half",
+        options: [
+          { label: "Accordion (stacks, any number)", value: "accordion" },
+          { label: "Tabs (two or three fit on a line)", value: "tabs" },
+        ],
+      },
+      {
         type: "list",
         name: "tabs",
-        label: "Tabs",
+        label: "Entries",
         itemLabel: "title",
         max: 4,
         fields: [
@@ -776,6 +786,7 @@ export const BLOCKS: BlockDefinition[] = [
       counterValue: "10",
       counterSuffix: "+",
       counterLabel: "Years of\nExperience",
+      layout: "accordion",
       tabs: [{ title: "Our Story", body: "Tell your story here.", button: { label: "", url: "" } }],
       cardImage: img("/images/brand/about-card-waves.png"),
       cardTitle: "Data-driven insights",
