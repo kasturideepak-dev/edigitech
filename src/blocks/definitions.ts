@@ -173,6 +173,16 @@ export const BLOCKS: BlockDefinition[] = [
           { label: "List (columns of links)", value: "list" },
         ],
       },
+      {
+        type: "select",
+        name: "background",
+        label: "Section background (cards)",
+        width: "half",
+        options: [
+          { label: "None (white)", value: "none" },
+          { label: "Blue gradient", value: "gradient" },
+        ],
+      },
       eyebrowField,
       { type: "text", name: "title", label: "Heading", width: "half", required: true, help: "**Asterisks** paint a word in the brand blue." },
       { type: "textarea", name: "intro", label: "Intro copy", rows: 3 },
@@ -222,6 +232,7 @@ export const BLOCKS: BlockDefinition[] = [
     ],
     defaults: () => ({
       layout: "cards",
+      background: "gradient",
       eyebrow: "Smart Solutions",
       title: "Our Services",
       intro: "Describe the services you deliver.",

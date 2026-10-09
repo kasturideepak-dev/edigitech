@@ -17,6 +17,7 @@ type ServicesData = {
   eyebrow?: string;
   title?: string;
   intro?: string;
+  background?: "none" | "gradient";
   columns?: ServiceColumn[];
 };
 
@@ -44,7 +45,7 @@ export default function ServiceCards({ data, ctx, anchor }: BlockProps<ServicesD
   const colClass = columns.length >= 4 ? "col-xl-3 col-lg-6 col-md-6" : "col-lg-4 col-md-6";
 
   return (
-    <div id={anchor} className="tp-service-area pt-150 pb-120">
+    <div id={anchor} className={`tp-service-area pt-150 pb-120${data.background === "gradient" ? " ed-services-bg" : ""}`}>
       <div className="container container-1230">
         <div className="row align-items-end mb-55">
           <div className="col-lg-7">

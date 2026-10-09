@@ -703,6 +703,30 @@
    The reference alternates pastel mint and peach. The brief is to build from
    the logo blue, so the tints are brand-blue washes against a cool neutral
    rather than a second colour family. */
+/* Blue gradient backdrop for the section. Two brand-blue blooms over a vertical
+   wash that returns to near-white top and bottom, so it melts into the white
+   sections either side instead of butting against them with a hard edge.
+   Everything stays light, so the dark heading and body copy keep their
+   contrast; only the cards change, going white so they still read as cards
+   against a tinted field rather than dissolving into it. */
+.ed-services-bg {
+  background:
+    radial-gradient(900px 420px at 14% 2%, rgba(6, 85, 237, 0.14), rgba(6, 85, 237, 0) 60%),
+    radial-gradient(760px 380px at 92% 22%, rgba(5, 20, 46, 0.09), rgba(5, 20, 46, 0) 62%),
+    linear-gradient(180deg, #f8faff 0%, #e9f0ff 52%, #f8faff 100%);
+}
+.ed-services-bg .ed-scard {
+  background: #fff;
+  border: 1px solid rgba(6, 85, 237, 0.12);
+}
+.ed-services-bg .ed-scard-tag {
+  background: rgba(6, 85, 237, 0.08);
+}
+.ed-services-bg .ed-scard:hover {
+  border-color: rgba(6, 85, 237, 0.4);
+  box-shadow: 0 22px 46px rgba(5, 20, 46, 0.12);
+}
+
 .ed-scard {
   display: flex;
   flex-direction: column;
