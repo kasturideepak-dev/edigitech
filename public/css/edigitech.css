@@ -697,14 +697,10 @@
 }
 
 /* ------------------------------------------------------------- Motion bits
-   The armed class is added by Reveal.tsx after mount and removed once the
-   animation runs or the watchdog fires, so server-rendered and no-JS output
-   is never hidden by it. */
-.ed-reveal-armed > *,
-.ed-reveal-armed .accordion-item,
-.ed-reveal-armed .tp-awards-item {
-  opacity: 0;
-}
+   Reveal.tsx deliberately has no hidden-by-default class. Hiding content in
+   CSS and waiting for a trigger to undo it is what stranded copy at opacity 0
+   twice on this site, so the from-state is written inline in the same tick as
+   the tween that clears it. Nothing here can hide content on its own. */
 
 /* WebGL field behind a dark section. Sits under the section's own shapes and
    content; the flat background stays as the fallback beneath it. */
