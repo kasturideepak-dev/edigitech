@@ -710,11 +710,13 @@
   background-color: #04070f;
   background-image:
     url("/images/brand/faq-mosaic.png"),
-    radial-gradient(900px 620px at 6% 92%, rgba(6, 85, 237, 0.4), rgba(6, 85, 237, 0) 66%);
+    radial-gradient(820px 560px at 4% 95%, rgba(6, 85, 237, 0.26), rgba(6, 85, 237, 0) 68%);
   background-position: left bottom, left bottom;
   background-size: cover, auto;
   background-repeat: no-repeat;
 }
+/* The grid is a texture, not a feature — at 0.04 across the whole panel it was
+   doing as much of the visual noise as the mosaic. */
 .ed-faq-dark::before {
   content: "";
   position: absolute;
@@ -722,8 +724,8 @@
   z-index: -1;
   pointer-events: none;
   background-image:
-    repeating-linear-gradient(to right, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 25px),
-    repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 25px);
+    repeating-linear-gradient(to right, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 32px),
+    repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 32px);
 }
 .ed-faq-dark .tp-section-title,
 .ed-faq-dark .tp-section-subtitle {
@@ -732,14 +734,13 @@
 .ed-faq-dark .tp-section-subtitle .borders {
   background: var(--ed-blue-light);
 }
-/* The panels are mostly opaque, not a 3% white veil. The mosaic's brightest
-   cells reach rgb(13,62,157), and the open question's blue sitting straight on
-   one of those measures 2.52:1. At 0.8 the worst backdrop behind any text is
-   rgb(6,18,43): blue 4.89:1, white 18.6:1, answer grey 11.65:1 — and the
-   mosaic still reads through the remaining fifth. */
+/* Panels stay largely opaque so the mosaic can't wash out the text. Against
+   the calmed mosaic the brightest composite is rgb(29,60,116); at 0.7 the
+   worst backdrop behind any text is rgb(12,23,45) — blue 4.69:1, white
+   17.9:1, answer grey 11.2:1. */
 .ed-faq-dark .tp-faq-wrap .accordion-item,
 .ed-faq-dark .tp-faq-wrap .accordion-item:not(:first-of-type) {
-  background: rgba(4, 7, 15, 0.8);
+  background: rgba(4, 7, 15, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
 }
@@ -747,7 +748,7 @@
    instead of losing the border to the inactive rule's higher specificity. */
 .ed-faq-dark .tp-faq-wrap .accordion-item.tp-faq-active,
 .ed-faq-dark .tp-faq-wrap .accordion-item.tp-faq-active:not(:first-of-type) {
-  background: rgba(9, 17, 38, 0.86);
+  background: rgba(9, 17, 38, 0.78);
   border-color: rgba(61, 127, 242, 0.45);
 }
 .ed-faq-dark .tp-faq-wrap .tp-faq-btn {
