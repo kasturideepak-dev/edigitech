@@ -50,41 +50,48 @@ export default function Reveal({ children, selector, y = 28, stagger = 0.1, clas
 
     host.classList.add("ed-reveal-armed");
 
-    const run = (gsap: NonNullable<Window["gsap"]>) => {
-      tween = gsap.to(targets, {
+    // IntersectionObserver rather than ScrollTrigger: the template loads
+    // ScrollTrigger but never registers it as a GSAP plugin, so a
+    // `scrollTrigger` key in the vars is treated as a property to tween.
+    const run = () => {
+      if (!window.gsap || disarmed) return;
+      // Seed the from-state inline so dropping the class can't flash it.
+      targets.forEach((t) => {
+        t.style.opacity = "0";
+        t.style.transform = `translateY(${y}px)`;
+      });
+      host.classList.remove("ed-reveal-armed");
+      tween = window.gsap.to(targets, {
         opacity: 1,
         y: 0,
         duration: 0.7,
         stagger,
         ease: "power2.out",
-        scrollTrigger: { trigger: host, start: "top 88%", once: true },
-        onStart: () => host.classList.remove("ed-reveal-armed"),
         onComplete: disarm,
-      } as Record<string, unknown>);
+      });
     };
 
-    const start = () => {
-      if (window.gsap) {
-        // Seed the from-state inline so removing the class mid-tween can't flash it.
-        targets.forEach((t) => {
-          t.style.opacity = "0";
-          t.style.transform = `translateY(${y}px)`;
-        });
-        run(window.gsap);
-        return true;
-      }
-      return false;
-    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        io.disconnect();
+        if (window.gsap) return run();
+        poll = window.setInterval(() => {
+          if (window.gsap) {
+            window.clearInterval(poll);
+            run();
+          }
+        }, 120);
+      },
+      { threshold: 0.12 },
+    );
+    io.observe(host);
 
-    if (!start()) {
-      poll = window.setInterval(() => {
-        if (start()) window.clearInterval(poll);
-      }, 120);
-    }
-    // If GSAP never arrives, or the trigger never fires, show the content anyway.
+    // If GSAP never arrives, or the tween stalls, show the content anyway.
     const watchdog = window.setTimeout(disarm, 7000);
 
     return () => {
+      io.disconnect();
       window.clearInterval(poll);
       window.clearTimeout(watchdog);
       tween?.kill();

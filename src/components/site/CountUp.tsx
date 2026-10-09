@@ -33,31 +33,48 @@ export default function CountUp({ value, className }: { value: number; className
       el.textContent = final;
     };
 
-    const start = () => {
-      if (!window.gsap) return false;
+    // IntersectionObserver rather than ScrollTrigger: the template loads
+    // ScrollTrigger but never registers it with GSAP, so a `scrollTrigger` key
+    // in the vars is read as another property to tween — which is what briefly
+    // rendered these figures as "NaN".
+    const run = () => {
+      if (!window.gsap || done) return;
       const counter = { n: 0 };
       el.textContent = "0";
       tween = window.gsap.to(counter, {
         n: value,
         duration: 1.8,
         ease: "power2.out",
-        scrollTrigger: { trigger: el, start: "top 90%", once: true },
         onUpdate: () => {
-          el.textContent = Math.round(counter.n).toLocaleString("en-IN");
+          const n = Math.round(counter.n);
+          el.textContent = Number.isFinite(n) ? n.toLocaleString("en-IN") : final;
         },
         onComplete: settle,
-      } as Record<string, unknown>);
-      return true;
+      });
     };
 
-    if (!start()) {
-      poll = window.setInterval(() => {
-        if (start()) window.clearInterval(poll);
-      }, 120);
-    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0].isIntersecting) return;
+        io.disconnect();
+        if (window.gsap) return run();
+        // GSAP ships with the template bundle and may still be in flight.
+        poll = window.setInterval(() => {
+          if (window.gsap) {
+            window.clearInterval(poll);
+            run();
+          }
+        }, 120);
+      },
+      { threshold: 0.2 },
+    );
+    io.observe(el);
+
+    // Never leave a counter sitting on 0 because the tween stalled.
     const watchdog = window.setTimeout(settle, 9000);
 
     return () => {
+      io.disconnect();
       window.clearInterval(poll);
       window.clearTimeout(watchdog);
       tween?.kill();
