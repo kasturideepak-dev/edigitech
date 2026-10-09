@@ -3,6 +3,7 @@ import { Icon, SwitchButton } from "@/components/site/Icon";
 import { Text } from "@/components/site/Text";
 import { socialIconClass } from "../common-fields";
 import { type BlockProps, alt, hasLink, linkProps, src } from "./shared";
+import LogoMark from "./LogoMark";
 
 type HeroData = {
   titlePrefix?: string;
@@ -18,7 +19,8 @@ type HeroData = {
   socialLabel?: string;
   socials?: { platform: string; url: string }[];
   image?: ImageValue;
-  highlight?: { eyebrow?: string; title?: string; url?: string };
+  /** `icon` overrides the brand mark on the dark panel; it falls back to the logo. */
+  highlight?: { eyebrow?: string; title?: string; url?: string; icon?: ImageValue };
 };
 
 export default function Hero({ data, ctx, anchor }: BlockProps<HeroData>) {
@@ -174,9 +176,7 @@ export default function Hero({ data, ctx, anchor }: BlockProps<HeroData>) {
                 <div className="tp-hero-bottom-right h-100 tp-bg-common-black tp-left-right p-relative z-index-1 pb-50">
                   <img className="tp-hero-customer-shape" src="/assets/img/hero/grid-shape.png" alt="" />
                   <div className="tp-hero-bottom-box">
-                    <span className="tp-hero-bottom-icon d-inline-block mb-55">
-                      <Icon name="heroBottomIcon" />
-                    </span>
+                    <LogoMark src={hl.icon?.url || "/images/brand/edigitech-icon.png"} alt={ctx.settings.general.siteName} />
                     <span className="tp-hero-bottom-border mb-15">
                       <Icon name="border380" />
                     </span>

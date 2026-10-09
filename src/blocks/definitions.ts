@@ -65,6 +65,13 @@ export const BLOCKS: BlockDefinition[] = [
           { type: "text", name: "eyebrow", label: "Small text", width: "half" },
           { type: "text", name: "title", label: "Title", width: "half" },
           { type: "url", name: "url", label: "Link", width: "half" },
+          {
+            type: "image",
+            name: "icon",
+            label: "Brand mark",
+            width: "half",
+            help: "Shown at the top of the dark box, animated. Leave empty to use the eDigiTech icon.",
+          },
         ],
       },
     ],

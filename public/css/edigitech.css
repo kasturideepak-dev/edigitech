@@ -696,6 +696,62 @@
   }
 }
 
+/* --------------------------------------------------- Brand mark, hero panel
+   Replaces the template's geometric glyph with the eDigiTech globe. The
+   entrance is a keyframe so it plays on first paint without waiting for the
+   GSAP bundle; LogoMark.tsx floats the outer span once GSAP is up, and the two
+   sit on separate elements so their transforms never collide. */
+.ed-logo-mark {
+  position: relative;
+  line-height: 0;
+}
+.ed-logo-mark img {
+  width: 100px;
+  height: auto;
+  display: block;
+}
+.ed-logo-mark-in {
+  display: block;
+  animation: ed-logo-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes ed-logo-in {
+  from {
+    opacity: 0;
+    transform: scale(0.82) rotate(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* A soft bloom so the mark sits in the dark panel instead of floating on it. */
+.ed-logo-mark::before {
+  content: "";
+  position: absolute;
+  inset: -22%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6, 85, 237, 0.4), rgba(6, 85, 237, 0) 70%);
+  animation: ed-logo-glow 3.4s ease-in-out infinite;
+}
+@keyframes ed-logo-glow {
+  0%, 100% { opacity: 0.45; transform: scale(0.94); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ed-logo-mark-in,
+  .ed-logo-mark::before {
+    animation: none;
+  }
+  .ed-logo-mark-in {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (max-width: 1199.98px) {
+  .ed-logo-mark img { width: 76px; }
+}
+
 /* ------------------------------------------------------------ Logo marquee
    Five logos per view, driven by GSAP (BrandsMarquee.tsx). Cells take a fixed
    share of the viewport, which is what pins the count per view and gives the
