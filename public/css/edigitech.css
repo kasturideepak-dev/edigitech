@@ -696,6 +696,122 @@
   }
 }
 
+/* ------------------------------------------------------- Testimonial cards
+   Equal-height cards, three across. Avatars fall back to initials because the
+   source testimonials have no photographs - a generic stock face would imply
+   we have one. */
+.ed-tcard {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 28px 26px;
+  border: 1px solid rgba(3, 3, 3, 0.09);
+  border-radius: 16px;
+  background: #fff;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.ed-tcard:hover {
+  border-color: rgba(6, 85, 237, 0.35);
+  box-shadow: 0 18px 40px rgba(3, 3, 3, 0.08);
+  transform: translateY(-4px);
+}
+/* Oversized closing quote, clipped by the card like the reference. */
+.ed-tcard-quote {
+  position: absolute;
+  top: -18px;
+  right: 18px;
+  font-family: var(--tp-ff-heading);
+  font-size: 110px;
+  line-height: 1;
+  color: rgba(3, 3, 3, 0.06);
+  pointer-events: none;
+}
+.ed-tcard-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(3, 3, 3, 0.08);
+}
+.ed-tcard-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+.ed-tcard-initials {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tp-theme-primary);
+  color: #fff;
+  font-family: var(--tp-ff-heading);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+}
+.ed-tcard-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+.ed-tcard-role {
+  font-size: 14px;
+  color: var(--ed-grey);
+}
+.ed-tcard-quote-text {
+  font-size: 16px;
+  line-height: 1.62;
+  color: #3b3f47;
+  margin: 0 0 18px;
+  flex: 1 1 auto;
+}
+.ed-tcard-stars {
+  display: inline-flex;
+  gap: 4px;
+  color: var(--tp-theme-primary);
+}
+.ed-tcard-tag {
+  align-self: flex-start;
+  margin-top: 14px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(6, 85, 237, 0.08);
+  color: var(--tp-theme-primary);
+  font-family: var(--tp-ff-heading);
+  font-weight: 500;
+  font-size: 13px;
+}
+/* Aggregate score under the heading. */
+.ed-trating {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 8px 18px;
+  border: 1px solid rgba(3, 3, 3, 0.1);
+  border-radius: 40px;
+}
+.ed-trating-score {
+  font-family: var(--tp-ff-heading);
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--tp-common-black);
+}
+.ed-trating-stars {
+  display: inline-flex;
+  gap: 3px;
+  color: var(--tp-theme-primary);
+}
+.ed-trating-note {
+  font-size: 15px;
+  color: var(--ed-grey);
+}
+
 /* --------------------------------------------------- Brand mark, hero panel
    Replaces the template's geometric glyph with the eDigiTech globe. The
    entrance is a keyframe so it plays on first paint without waiting for the
