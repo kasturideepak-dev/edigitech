@@ -321,6 +321,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
       { platform: "instagram", url: "https://www.instagram.com/edigitech/" },
       { platform: "linkedin", url: "https://www.linkedin.com/company/edigitech" },
       { platform: "youtube", url: "https://www.youtube.com/@edigitech" },
+      { platform: "whatsapp", url: "https://wa.me/919673400428" },
     ],
   },
   header: {
