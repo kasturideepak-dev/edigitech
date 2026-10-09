@@ -25,6 +25,7 @@ export default function CountUp({ value, className }: { value: number; className
     const final = value.toLocaleString("en-IN");
     let tween: { kill: () => void } | undefined;
     let poll: number | undefined;
+    let watchdog: number | undefined;
     let done = false;
 
     const settle = () => {
@@ -51,6 +52,11 @@ export default function CountUp({ value, className }: { value: number; className
         },
         onComplete: settle,
       });
+      // Armed here, not at mount: the figure is only at risk of being stuck on
+      // zero once we have actually zeroed it. A mount-time timer fired before
+      // a visitor had scrolled this far and marked the counter finished, so it
+      // never ran at all.
+      watchdog = window.setTimeout(settle, 5000);
     };
 
     const io = new IntersectionObserver(
@@ -69,9 +75,6 @@ export default function CountUp({ value, className }: { value: number; className
       { threshold: 0.2 },
     );
     io.observe(el);
-
-    // Never leave a counter sitting on 0 because the tween stalled.
-    const watchdog = window.setTimeout(settle, 9000);
 
     return () => {
       io.disconnect();

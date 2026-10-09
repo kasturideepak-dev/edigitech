@@ -36,6 +36,7 @@ export default function Reveal({ children, selector, y = 28, stagger = 0.1, clas
 
     let tween: { kill: () => void } | undefined;
     let poll: number | undefined;
+    let watchdog: number | undefined;
     let disarmed = false;
 
     const disarm = () => {
@@ -48,7 +49,12 @@ export default function Reveal({ children, selector, y = 28, stagger = 0.1, clas
       });
     };
 
-    host.classList.add("ed-reveal-armed");
+    // Only hide ahead of time when the section is still below the fold. If it
+    // is already on screen there is nothing to reveal, and hiding it would
+    // just blink. This also means the hidden state is never applied to
+    // something the visitor is currently reading.
+    const belowFold = host.getBoundingClientRect().top > window.innerHeight;
+    if (belowFold) host.classList.add("ed-reveal-armed");
 
     // IntersectionObserver rather than ScrollTrigger: the template loads
     // ScrollTrigger but never registers it as a GSAP plugin, so a
@@ -69,6 +75,10 @@ export default function Reveal({ children, selector, y = 28, stagger = 0.1, clas
         ease: "power2.out",
         onComplete: disarm,
       });
+      // Started here, not at mount: a mount-time timer expires while the
+      // visitor is still reading further up the page, and then the reveal is
+      // marked done before it ever had a chance to run.
+      watchdog = window.setTimeout(disarm, 4000);
     };
 
     const io = new IntersectionObserver(
@@ -76,19 +86,23 @@ export default function Reveal({ children, selector, y = 28, stagger = 0.1, clas
         if (!entries[0].isIntersecting) return;
         io.disconnect();
         if (window.gsap) return run();
+        // GSAP ships with the template bundle and may still be in flight. If
+        // it never turns up the content is already hidden, so this needs its
+        // own deadline rather than polling forever.
         poll = window.setInterval(() => {
           if (window.gsap) {
             window.clearInterval(poll);
             run();
           }
         }, 120);
+        watchdog = window.setTimeout(() => {
+          window.clearInterval(poll);
+          disarm();
+        }, 4000);
       },
       { threshold: 0.12 },
     );
     io.observe(host);
-
-    // If GSAP never arrives, or the tween stalls, show the content anyway.
-    const watchdog = window.setTimeout(disarm, 7000);
 
     return () => {
       io.disconnect();
