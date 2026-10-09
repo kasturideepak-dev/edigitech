@@ -42,6 +42,9 @@ export default function Reveal({ children, selector, y = 28, stagger = 0.1, clas
     const disarm = () => {
       if (disarmed) return;
       disarmed = true;
+      // Kill first, or a watchdog firing mid-tween has its cleanup immediately
+      // overwritten by the next frame of the animation it was rescuing.
+      tween?.kill();
       host.classList.remove("ed-reveal-armed");
       targets.forEach((t) => {
         t.style.removeProperty("opacity");

@@ -31,6 +31,9 @@ export default function CountUp({ value, className }: { value: number; className
     const settle = () => {
       if (done) return;
       done = true;
+      // Kill first: a watchdog that only writes the final figure gets undone
+      // by the tween's very next onUpdate, leaving the counter mid-count.
+      tween?.kill();
       el.textContent = final;
     };
 
