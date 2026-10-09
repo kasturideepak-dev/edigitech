@@ -16,7 +16,20 @@ type AboutModernData = {
   cardImage?: ImageValue | null;
   cardTitle?: string;
   cardPoints?: { label?: string }[];
+  cardButton?: Partial<Link>;
+  /** The swinging doodle that fills the space under the tab column. */
+  shape?: boolean;
 };
+
+/** Arrow on the card's own button — smaller than the page buttons' BtnArrow. */
+const CardArrow = () => (
+  <svg width="13" height="8" viewBox="0 0 13 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M12.8 4.00047C10.5066 3.11428 7.66113 1.60168 5.89705 0L7.12686 3.54162H0.440804C0.353649 3.54164 0.268309 3.56806 0.195839 3.61849C0.123344 3.66894 0.0671054 3.74115 0.033736 3.82504C0.000415994 3.90889 -0.00860368 4.00106 0.00837916 4.09007C0.025379 4.17914 0.0676362 4.26117 0.129277 4.3254C0.211785 4.41135 0.323646 4.45959 0.440351 4.4598H7.12641L5.89705 8C7.66083 6.39798 10.5065 4.88609 12.8 4.00047Z"
+      fill="currentColor"
+    />
+  </svg>
+);
 
 const Tick = () => (
   <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,6 +49,7 @@ export default function AboutModern({ data, ctx, anchor }: BlockProps<AboutModer
   const tabs = (data.tabs ?? []).filter((t) => t.title?.trim() || t.body?.trim());
   const points = (data.cardPoints ?? []).filter((p) => p.label?.trim());
   const base = anchor || "about-modern";
+  const cardLink = linkProps(data.cardButton, ctx);
 
   return (
     <div id={anchor} className="tp-about-area pt-150 pb-100">
@@ -92,11 +106,17 @@ export default function AboutModern({ data, ctx, anchor }: BlockProps<AboutModer
                     return (
                       <div className={`tab-pane${i === 0 ? " active show" : ""}`} id={`${base}-tab-${i}`} role="tabpanel" key={i}>
                         <div className="tp-about-cst-tab-content">
-                          {t.body && (
-                            <p className="fs-18 tp-ff-dm lh-140-per mb-40">
-                              <Text value={t.body} />
-                            </p>
-                          )}
+                          {/* Blank lines split the copy into real paragraphs, the way
+                              the template sets them - a <br><br> reads as a cramped gap. */}
+                          {(t.body ?? "")
+                            .split(/\n\s*\n/)
+                            .map((para) => para.trim())
+                            .filter(Boolean)
+                            .map((para, pi, all) => (
+                              <p className={`fs-18 tp-ff-dm lh-140-per ${pi === all.length - 1 ? "mb-40" : "mb-30"}`} key={pi}>
+                                <Text value={para} />
+                              </p>
+                            ))}
                           {hasLink(t.button) && (
                             <a
                               href={link.href}
@@ -115,6 +135,19 @@ export default function AboutModern({ data, ctx, anchor }: BlockProps<AboutModer
                     );
                   })}
                 </div>
+                {data.shape !== false && (
+                  /* Balances the column: without it the tab copy stops short and
+                     the row reads lopsided against the taller card beside it. */
+                  <span className="tp-about-cst-shape text-center d-block ml-100 tpswing" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="97" height="55" viewBox="0 0 97 55" fill="none">
+                      <path
+                        d="M83.9847 54C78.6511 51.5322 68.0674 44.655 61.7108 35.7342M61.7108 35.7342C57.5824 29.9403 55.2371 23.2843 57.2715 16.4144C60.0986 7.49032 70.2847 -6.31124 90.9344 5.6788C98.7241 10.2019 98.4556 20.6021 83.5646 27.5777C79.0031 29.7146 71.0686 33.5275 61.7108 35.7342ZM61.7108 35.7342C53.4442 37.6836 44.0668 38.3795 34.9229 35.559C25.1202 32.5353 9.6859 22.4932 2.95683 11.8205M2.95683 11.8205C2.62313 11.2912 2.31083 10.7604 2.02169 10.2288M2.95683 11.8205C2.64312 11.2405 2.3276 10.7065 2.02169 10.2288M2.95683 11.8205C6.02114 17.4865 8.91304 27.5524 1 32.5592M2.02169 10.2288C4.26447 13.5357 12.5228 18.93 27.614 14.0517M60.1349 46.4081C56.4491 47.6903 43.2901 50.1894 32.1762 43.8776"
+                        stroke="#030303"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </span>
+                )}
               </div>
             </div>
           )}
@@ -142,6 +175,16 @@ export default function AboutModern({ data, ctx, anchor }: BlockProps<AboutModer
                           </li>
                         ))}
                       </ul>
+                    )}
+                    {hasLink(data.cardButton) && (
+                      <a
+                        className="tp-about-cst-list-btn tp-bg-common-black-1 text-capitalize d-flex justify-content-between align-items-center tp-text-grey-5 fw-700 fs-14 tp-ff-dm"
+                        href={cardLink.href}
+                        {...(cardLink.newTab ? { target: "_blank", rel: "noopener" } : {})}
+                      >
+                        {data.cardButton?.label}
+                        <CardArrow />
+                      </a>
                     )}
                   </div>
                 </div>

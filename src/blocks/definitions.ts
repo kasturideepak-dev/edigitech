@@ -751,7 +751,13 @@ export const BLOCKS: BlockDefinition[] = [
           linkField("button", "Button", "full"),
         ],
       },
-      { type: "image", name: "cardImage", label: "Card image", width: "half", help: "Small graphic at the top of the highlight card." },
+      {
+        type: "image",
+        name: "cardImage",
+        label: "Card image",
+        width: "half",
+        help: "Graphic across the top of the highlight card. Its edges should match the card colour — the card pulls its text up 20px onto the image.",
+      },
       { type: "text", name: "cardTitle", label: "Card title", width: "half" },
       {
         type: "list",
@@ -760,6 +766,8 @@ export const BLOCKS: BlockDefinition[] = [
         itemLabel: "label",
         fields: [{ type: "text", name: "label", label: "Point" }],
       },
+      linkField("cardButton", "Card button", "full"),
+      { type: "toggle", name: "shape", label: "Show the squiggle under the tabs", width: "half" },
     ],
     defaults: () => ({
       statement: "A short, bold statement about the company.",
@@ -769,9 +777,11 @@ export const BLOCKS: BlockDefinition[] = [
       counterSuffix: "+",
       counterLabel: "Years of\nExperience",
       tabs: [{ title: "Our Story", body: "Tell your story here.", button: { label: "", url: "" } }],
-      cardImage: img("/assets/img/about/cst/graph.png"),
+      cardImage: img("/images/brand/about-card-waves.png"),
       cardTitle: "Data-driven insights",
       cardPoints: [{ label: "First point" }],
+      cardButton: { label: "", url: "" },
+      shape: true,
     }),
   },
 ];

@@ -689,6 +689,17 @@
 .ed-bg-brand li {
   color: #fff;
 }
+/* The card's own button. The template's --tp-common-black-1 is a green-tinted
+   dark that fights the blue, so use the brand navy; the label is #f3f1f2 on it
+   (16.5:1). On hover the template flips to a white panel, so the arrow has to
+   come back off white too - .ed-bg-brand svg above would otherwise keep it. */
+.ed-bg-brand .tp-about-cst-list-btn {
+  background-color: var(--ed-blue-dark);
+}
+.ed-bg-brand .tp-about-cst-list-btn:hover,
+.ed-bg-brand .tp-about-cst-list-btn:hover svg {
+  color: var(--ed-blue-dark);
+}
 .tp-about-cst-list.ed-bg-brand .tp-about-cst-list-inner ul li {
   color: rgba(255, 255, 255, 0.92);
 }
