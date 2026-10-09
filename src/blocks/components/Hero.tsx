@@ -62,8 +62,12 @@ export default function Hero({ data, ctx, anchor }: BlockProps<HeroData>) {
                 <Text value={data.title} />
               </h1>
               <div className="tp-hero-bottom-content">
-                {/* Top-aligned: the stats block is much shorter than the text column. */}
-                <div className="row align-items-start">
+                {/* Centred, as the template has it: the stats block is a single short
+                    row against a paragraph plus buttons, so top-aligning it left a
+                    void down the left-hand side. The columns split 6/6 rather than
+                    the template's 6/5 - that closes the stray twelfth column and
+                    gives the text side room to keep both buttons on one line. */}
+                <div className="row align-items-center">
                   <div className="col-lg-6">
                     {stats.length > 0 && (
                       <div className="tp-hero-customer d-flex align-items-center mb-50">
@@ -85,7 +89,7 @@ export default function Hero({ data, ctx, anchor }: BlockProps<HeroData>) {
                       </div>
                     )}
                   </div>
-                  <div className="col-lg-5">
+                  <div className="col-lg-6">
                     <div className="tp-hero-customer-text mb-30">
                       {data.subtitle && <p className="fs-20 lh-28 mb-40">{data.subtitle}</p>}
                       {(hasLink(data.primaryCta) || hasLink(data.secondaryCta)) && (
