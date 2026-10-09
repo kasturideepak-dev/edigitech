@@ -226,8 +226,11 @@
   opacity: 1;
   margin-left: 10px;
 }
+/* WhatsApp's bright #25d366 carries white text at only 1.98:1, so the label
+   and glyph fail AA on it. Their dark teal is an official brand colour and
+   takes white at 7.67:1, which also matches the sibling buttons. */
 .ed-floating-whatsapp {
-  background: #25d366;
+  background: #075e54;
 }
 .ed-floating-call {
   background: var(--ed-blue-dark);
