@@ -22,6 +22,9 @@ import Testimonials from "./components/Testimonials";
 import TextSlider from "./components/TextSlider";
 import Trust from "./components/Trust";
 import VideoBanner from "./components/VideoBanner";
+import ServiceHero from "./components/ServiceHero";
+import ProcessSteps from "./components/ProcessSteps";
+import OfferColumns from "./components/OfferColumns";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const COMPONENTS: Record<string, ComponentType<BlockProps<any>>> = {
@@ -46,6 +49,9 @@ const COMPONENTS: Record<string, ComponentType<BlockProps<any>>> = {
   feature: Feature,
   richText: Prose,
   team: Team,
+  serviceHero: ServiceHero,
+  processSteps: ProcessSteps,
+  offerColumns: OfferColumns,
 };
 
 export function RenderSections({ sections, ctx }: { sections: Section[]; ctx: BlockContext }) {

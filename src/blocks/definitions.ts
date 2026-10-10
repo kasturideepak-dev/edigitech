@@ -908,6 +908,120 @@ export const BLOCKS: BlockDefinition[] = [
       shape: true,
     }),
   },
+
+  // --------------------------------------------------------- SERVICE LANDING
+  {
+    type: "serviceHero",
+    name: "Service Hero (dark)",
+    description: "Deep navy hero for a service landing page: big headline, intro, trust badges, buttons and a photo.",
+    category: "Hero & Banners",
+    icon: "Sparkles",
+    fields: [
+      eyebrowField,
+      { type: "text", name: "title", label: "H1 heading", required: true, help: "**Asterisks** paint a phrase in the lighter blue." },
+      { type: "textarea", name: "intro", label: "Intro paragraph", rows: 4, help: TEXT_HELP },
+      {
+        type: "list",
+        name: "badges",
+        label: "Trust badges",
+        itemLabel: "label",
+        max: 4,
+        fields: [{ type: "text", name: "label", label: "Badge" }],
+      },
+      linkField("primaryCta", "Primary button"),
+      linkField("secondaryCta", "Secondary button"),
+      { type: "image", name: "image", label: "Hero photo" },
+    ],
+    defaults: () => ({
+      eyebrow: "Service",
+      title: "Service headline goes here",
+      intro: "One paragraph on what this service is and who it is for.",
+      badges: [{ label: "10+ Years" }],
+      primaryCta: { url: "/contact-us", label: "Get a Free Quote" },
+      secondaryCta: { url: "whatsapp", label: "WhatsApp Us" },
+      image: null,
+    }),
+  },
+
+  {
+    type: "offerColumns",
+    name: "What We Offer (columns)",
+    description: "Grouped capability lists, one card per group, with tick marks.",
+    category: "Content",
+    icon: "ListChecks",
+    fields: [
+      eyebrowField,
+      { type: "text", name: "title", label: "Heading", help: "**Asterisks** paint a word in the brand blue." },
+      { type: "textarea", name: "intro", label: "Intro copy", rows: 2, help: TEXT_HELP },
+      {
+        type: "list",
+        name: "columns",
+        label: "Groups",
+        itemLabel: "title",
+        max: 4,
+        fields: [
+          { type: "text", name: "title", label: "Group title" },
+          {
+            type: "list",
+            name: "items",
+            label: "Items",
+            itemLabel: "label",
+            fields: [
+              { type: "text", name: "label", label: "Item", width: "half" },
+              { type: "url", name: "url", label: "Link (optional)", width: "half" },
+            ],
+          },
+        ],
+      },
+    ],
+    defaults: () => ({
+      eyebrow: "What We Offer",
+      title: "What We **Offer**",
+      intro: "",
+      columns: [{ title: "Group", items: [{ label: "Item", url: "" }] }],
+    }),
+  },
+
+  {
+    type: "processSteps",
+    name: "Process Steps (numbered)",
+    description: "Numbered step cards — how the work runs, start to finish.",
+    category: "Content",
+    icon: "ListOrdered",
+    fields: [
+      eyebrowField,
+      { type: "text", name: "title", label: "Heading", help: "**Asterisks** paint a word in the accent blue." },
+      { type: "textarea", name: "intro", label: "Intro copy", rows: 2, help: TEXT_HELP },
+      {
+        type: "select",
+        name: "theme",
+        label: "Background",
+        width: "half",
+        options: [
+          { label: "Dark navy", value: "dark" },
+          { label: "Light", value: "light" },
+        ],
+      },
+      {
+        type: "list",
+        name: "steps",
+        label: "Steps",
+        itemLabel: "title",
+        max: 6,
+        fields: [
+          { type: "text", name: "title", label: "Step title" },
+          { type: "textarea", name: "text", label: "Step description", rows: 2, help: TEXT_HELP },
+        ],
+      },
+    ],
+    defaults: () => ({
+      eyebrow: "How It Works",
+      title: "Our **Process**",
+      intro: "",
+      theme: "dark",
+      steps: [{ title: "Discovery", text: "What happens at this step." }],
+    }),
+  },
 ];
 
 export const BLOCK_MAP: Record<string, BlockDefinition> = Object.fromEntries(BLOCKS.map((b) => [b.type, b]));
