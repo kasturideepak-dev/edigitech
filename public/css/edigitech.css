@@ -877,6 +877,123 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
   color: var(--tp-theme-primary);
 }
 
+/* ---- USP cards on a gradient band ---- */
+.ed-usp {
+  padding: 0 0 90px;
+}
+.ed-usp-band {
+  /* The band stops short of the cards' full height so they break out of its
+     lower edge, the way the reference's row sits over its panel. */
+  padding: 90px 0 0;
+  margin-bottom: -90px;
+  background:
+    radial-gradient(900px 480px at 85% 0%, rgba(6, 85, 237, 0.5), rgba(6, 85, 237, 0) 64%),
+    linear-gradient(135deg, #0a3ad0 0%, #0655ed 42%, #2f6ef5 100%);
+}
+.ed-usp-head {
+  max-width: 760px;
+  margin: 0 0 42px;
+}
+.ed-usp-eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: rgba(255, 255, 255, 0.82);
+  font-family: var(--tp-ff-heading);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ed-usp-title {
+  margin: 0;
+  color: #fff;
+  font-family: var(--tp-ff-heading);
+  font-weight: 700;
+  font-size: clamp(28px, 3.4vw, 46px);
+  line-height: 1.12;
+}
+.ed-usp-card {
+  display: flex;
+  flex-direction: column;
+  padding: 26px 24px 26px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 24px 50px rgba(4, 23, 80, 0.16);
+  transition: transform 0.26s ease, box-shadow 0.26s ease;
+}
+.ed-usp-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 30px 60px rgba(4, 23, 80, 0.22);
+}
+.ed-usp-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  color: var(--tp-theme-primary);
+  background: linear-gradient(145deg, rgba(6, 85, 237, 0.16), rgba(6, 85, 237, 0.05));
+}
+.ed-usp-icon img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+.ed-usp-card-title {
+  margin: 0 0 10px;
+  font-family: var(--tp-ff-heading);
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.25;
+  color: var(--tp-theme-primary);
+}
+.ed-usp-card-text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #3b3f47;
+}
+
+/* ---- Oversized statement ---- */
+.ed-statement {
+  padding: 110px 0 100px;
+}
+.ed-statement-label {
+  display: inline-block;
+  padding-top: 14px;
+  color: var(--ed-grey);
+  font-family: var(--tp-ff-heading);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.ed-statement-text {
+  margin: 0;
+  font-family: var(--tp-ff-heading);
+  font-weight: 700;
+  font-size: clamp(26px, 3.1vw, 42px);
+  line-height: 1.22;
+  letter-spacing: -0.005em;
+  color: var(--ed-blue-dark);
+}
+.ed-statement-accent {
+  color: var(--tp-theme-primary);
+}
+.ed-statement-foot {
+  margin: 26px 0 0;
+  max-width: 640px;
+  font-size: 17px;
+  line-height: 1.65;
+  color: #3b3f47;
+}
+@media (max-width: 991.98px) {
+  .ed-statement { padding: 80px 0 70px; }
+  .ed-statement-label { margin-bottom: 18px; padding-top: 0; }
+}
+
 /* ---- Numbered steps ---- */
 .ed-steps { padding: 120px 0 90px; }
 .ed-steps-dark {

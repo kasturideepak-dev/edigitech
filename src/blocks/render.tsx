@@ -25,6 +25,8 @@ import VideoBanner from "./components/VideoBanner";
 import ServiceHero from "./components/ServiceHero";
 import ProcessSteps from "./components/ProcessSteps";
 import OfferColumns from "./components/OfferColumns";
+import UspCards from "./components/UspCards";
+import Statement from "./components/Statement";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const COMPONENTS: Record<string, ComponentType<BlockProps<any>>> = {
@@ -52,6 +54,8 @@ const COMPONENTS: Record<string, ComponentType<BlockProps<any>>> = {
   serviceHero: ServiceHero,
   processSteps: ProcessSteps,
   offerColumns: OfferColumns,
+  uspCards: UspCards,
+  statement: Statement,
 };
 
 export function RenderSections({ sections, ctx }: { sections: Section[]; ctx: BlockContext }) {

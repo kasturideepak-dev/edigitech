@@ -1022,6 +1022,69 @@ export const BLOCKS: BlockDefinition[] = [
       steps: [{ title: "Discovery", text: "What happens at this step." }],
     }),
   },
+
+  {
+    type: "uspCards",
+    name: "USP Cards (gradient band)",
+    description: "Four reasons-to-choose cards sitting over a brand-blue band.",
+    category: "Content",
+    icon: "BadgeCheck",
+    fields: [
+      eyebrowField,
+      { type: "text", name: "title", label: "Heading", help: "**Asterisks** paint a phrase in the lighter blue." },
+      {
+        type: "list",
+        name: "items",
+        label: "Cards",
+        itemLabel: "title",
+        max: 4,
+        fields: [
+          { type: "text", name: "title", label: "Title", width: "half" },
+          {
+            type: "select",
+            name: "glyph",
+            label: "Icon",
+            width: "half",
+            options: [
+              { label: "Shield", value: "shield" },
+              { label: "Search", value: "search" },
+              { label: "Mobile", value: "mobile" },
+              { label: "Price tag", value: "tag" },
+              { label: "Support", value: "support" },
+              { label: "Rocket", value: "rocket" },
+              { label: "Code", value: "code" },
+              { label: "Globe", value: "globe" },
+            ],
+          },
+          { type: "textarea", name: "text", label: "Description", rows: 3, help: TEXT_HELP },
+          { type: "image", name: "icon", label: "Custom icon (optional)", help: "Overrides the chosen glyph." },
+        ],
+      },
+    ],
+    defaults: () => ({
+      eyebrow: "Why eDigiTech",
+      title: "Why clients **choose us**",
+      items: [{ title: "Reason", glyph: "shield", text: "What this means for the client.", icon: null }],
+    }),
+  },
+
+  {
+    type: "statement",
+    name: "Big Statement",
+    description: "A side label against one oversized paragraph, with phrases picked out in the brand blue.",
+    category: "Content",
+    icon: "Quote",
+    fields: [
+      { type: "text", name: "label", label: "Side label", width: "half", help: "Small uppercase label, e.g. ABOUT US." },
+      { type: "textarea", name: "text", label: "Statement", rows: 5, required: true, help: "Wrap phrases in **asterisks** to paint them in the brand blue." },
+      { type: "textarea", name: "footnote", label: "Supporting line (optional)", rows: 3, help: TEXT_HELP },
+    ],
+    defaults: () => ({
+      label: "About Us",
+      text: "A short, bold statement with a **highlighted phrase** inside it.",
+      footnote: "",
+    }),
+  },
 ];
 
 export const BLOCK_MAP: Record<string, BlockDefinition> = Object.fromEntries(BLOCKS.map((b) => [b.type, b]));
