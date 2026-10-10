@@ -18,6 +18,71 @@
   --ed-grey: #828690;
 }
 
+/* ------------------------------------------------------------------ Brand type
+   Gotham for display, Raleway for body, per the brand sheet.
+
+   Gotham is a licensed Hoefler&Co family. It is not on Google Fonts and must
+   not be served from a public CDN, so nothing here downloads it. It is first
+   in the stack, which means a self-hosted licensed copy — or a visitor who
+   has it installed — is used automatically. Until the webfont files arrive,
+   Montserrat renders: the usual geometric stand-in, closest of the free faces
+   on the capital G, R and the single-storey a.
+
+   To switch Gotham on, drop the licensed woff2 files into
+   /public/fonts/gotham/ and uncomment the @font-face blocks below. Nothing
+   else needs to change.
+
+@font-face {
+  font-family: "Gotham";
+  src: url("/fonts/gotham/Gotham-Book.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gotham";
+  src: url("/fonts/gotham/Gotham-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gotham";
+  src: url("/fonts/gotham/Gotham-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+*/
+:root {
+  /* The two --ed-font-* variables come from next/font in the site layout, so
+     both faces are self-hosted — no request to Google, no layout shift. */
+  --ed-ff-display: "Gotham", var(--ed-font-montserrat), "Space Grotesk", sans-serif;
+  --ed-ff-body: var(--ed-font-raleway), sans-serif;
+
+  /* The template's own variables are repointed rather than chased through its
+     utility classes — ~200 rules reference --tp-ff-dm alone. */
+  --tp-ff-heading: var(--ed-ff-display);
+  --tp-ff-dm: var(--ed-ff-display);
+  --tp-ff-body: var(--ed-ff-body);
+  --tp-ff-p: var(--ed-ff-body);
+  --tp-ff-inter: var(--ed-ff-body);
+  --tp-ff-poppins: var(--ed-ff-body);
+  --tp-ff-jakarta: var(--ed-ff-body);
+}
+body {
+  font-family: var(--ed-ff-body);
+}
+/* Raleway runs light at small sizes next to the template's previous face, so
+   body copy sits a touch heavier to hold the same colour on the page. */
+body,
+p,
+li,
+td,
+label {
+  font-weight: 450;
+}
+
 /* Text sitting on the accent must be white - black would fail AA. */
 .tp-bg-theme-primary,
 .tp-bg-theme-primary .btn-text,

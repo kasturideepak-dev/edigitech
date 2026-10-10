@@ -45,8 +45,10 @@ function TabBody({ tab, ctx }: { tab: Tab; ctx: BlockProps<AboutModernData>["ctx
 
   return (
     <>
+      {/* No tp-ff-dm on these paragraphs: that variable now carries the display
+          face, and this is body copy, which belongs in Raleway. */}
       {paras.map((para, i) => (
-        <p className={`fs-18 tp-ff-dm lh-140-per ${i === paras.length - 1 ? "mb-40" : "mb-30"}`} key={i}>
+        <p className={`fs-18 lh-140-per ${i === paras.length - 1 ? "mb-40" : "mb-30"}`} key={i}>
           <Text value={para} />
         </p>
       ))}
