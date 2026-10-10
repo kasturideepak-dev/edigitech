@@ -801,6 +801,17 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
   .ed-shero-thumb img { aspect-ratio: 16 / 10; }
 }
 
+/* The feature block themes its heading and paragraph but not its tick list —
+   that inherits --tp-grey-5 (#f3f1f2), which is meant for the dark panel. On
+   the light panel it is near-white on white, 1.12:1. Every page using the
+   block had a dark panel until this one, so it had not shown up. */
+.tp-about-feature-info.tp-bg-common-white .tp-service-cst-info-list ul li {
+  color: #3b3f47;
+}
+.tp-about-feature-info.tp-bg-common-white .tp-service-cst-info-list ul li span {
+  color: var(--tp-theme-primary);
+}
+
 /* ---- Numbered steps ---- */
 .ed-steps { padding: 120px 0 90px; }
 .ed-steps-dark {
