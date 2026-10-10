@@ -700,6 +700,25 @@
    Deep navy and white alternating, after the reference deck. Everything is
    built from the logo blue and the brand navy — no second colour family. */
 
+/* The header is transparent and overlays the first section, so on these pages
+   it sits on the navy hero with near-black nav links — 1.12:1, invisible.
+   :has() scopes the inversion to pages that actually carry the dark hero,
+   without plumbing page data into the chrome.
+
+   :not(.header-sticky) matters: on scroll the header takes a white background
+   (sticky-white-bg), and white links on it would be just as invisible the
+   other way. `content` swaps the logo bitmap for the white artwork; where it
+   is unsupported the dark logo simply stays, which is today's behaviour. */
+body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-main-menu > nav > ul > li > a {
+  color: #fff;
+}
+body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-main-menu > nav > ul > li > a:hover {
+  color: var(--ed-blue-light);
+}
+body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
+  content: url("/images/brand/edigitech-logo-white.png");
+}
+
 /* ---- Hero ---- */
 .ed-shero {
   position: relative;
