@@ -73,12 +73,13 @@
 body {
   font-family: var(--ed-ff-body);
 }
-/* The display face is wider than the one it replaced, which pushed the five
-   top-level nav items 13px past their column and wrapped the menu onto a
-   second line at 1280. The template gives each item 18px of side margin;
-   15px buys back 30px across the row. */
+/* The display face is wider than the one it replaced, which wrapped the five
+   top-level nav items onto a second line at 1280. The row has 616px to work
+   in — the column minus Bootstrap's gutters, not the 640 the column reports —
+   and the items need 474 of it, so the template's 25px side margins do not
+   fit. 12px leaves about 20px of slack at this width. */
 .tp-main-menu > nav > ul > li {
-  margin: 0 15px;
+  margin: 0 12px;
 }
 /* Raleway runs light at small sizes next to the template's previous face, so
    body copy sits a touch heavier to hold the same colour on the page. */
