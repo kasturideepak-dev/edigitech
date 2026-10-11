@@ -73,6 +73,13 @@
 body {
   font-family: var(--ed-ff-body);
 }
+/* The display face is wider than the one it replaced, which pushed the five
+   top-level nav items 13px past their column and wrapped the menu onto a
+   second line at 1280. The template gives each item 18px of side margin;
+   15px buys back 30px across the row. */
+.tp-main-menu > nav > ul > li {
+  margin: 0 15px;
+}
 /* Raleway runs light at small sizes next to the template's previous face, so
    body copy sits a touch heavier to hold the same colour on the page. */
 body,
@@ -904,13 +911,20 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
+/* On the blue band the usual lighter-blue accent is 1.56:1 — invisible. White
+   is the only highlight that holds (4.5:1 against the gradient's lightest
+   stop), so the relationship inverts: the line sits in a pale tint and the
+   emphasis is pure white. Both clear the 3:1 large-text floor. */
 .ed-usp-title {
   margin: 0;
-  color: #fff;
+  color: #cfe0ff;
   font-family: var(--tp-ff-heading);
   font-weight: 700;
   font-size: clamp(28px, 3.4vw, 46px);
   line-height: 1.12;
+}
+.ed-usp-title .ed-shero-accent {
+  color: #fff;
 }
 .ed-usp-card {
   display: flex;
