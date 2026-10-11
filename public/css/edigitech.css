@@ -81,6 +81,19 @@ body {
 .tp-main-menu > nav > ul > li {
   margin: 0 12px;
 }
+/* The desktop menu appears at 1200, where the row only has 576px and the
+   items alone take 473 — 12px margins still overflow by 17. Through to 1399
+   the labels drop a point and the margins tighten, which leaves ~35px spare.
+   "Industry Solutions" is the long one at 186px; shortening that label would
+   buy back more room than any amount of spacing here. */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+  .tp-main-menu > nav > ul > li {
+    margin: 0 10px;
+  }
+  .tp-main-menu > nav > ul > li > a {
+    font-size: 14px;
+  }
+}
 /* Raleway runs light at small sizes next to the template's previous face, so
    body copy sits a touch heavier to hold the same colour on the page. */
 body,
