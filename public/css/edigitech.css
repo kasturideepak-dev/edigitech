@@ -900,16 +900,28 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
 
 /* ---- USP cards on a gradient band ---- */
 .ed-usp {
-  padding: 0 0 90px;
+  position: relative;
+  padding: 0 0 100px;
 }
-.ed-usp-band {
-  /* The band stops short of the cards' full height so they break out of its
-     lower edge, the way the reference's row sits over its panel. */
-  padding: 90px 0 0;
-  margin-bottom: -90px;
+/* --ed-usp-reveal is how much of the section's foot stays white: the part of
+   the cards hanging below the blue, plus the section's bottom padding. At a
+   ~275px card that leaves roughly 60% of each card on the blue and 40% below,
+   which is the proportion in the reference. */
+.ed-usp-bg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 0;
+  height: calc(100% - var(--ed-usp-reveal, 205px));
   background:
     radial-gradient(900px 480px at 85% 0%, rgba(6, 85, 237, 0.5), rgba(6, 85, 237, 0) 64%),
     linear-gradient(135deg, #0a3ad0 0%, #0655ed 42%, #2f6ef5 100%);
+}
+.ed-usp-band {
+  position: relative;
+  z-index: 1;
+  padding: 90px 0 0;
 }
 .ed-usp-head {
   max-width: 760px;
@@ -982,6 +994,17 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
   font-size: 15px;
   line-height: 1.6;
   color: #3b3f47;
+}
+/* Stacked, a single cut would leave the first card on blue and the rest
+   stranded on white. Below the grid breakpoints the blue just backs the
+   heading and the cards sit under it. */
+@media (max-width: 767.98px) {
+  .ed-usp-bg {
+    height: var(--ed-usp-bg-mobile, 230px);
+  }
+  .ed-usp-band {
+    padding-top: 70px;
+  }
 }
 
 /* ---- Oversized statement ---- */

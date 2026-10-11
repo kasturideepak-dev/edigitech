@@ -75,6 +75,10 @@ export default function UspCards({ data, anchor }: BlockProps<UspCardsData>) {
 
   return (
     <div id={anchor} className="ed-usp">
+      {/* The blue is a backdrop of its own, not a wrapper. As a wrapper its
+          height was driven by the cards inside it, so they sat entirely on the
+          blue instead of straddling its lower edge. */}
+      <span className="ed-usp-bg" aria-hidden="true"></span>
       <div className="ed-usp-band">
         <div className="container container-1230">
           {(data.eyebrow || data.title) && (
