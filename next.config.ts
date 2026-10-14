@@ -17,6 +17,12 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      // Belt and braces for non-production environments: the meta tag covers
+      // HTML, this covers PDFs, images and anything else a crawler reaches.
+      // Set NEXT_PUBLIC_NOINDEX=true on staging; leave it unset in production.
+      ...(process.env.NEXT_PUBLIC_NOINDEX === "true"
+        ? [{ source: "/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] }]
+        : []),
       {
         source: "/assets/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=2592000, stale-while-revalidate=86400" }],

@@ -5,6 +5,18 @@ import { plain } from "@/components/site/Text";
 
 export const siteUrl = () => (process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000").replace(/\/$/, "");
 
+/**
+ * Set NEXT_PUBLIC_NOINDEX=true on any environment that is not the live site.
+ *
+ * The staging build was serving `index, follow` with a canonical pointing at
+ * the staging host, so a crawl before go-live could have put the staging URL
+ * in the index competing with the real one. This is an env flag rather than
+ * the `allowIndexing` setting because it belongs to the environment, not the
+ * content — nobody has to remember to flip it back, they just don't set it in
+ * production. proxy.ts sends a matching X-Robots-Tag so non-HTML is covered.
+ */
+export const isNoindexEnv = () => process.env.NEXT_PUBLIC_NOINDEX === "true";
+
 export const absoluteUrl = (path: string) => (/^https?:\/\//.test(path) ? path : `${siteUrl()}${path.startsWith("/") ? "" : "/"}${path}`);
 
 /** First meaningful text on the page, used when no meta description is set. */
@@ -38,15 +50,18 @@ export function buildMetadata(opts: {
   const description = seo.metaDescription || fallbackDescription(content.sections) || s.defaultDescription;
   const canonical = seo.canonical ? absoluteUrl(seo.canonical) : absoluteUrl(path);
   const ogImage = seo.ogImage?.url || s.defaultOgImage?.url;
-  const index = s.allowIndexing && !seo.noindex && !opts.forceNoindex;
+  const noindexEnv = isNoindexEnv();
+  const index = s.allowIndexing && !seo.noindex && !opts.forceNoindex && !noindexEnv;
 
   return {
     metadataBase: new URL(siteUrl()),
     title: { absolute: title },
     description,
-    keywords: seo.focusKeyword ? [seo.focusKeyword] : undefined,
+    // No `keywords`: the meta keywords tag has been ignored by every major
+    // engine for years, and publishing the target term invites scraping by
+    // competitors. focusKeyword stays, it just drives the editor, not a tag.
     alternates: { canonical },
-    robots: { index, follow: s.allowIndexing && !seo.nofollow && !opts.forceNoindex },
+    robots: { index, follow: s.allowIndexing && !seo.nofollow && !opts.forceNoindex && !noindexEnv },
     openGraph: {
       type: "website",
       url: canonical,
@@ -111,6 +126,26 @@ export function buildJsonLd(opts: { title: string; path: string; content: PageCo
     isPartOf: { "@id": `${siteUrl()}/#website` },
     about: { "@id": orgId },
   });
+
+  // The page sells "schema markup included by default", so it should carry its
+  // own. Built from the rendered FAQ blocks, so the markup can never drift
+  // from what a visitor actually reads — which is what Google penalises.
+  const faqs = content.sections
+    .filter((s) => s.visible !== false && s.type === "faq")
+    .flatMap((s) => ((s.data as { items?: { question?: string; answer?: string }[] }).items ?? []))
+    .filter((i) => i.question?.trim() && i.answer?.trim());
+
+  if (faqs.length) {
+    graph.push({
+      "@type": "FAQPage",
+      "@id": `${url}#faq`,
+      mainEntity: faqs.map((i) => ({
+        "@type": "Question",
+        name: plain(i.question),
+        acceptedAnswer: { "@type": "Answer", text: plain(i.answer) },
+      })),
+    });
+  }
 
   if (!opts.isHome) {
     graph.push({

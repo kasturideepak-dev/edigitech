@@ -129,7 +129,9 @@ export function Offcanvas({ settings }: Props) {
             </div>
           </div>
           <div className="tp-offcanvas-content d-none d-xl-block">
-            {h.offcanvasTitle && <h3 className="tp-offcanvas-title">{h.offcanvasTitle}</h3>}
+            {/* A greeting, not a section title — as an h3 it lands in the document
+                outline above the real page headings. */}
+            {h.offcanvasTitle && <div className="tp-offcanvas-title">{h.offcanvasTitle}</div>}
             {h.offcanvasText && <p>{h.offcanvasText}</p>}
           </div>
           <div className="tp-offcanvas-menu d-xl-none">

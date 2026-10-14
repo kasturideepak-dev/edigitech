@@ -377,7 +377,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
       { label: "Blog", url: "/blog" },
       { label: "Contact", url: "/contact-us" },
     ],
-    cta: { label: "Let’s Talk", url: "/contact-us" },
+    cta: { label: "Get a Free Quote", url: "/contact-us" },
     showSearch: false,
     offcanvasTitle: "Hello There!",
     offcanvasText: "Websites, apps, cloud and digital marketing — one team for every digital need.",
@@ -387,7 +387,7 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     ctaEyebrow: "Ready to Start a Project?",
     ctaTitle: "Let’s Talk",
     ctaUrl: "/contact-us",
-    button: { label: "Start the Journey", url: "/contact-us" },
+    button: { label: "Get a Free Quote", url: "/contact-us" },
     aboutText: "We’re a global digital agency since 2017, providing web, marketing and AI automation solutions to businesses across India and beyond.",
     columns: [
       {

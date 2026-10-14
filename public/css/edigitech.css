@@ -898,6 +898,23 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
   color: var(--tp-theme-primary);
 }
 
+/* Counter figures were <h3>, which put "1,000+" and "500+" into the document
+   outline for no reason. They are a <div> now, so they need the heading
+   typography they used to inherit — everything but the semantics. */
+.tp-counter-number {
+  font-family: var(--tp-ff-heading);
+  color: var(--tp-common-black);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 10px;
+}
+
+/* Same reason as the counters: the drawer greeting is a <div> now, and its
+   class sets everything except the face it used to inherit from h3. */
+.tp-offcanvas-title {
+  font-family: var(--tp-ff-heading);
+}
+
 /* ---- USP cards on a gradient band ---- */
 .ed-usp {
   position: relative;
