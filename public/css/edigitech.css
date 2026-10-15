@@ -1179,17 +1179,35 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
   line-height: 0;
 }
 
+/* --------------------------------------------------------------- Preloader
+   The template's loader is a near-black panel (#121212) with white letters.
+   On a light site that is a black flash before every page, so the panel goes
+   white and the wordmark takes the brand navy — 18.8:1, and the letters only
+   animate opacity so recolouring them is safe. */
+.loader-wrap svg {
+  fill: #ffffff;
+}
+.loader-wrap .loader-wrap-heading .load-text {
+  color: var(--ed-blue-dark);
+}
+
 /* ------------------------------------------------------------- Motion bits
    Reveal.tsx deliberately has no hidden-by-default class. Hiding content in
    CSS and waiting for a trigger to undo it is what stranded copy at opacity 0
    twice on this site, so the from-state is written inline in the same tick as
    the tween that clears it. Nothing here can hide content on its own. */
 
-/* WebGL field behind a dark section. Sits under the section's own shapes and
-   content; the flat background stays as the fallback beneath it. */
-.ed-shader-host > *:not(.ed-shader-canvas) {
+/* WebGL field behind a dark section. The canvas sits on a negative layer
+   inside the host's own stacking context, so everything else paints above it
+   untouched.
+
+   It must not be done by lifting the children instead: `> *` also caught the
+   section's decorative shape, which the template positions absolutely at
+   100%x100%. Forcing it to relative dropped it into the flow and added about
+   950px of empty space to the section. */
+.ed-shader-host {
   position: relative;
-  z-index: 1;
+  isolation: isolate;
 }
 .ed-shader-canvas {
   position: absolute;
@@ -1197,7 +1215,7 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
   width: 100%;
   height: 100%;
   display: block;
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
 }
 
