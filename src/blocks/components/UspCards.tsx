@@ -1,11 +1,15 @@
 import type { ImageValue } from "@/lib/types";
 import { Text } from "@/components/site/Text";
 import Reveal from "@/components/site/Reveal";
+import ZoomIn from "@/components/site/ZoomIn";
 import { type BlockProps, alt, src } from "./shared";
 
 type Usp = {
   glyph?: string;
   icon?: ImageValue | null;
+  image?: ImageValue | null;
+  /** Large display figure for a cell carrying a number instead of a photo. */
+  figure?: string;
   title?: string;
   text?: string;
 };
@@ -13,6 +17,7 @@ type Usp = {
 type UspCardsData = {
   eyebrow?: string;
   title?: string;
+  layout?: "bento" | "cards";
   items?: Usp[];
 };
 
@@ -68,11 +73,74 @@ const GLYPHS: Record<string, React.ReactNode> = {
   ),
 };
 
+/* Bento spans across a 12-column grid: wide, narrow, narrow, wide. Cells that
+   carry a figure take the narrow slots, photo cells the wide ones. */
+const SPANS = [7, 5, 5, 7];
+
 export default function UspCards({ data, anchor }: BlockProps<UspCardsData>) {
   const items = (data.items ?? []).filter((i) => i.title?.trim());
   if (!items.length) return null;
-  const cols = items.length >= 4 ? "col-xl-3 col-lg-6 col-md-6" : "col-lg-4 col-md-6";
+  const bento = (data.layout ?? "bento") === "bento";
 
+  if (!bento) return <UspRow data={data} anchor={anchor} items={items} />;
+
+  return (
+    <div id={anchor} className="ed-bento">
+      <div className="container container-1230">
+        {(data.eyebrow || data.title) && (
+          <div className="ed-bento-head">
+            {data.eyebrow && <span className="ed-bento-eyebrow">{data.eyebrow}</span>}
+            {data.title && (
+              <h2 className="ed-bento-title">
+                <Text value={data.title} boldClassName="ed-bento-accent" />
+              </h2>
+            )}
+          </div>
+        )}
+
+        <Reveal className="ed-bento-grid" selector=".ed-bento-cell" stagger={0.09} y={26}>
+          {items.map((u, i) => {
+            const photo = src(u.image);
+            return (
+              <article
+                className={`ed-bento-cell ed-bento-span-${SPANS[i % SPANS.length]}${photo ? " has-photo" : ""}`}
+                key={i}
+              >
+                {photo ? (
+                  <div className="ed-bento-media">
+                    <ZoomIn className="ed-bento-media-inner">
+                      <img src={photo} alt={alt(u.image, u.title ?? "")} loading="lazy" />
+                    </ZoomIn>
+                  </div>
+                ) : u.figure ? (
+                  <span className="ed-bento-figure">{u.figure}</span>
+                ) : (
+                  <span className="ed-bento-icon">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      {GLYPHS[u.glyph ?? "shield"] ?? GLYPHS.shield}
+                    </svg>
+                  </span>
+                )}
+                <div className="ed-bento-body">
+                  <h3 className="ed-bento-cell-title">{u.title}</h3>
+                  {u.text && (
+                    <p className="ed-bento-text">
+                      <Text value={u.text} />
+                    </p>
+                  )}
+                </div>
+              </article>
+            );
+          })}
+        </Reveal>
+      </div>
+    </div>
+  );
+}
+
+/** The original four-across row on a brand band, kept as a layout option. */
+function UspRow({ data, anchor, items }: { data: UspCardsData; anchor?: string; items: Usp[] }) {
+  const cols = items.length >= 4 ? "col-xl-3 col-lg-6 col-md-6" : "col-lg-4 col-md-6";
   return (
     <div id={anchor} className="ed-usp">
       {/* The blue is a backdrop of its own, not a wrapper. As a wrapper its

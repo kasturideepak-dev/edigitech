@@ -1052,8 +1052,18 @@ export const BLOCKS: BlockDefinition[] = [
     category: "Content",
     icon: "BadgeCheck",
     fields: [
+      {
+        type: "select",
+        name: "layout",
+        label: "Layout",
+        width: "half",
+        options: [
+          { label: "Bento grid (mixed sizes, light)", value: "bento" },
+          { label: "Row of cards on a blue band", value: "cards" },
+        ],
+      },
       eyebrowField,
-      { type: "text", name: "title", label: "Heading", help: "**Asterisks** paint a phrase in the lighter blue." },
+      { type: "text", name: "title", label: "Heading", help: "**Asterisks** paint a phrase in the brand blue." },
       {
         type: "list",
         name: "items",
@@ -1079,14 +1089,17 @@ export const BLOCKS: BlockDefinition[] = [
             ],
           },
           { type: "textarea", name: "text", label: "Description", rows: 3, help: TEXT_HELP },
+          { type: "image", name: "image", label: "Photo (bento)", help: "A cell shows a photo, else its figure, else the glyph." },
+          { type: "text", name: "figure", label: "Display figure (bento)", width: "half", help: "e.g. 37 — used when there is no photo." },
           { type: "image", name: "icon", label: "Custom icon (optional)", help: "Overrides the chosen glyph." },
         ],
       },
     ],
     defaults: () => ({
+      layout: "bento",
       eyebrow: "Why eDigiTech",
       title: "Why clients **choose us**",
-      items: [{ title: "Reason", glyph: "shield", text: "What this means for the client.", icon: null }],
+      items: [{ title: "Reason", glyph: "shield", text: "What this means for the client.", icon: null, image: null, figure: "" }],
     }),
   },
 

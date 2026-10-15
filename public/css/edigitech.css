@@ -1018,6 +1018,138 @@ body {
   font-family: var(--tp-ff-heading);
 }
 
+/* ---- USP bento ----
+   After the reference: soft cards of mixed width on a light ground, generous
+   padding, display-weight figures. Kept warm rather than the reference's cool
+   grey, so it belongs to the rest of this page. */
+.ed-bento {
+  padding: 110px 0 100px;
+  background: linear-gradient(180deg, var(--ed-cream) 0%, var(--ed-sand) 100%);
+}
+.ed-bento-head {
+  max-width: 720px;
+  margin: 0 0 44px;
+}
+.ed-bento-eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: var(--ed-grey);
+  font-family: var(--tp-ff-heading);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.ed-bento-title {
+  margin: 0;
+  color: var(--ed-blue-dark);
+  font-family: var(--tp-ff-heading);
+  font-weight: 700;
+  font-size: clamp(28px, 3.4vw, 46px);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+}
+.ed-bento-accent {
+  color: var(--tp-theme-primary);
+}
+.ed-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 18px;
+}
+.ed-bento-span-7 { grid-column: span 7; }
+.ed-bento-span-5 { grid-column: span 5; }
+.ed-bento-cell {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 260px;
+  border-radius: 22px;
+  background: #fff;
+  border: 1px solid var(--ed-line);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+.ed-bento-cell:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 26px 54px rgba(5, 20, 46, 0.1);
+}
+/* Photo cells: image on top, copy beneath. */
+.ed-bento-media {
+  flex: 1 1 auto;
+  min-height: 150px;
+}
+.ed-bento-media-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.ed-bento-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.55s ease;
+}
+.ed-bento-cell:hover .ed-bento-media img {
+  transform: scale(1.04);
+}
+/* Figure cells: the number does the work the photo does elsewhere. */
+.ed-bento-figure {
+  display: block;
+  padding: 34px 30px 0;
+  color: var(--ed-blue-dark);
+  font-family: var(--tp-ff-heading);
+  font-weight: 700;
+  font-size: clamp(42px, 5vw, 68px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.ed-bento-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin: 30px 0 0 30px;
+  border-radius: 15px;
+  color: var(--tp-theme-primary);
+  background: rgba(6, 85, 237, 0.1);
+}
+.ed-bento-body {
+  padding: 26px 30px 30px;
+}
+.ed-bento-cell-title {
+  margin: 0 0 10px;
+  font-family: var(--tp-ff-heading);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.25;
+  color: var(--ed-blue-dark);
+}
+.ed-bento-text {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--ed-body);
+}
+@media (prefers-reduced-motion: reduce) {
+  .ed-bento-cell:hover .ed-bento-media img { transform: none; }
+}
+@media (max-width: 991.98px) {
+  .ed-bento { padding: 80px 0 70px; }
+  /* Two up, then one: the 7/5 rhythm has no room to read below this. */
+  .ed-bento-span-7,
+  .ed-bento-span-5 { grid-column: span 6; }
+}
+@media (max-width: 575.98px) {
+  .ed-bento-span-7,
+  .ed-bento-span-5 { grid-column: span 12; }
+  .ed-bento-figure { padding: 28px 24px 0; }
+  .ed-bento-body { padding: 22px 24px 26px; }
+}
+
 /* ---- USP cards on a gradient band ---- */
 .ed-usp {
   position: relative;
