@@ -2,6 +2,7 @@ import type { ImageValue, Link } from "@/lib/types";
 import { SwitchButton } from "@/components/site/Icon";
 import { Text } from "@/components/site/Text";
 import Reveal from "@/components/site/Reveal";
+import QuoteForm from "./QuoteForm";
 import { type BlockProps, alt, hasLink, linkProps, src } from "./shared";
 
 type ServiceHeroData = {
@@ -12,6 +13,12 @@ type ServiceHeroData = {
   primaryCta?: Link;
   secondaryCta?: Link;
   image?: ImageValue | null;
+  /** Full-bleed banner photo behind the whole section. */
+  background?: ImageValue | null;
+  showForm?: boolean;
+  formTitle?: string;
+  formNote?: string;
+  formButton?: string;
 };
 
 /**
@@ -26,12 +33,22 @@ export default function ServiceHero({ data, ctx, anchor }: BlockProps<ServiceHer
   const badges = (data.badges ?? []).map((b) => b.label?.trim()).filter(Boolean);
   const primary = linkProps(data.primaryCta, ctx);
   const secondary = linkProps(data.secondaryCta, ctx);
+  const bg = src(data.background);
+  const form = data.showForm !== false;
+  // The form takes the right column when it is on; otherwise the side photo
+  // does, and with neither the copy runs wider.
+  const copyCols = form || src(data.image) ? "col-lg-7" : "col-lg-10";
 
   return (
-    <div id={anchor} className="ed-shero">
+    <div id={anchor} className={`ed-shero${bg ? " ed-shero-banner" : ""}`}>
+      {bg && (
+        <div className="ed-shero-bg" aria-hidden="true">
+          <img src={bg} alt="" fetchPriority="high" />
+        </div>
+      )}
       <div className="container container-1230">
         <div className="row align-items-center">
-          <div className={src(data.image) ? "col-lg-7" : "col-lg-10"}>
+          <div className={copyCols}>
             <Reveal className="ed-shero-copy" selector=".ed-shero-step" stagger={0.11} y={26}>
               {data.eyebrow && (
                 <div className="ed-shero-step">
@@ -86,12 +103,18 @@ export default function ServiceHero({ data, ctx, anchor }: BlockProps<ServiceHer
             </Reveal>
           </div>
 
-          {src(data.image) && (
+          {form ? (
             <div className="col-lg-5">
-              <div className="ed-shero-thumb">
-                <img src={src(data.image)} alt={alt(data.image, data.title ?? "")} fetchPriority="high" />
-              </div>
+              <QuoteForm title={data.formTitle} note={data.formNote} buttonLabel={data.formButton} />
             </div>
+          ) : (
+            src(data.image) && (
+              <div className="col-lg-5">
+                <div className="ed-shero-thumb">
+                  <img src={src(data.image)} alt={alt(data.image, data.title ?? "")} fetchPriority="high" />
+                </div>
+              </div>
+            )
           )}
         </div>
       </div>

@@ -1,5 +1,5 @@
 import type { Viewport } from "next";
-import { Montserrat, Raleway } from "next/font/google";
+import { Poppins } from "next/font/google";
 import { getSettings } from "@/lib/settings";
 import TemplateScripts from "@/components/site/TemplateScripts";
 import TrackingScripts from "@/components/site/TrackingScripts";
@@ -8,12 +8,16 @@ import { asset } from "@/lib/asset-version";
 
 export const viewport: Viewport = { width: "device-width", initialScale: 1 };
 
-// Raleway is the brand's body face. Montserrat stands in for Gotham, which is
-// a licensed Hoefler&Co family and cannot be served from a CDN — see the
-// @font-face note in edigitech.css. next/font self-hosts both, so there is no
-// request to Google and no layout shift.
-const raleway = Raleway({ subsets: ["latin"], display: "swap", variable: "--ed-font-raleway" });
-const montserrat = Montserrat({ subsets: ["latin"], display: "swap", variable: "--ed-font-montserrat" });
+// Poppins, headings and body, matching techmahindra.com — the reference the
+// client asked us to follow. This supersedes the Gotham/Raleway pairing on the
+// brand sheet; see the note in edigitech.css. Self-hosted via next/font, so
+// there is no request to Google and no layout shift.
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
+  variable: "--ed-font-poppins",
+});
 
 const STYLES = [
   "/assets/css/bootstrap.css",
@@ -28,7 +32,7 @@ const STYLES = [
 export default async function SiteLayout({ children }: LayoutProps<"/">) {
   const settings = await getSettings();
   return (
-    <html lang="en" className={`no-js ${raleway.variable} ${montserrat.variable}`}>
+    <html lang="en" className={`no-js ${poppins.variable}`}>
       <head>
         {STYLES.map((href) => (
           // Template CSS is served as-is from /public so its relative font/image URLs keep working.
