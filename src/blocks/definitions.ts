@@ -982,6 +982,7 @@ export const BLOCKS: BlockDefinition[] = [
         max: 4,
         fields: [
           { type: "text", name: "title", label: "Group title" },
+          { type: "image", name: "image", label: "Card photo" },
           {
             type: "list",
             name: "items",
@@ -999,7 +1000,7 @@ export const BLOCKS: BlockDefinition[] = [
       eyebrow: "What We Offer",
       title: "What We **Offer**",
       intro: "",
-      columns: [{ title: "Group", items: [{ label: "Item", url: "" }] }],
+      columns: [{ title: "Group", image: null, items: [{ label: "Item", url: "" }] }],
     }),
   },
 

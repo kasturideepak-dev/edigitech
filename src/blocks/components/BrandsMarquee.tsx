@@ -12,6 +12,7 @@ type GsapTarget = Element | Element[] | string | Record<string, number>;
 type Gsap = {
   set: (target: GsapTarget, vars: Record<string, unknown>) => void;
   to: (target: GsapTarget, vars: Record<string, unknown>) => Tween;
+  fromTo: (target: GsapTarget, from: Record<string, unknown>, to: Record<string, unknown>) => Tween;
 };
 
 declare global {

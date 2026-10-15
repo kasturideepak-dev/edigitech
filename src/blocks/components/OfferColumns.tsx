@@ -1,12 +1,14 @@
+import type { ImageValue } from "@/lib/types";
 import { Text } from "@/components/site/Text";
 import Reveal from "@/components/site/Reveal";
-import { type BlockProps, resolveUrl } from "./shared";
+import ZoomIn from "@/components/site/ZoomIn";
+import { type BlockProps, alt, resolveUrl, src } from "./shared";
 
 type OfferColumnsData = {
   eyebrow?: string;
   title?: string;
   intro?: string;
-  columns?: { title?: string; items?: { label?: string; url?: string }[] }[];
+  columns?: { title?: string; image?: ImageValue | null; items?: { label?: string; url?: string }[] }[];
 };
 
 const Tick = () => (
@@ -52,9 +54,23 @@ export default function OfferColumns({ data, ctx, anchor }: BlockProps<OfferColu
           {columns.map((col, i) => (
             <div className={`${cols} mb-30`} key={i}>
               <div className="ed-offer-card h-100">
-                <span className="ed-offer-index" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
+                {src(col.image) && (
+                  <div className="ed-offer-media">
+                    <ZoomIn className="ed-offer-media-inner">
+                      <img src={src(col.image)} alt={alt(col.image, col.title ?? "")} loading="lazy" />
+                    </ZoomIn>
+                    {/* The index rides the image's lower edge so the card reads
+                        as one object rather than a badge stacked over a photo. */}
+                    <span className="ed-offer-index" aria-hidden="true">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                )}
+                {!src(col.image) && (
+                  <span className="ed-offer-index ed-offer-index-flat" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                )}
                 <h3 className="ed-offer-title">{col.title}</h3>
                 <ul className="ed-offer-list">
                   {(col.items ?? [])
