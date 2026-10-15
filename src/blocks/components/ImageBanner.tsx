@@ -12,6 +12,8 @@ type ImageBannerData = {
   secondaryCta?: Link;
   /** How hard the scrim sits on the photo. See the note in edigitech.css. */
   overlay?: "none" | "soft" | "medium" | "strong";
+  /** Light lays a warm wash over the photo and sets dark type on it. */
+  tone?: "light" | "dark";
 };
 
 /**
@@ -26,11 +28,12 @@ export default function ImageBanner({ data, ctx, anchor }: BlockProps<ImageBanne
   const secondary = linkProps(data.secondaryCta, ctx);
   const hasCta = Boolean(data.title?.trim() || hasLink(data.primaryCta) || hasLink(data.secondaryCta));
   const overlay = data.overlay ?? "medium";
+  const light = (data.tone ?? "dark") === "light";
 
   return (
     <div
       id={anchor}
-      className={`tp-banner-thumb scale-up-img${hasCta ? ` ed-banner-cta ed-banner-scrim-${overlay}` : ""}`}
+      className={`tp-banner-thumb scale-up-img${hasCta ? ` ed-banner-cta ed-banner-${light ? "light" : "dark"} ed-banner-scrim-${overlay}` : ""}`}
     >
       <img data-speed="0.4" className="img-cover scale-up" src={src(data.image)} alt={alt(data.image)} loading="lazy" />
 
@@ -40,7 +43,7 @@ export default function ImageBanner({ data, ctx, anchor }: BlockProps<ImageBanne
             <div className="row justify-content-center">
               <div className="col-xl-9 col-lg-10 text-center">
                 {data.eyebrow && (
-                  <span className="tp-section-subtitle tp-section-subtitle-white tp-text-common-white tp-ff-heading fw-500 fs-16 mb-25 d-inline-block">
+                  <span className={`tp-section-subtitle tp-ff-heading fw-500 fs-16 mb-25 d-inline-block${light ? "" : " tp-section-subtitle-white tp-text-common-white"}`}>
                     <span className="borders d-inline-block"></span>
                     {data.eyebrow}
                   </span>
@@ -52,7 +55,7 @@ export default function ImageBanner({ data, ctx, anchor }: BlockProps<ImageBanne
                     scrolling past and back. A reveal that can silently swallow the
                     closing CTA isn't worth it; the photo's parallax is motion enough. */}
                 {data.title && (
-                  <h2 className="tp-section-title fs-70 fs-lg-50 fs-xs-35 fw-700 text-uppercase mb-25 tp-text-common-white">
+                  <h2 className={`tp-section-title fs-70 fs-lg-50 fs-xs-35 fw-700 text-uppercase mb-25${light ? "" : " tp-text-common-white"}`}>
                     <Text value={data.title} />
                   </h2>
                 )}
@@ -60,7 +63,7 @@ export default function ImageBanner({ data, ctx, anchor }: BlockProps<ImageBanne
                   /* White, not the usual muted grey: over a photo even a light
                      grey drops under AA once the scrim is light enough to keep
                      the picture readable. */
-                  <p className="fs-20 lh-28 mb-45 tp-text-common-white">
+                  <p className={`fs-20 lh-28 mb-45${light ? "" : " tp-text-common-white"}`}>
                     <Text value={data.text} />
                   </p>
                 )}
@@ -79,7 +82,7 @@ export default function ImageBanner({ data, ctx, anchor }: BlockProps<ImageBanne
                         href={secondary.href}
                         newTab={secondary.newTab}
                         label={data.secondaryCta!.label}
-                        className="tp-btn-lg d-inline-block lh-0 tp-round-26 fs-15 text-uppercase ls-0 tp-btn-switch-animation tp-ff-heading fw-500 ed-btn-white tp-text-common-black hover-text-black"
+                        className={`tp-btn-lg d-inline-block lh-0 tp-round-26 fs-15 text-uppercase ls-0 tp-btn-switch-animation tp-ff-heading fw-500 ${light ? "ed-btn-outline-ink tp-text-common-black hover-text-black" : "ed-btn-white tp-text-common-black hover-text-black"}`}
                       />
                     )}
                   </div>

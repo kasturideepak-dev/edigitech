@@ -493,8 +493,18 @@ export const BLOCKS: BlockDefinition[] = [
       linkField("secondaryCta", "Secondary button", "half"),
       {
         type: "select",
+        name: "tone",
+        label: "Overlay tone",
+        width: "half",
+        options: [
+          { label: "Light (warm wash, dark text)", value: "light" },
+          { label: "Dark (dark wash, white text)", value: "dark" },
+        ],
+      },
+      {
+        type: "select",
         name: "overlay",
-        label: "Photo darkening",
+        label: "Overlay strength",
         width: "half",
         help: "Medium keeps body text readable on most photos. Use strong for bright or busy ones.",
         options: [
@@ -511,6 +521,7 @@ export const BLOCKS: BlockDefinition[] = [
       text: "",
       primaryCta: { label: "", url: "" },
       secondaryCta: { label: "", url: "" },
+      tone: "light",
       overlay: "medium",
     }),
   },

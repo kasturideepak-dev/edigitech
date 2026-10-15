@@ -2,7 +2,6 @@ import type { ImageValue, Link } from "@/lib/types";
 import { SwitchButton } from "@/components/site/Icon";
 import { Text } from "@/components/site/Text";
 import Reveal from "@/components/site/Reveal";
-import ShaderBackdrop from "@/components/site/ShaderBackdrop";
 import { type BlockProps, alt, hasLink, linkProps, src } from "./shared";
 
 type ServiceHeroData = {
@@ -16,11 +15,12 @@ type ServiceHeroData = {
 };
 
 /**
- * Service landing hero: deep navy with a drifting brand-blue field, an
- * oversized headline, trust badges and the photo alongside.
+ * Service landing hero: a warm cream field, an oversized headline, trust
+ * badges and the photo alongside.
  *
- * The shader is decoration only — it is skipped without WebGL or under
- * reduced motion, and the gradient underneath carries the section on its own.
+ * No WebGL backdrop here. The shader paints a dark navy field, which is what
+ * the hero used to be; on cream it would read as a dark stain. The warm
+ * gradient carries the section on its own.
  */
 export default function ServiceHero({ data, ctx, anchor }: BlockProps<ServiceHeroData>) {
   const badges = (data.badges ?? []).map((b) => b.label?.trim()).filter(Boolean);
@@ -28,8 +28,7 @@ export default function ServiceHero({ data, ctx, anchor }: BlockProps<ServiceHer
   const secondary = linkProps(data.secondaryCta, ctx);
 
   return (
-    <div id={anchor} className="ed-shero ed-shader-host">
-      <ShaderBackdrop className="ed-shader-canvas" />
+    <div id={anchor} className="ed-shero">
       <div className="container container-1230">
         <div className="row align-items-center">
           <div className={src(data.image) ? "col-lg-7" : "col-lg-10"}>

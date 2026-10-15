@@ -783,45 +783,43 @@ label {
 }
 
 /* ====================================================== Service landing page
-   Deep navy and white alternating, after the reference deck. Everything is
-   built from the logo blue and the brand navy — no second colour family. */
+   Warm light surfaces with the logo blue as the only accent — no black
+   panels. Cream and sand carry the sections; the blue is kept for CTAs,
+   highlights and the single brand band, so it always reads as "act here".
 
-/* The header is transparent and overlays the first section, so on these pages
-   it sits on the navy hero with near-black nav links — 1.12:1, invisible.
-   :has() scopes the inversion to pages that actually carry the dark hero,
-   without plumbing page data into the chrome.
+   Body text is the brand navy rather than pure black: softer against cream,
+   and still well past AA on every surface used below.
 
-   :not(.header-sticky) matters: on scroll the header takes a white background
-   (sticky-white-bg), and white links on it would be just as invisible the
-   other way. `content` swaps the logo bitmap for the white artwork; where it
-   is unsupported the dark logo simply stays, which is today's behaviour. */
-body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-main-menu > nav > ul > li > a {
-  color: #fff;
-}
-body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-main-menu > nav > ul > li > a:hover {
-  color: var(--ed-blue-light);
-}
-body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
-  content: url("/images/brand/edigitech-logo-white.png");
+   No header inversion here any more. That rule existed because the hero was
+   navy and the transparent header sat on it with near-black links; on a cream
+   hero the same rule would paint them white on cream, which is the same bug
+   the other way round. */
+:root {
+  --ed-cream: #fdfaf5;
+  --ed-sand: #f6f0e6;
+  --ed-blush: #fbf1ea;
+  --ed-line: rgba(5, 20, 46, 0.1);
+  --ed-body: #4a4f5a;
 }
 
 /* ---- Hero ---- */
 .ed-shero {
   position: relative;
   overflow: hidden;
-  padding: 190px 0 120px;
+  padding: 180px 0 110px;
   background:
-    radial-gradient(1100px 620px at 12% 8%, rgba(6, 85, 237, 0.42), rgba(6, 85, 237, 0) 62%),
-    radial-gradient(900px 560px at 88% 78%, rgba(4, 67, 187, 0.34), rgba(4, 67, 187, 0) 66%),
-    linear-gradient(160deg, #061330 0%, #04091a 48%, #050e22 100%);
+    radial-gradient(1000px 560px at 8% 4%, rgba(6, 85, 237, 0.09), rgba(6, 85, 237, 0) 58%),
+    radial-gradient(880px 520px at 94% 72%, rgba(232, 193, 155, 0.34), rgba(232, 193, 155, 0) 62%),
+    linear-gradient(165deg, var(--ed-cream) 0%, var(--ed-blush) 54%, var(--ed-sand) 100%);
 }
 .ed-shero-eyebrow {
   display: inline-block;
   padding: 7px 16px;
   margin-bottom: 26px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid var(--ed-line);
   border-radius: 30px;
-  color: #fff;
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--ed-blue-dark);
   font-family: var(--tp-ff-heading);
   font-weight: 500;
   font-size: 14px;
@@ -829,7 +827,7 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
 }
 .ed-shero-title {
   margin: 0 0 24px;
-  color: #fff;
+  color: var(--ed-blue-dark);
   font-family: var(--tp-ff-heading);
   font-weight: 700;
   /* Scales with the viewport the way the reference's display type does. */
@@ -838,12 +836,12 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
   letter-spacing: -0.01em;
 }
 .ed-shero-accent {
-  color: var(--ed-blue-light);
+  color: var(--tp-theme-primary);
 }
 .ed-shero-intro {
-  max-width: 640px;
+  max-width: 620px;
   margin: 0 0 30px;
-  color: #c3cbd9;
+  color: var(--ed-body);
   font-size: 18px;
   line-height: 1.66;
 }
@@ -858,21 +856,21 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
 .ed-shero-badges li {
   padding: 8px 16px;
   border-radius: 30px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  color: #fff;
+  background: #fff;
+  border: 1px solid var(--ed-line);
+  color: var(--ed-blue-dark);
   font-family: var(--tp-ff-heading);
   font-weight: 500;
   font-size: 14px;
   white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(5, 20, 46, 0.05);
 }
 .ed-shero-thumb {
   position: relative;
   border-radius: 20px;
   overflow: hidden;
-  /* Sits above the shader canvas, which is absolutely placed at z-index 0. */
   z-index: 1;
-  box-shadow: 0 30px 70px rgba(2, 6, 18, 0.55);
+  box-shadow: 0 30px 60px rgba(5, 20, 46, 0.16);
 }
 .ed-shero-thumb img {
   width: 100%;
@@ -1064,13 +1062,19 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
 
 /* ---- Numbered steps ---- */
 .ed-steps { padding: 120px 0 90px; }
+/* "dark" is kept as the option name so existing content keeps working, but
+   on this site it paints warm sand — the brief is no black backgrounds. */
 .ed-steps-dark {
   background:
-    radial-gradient(800px 460px at 85% 10%, rgba(6, 85, 237, 0.26), rgba(6, 85, 237, 0) 64%),
-    linear-gradient(180deg, #04091a 0%, #061330 100%);
+    radial-gradient(760px 420px at 88% 8%, rgba(6, 85, 237, 0.07), rgba(6, 85, 237, 0) 62%),
+    linear-gradient(180deg, var(--ed-sand) 0%, var(--ed-cream) 100%);
 }
-.ed-steps-light { background: #f6f8ff; }
-.ed-steps-intro { color: #aeb7c7; }
+.ed-steps-light { background: var(--ed-cream); }
+.ed-steps-intro { color: var(--ed-body); }
+.ed-steps-dark .tp-section-title,
+.ed-steps-dark .tp-section-subtitle { color: var(--ed-blue-dark); }
+.ed-steps-dark .tp-section-subtitle .borders { background: var(--tp-theme-primary); }
+.ed-steps-dark .ed-shero-accent { color: var(--tp-theme-primary); }
 .ed-step {
   position: relative;
   overflow: hidden;
@@ -1082,10 +1086,10 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
   border: 1px solid rgba(6, 85, 237, 0.12);
   transition: transform 0.28s ease, box-shadow 0.28s ease;
 }
-.ed-steps-dark .ed-step { border-color: rgba(255, 255, 255, 0.1); }
+.ed-steps-dark .ed-step { border-color: var(--ed-line); }
 .ed-step:hover {
   transform: translateY(-6px);
-  box-shadow: 0 22px 46px rgba(2, 6, 18, 0.28);
+  box-shadow: 0 20px 42px rgba(5, 20, 46, 0.1);
 }
 .ed-step-num {
   position: absolute;
@@ -1248,6 +1252,45 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
 .ed-banner-scrim-strong::after {
   background: linear-gradient(180deg, rgba(4, 7, 15, 0.64) 0%, rgba(4, 7, 15, 0.72) 50%, rgba(4, 7, 15, 0.64) 100%);
 }
+/* Light tone: a warm wash instead of a dark one, with navy type on it. This
+   is the safer direction on a bright photo — over the darkest pixel a 0.82
+   cream wash still composites to about rgb(210,207,203), so navy holds ~13:1,
+   and over the white areas ~16:1. The dark scrim had to fight the photo's
+   pure white; this one never does. */
+.ed-banner-light.ed-banner-scrim-soft::after {
+  background: linear-gradient(180deg, rgba(253, 250, 245, 0.66) 0%, rgba(251, 241, 234, 0.74) 50%, rgba(253, 250, 245, 0.66) 100%);
+}
+.ed-banner-light.ed-banner-scrim-medium::after {
+  background: linear-gradient(180deg, rgba(253, 250, 245, 0.78) 0%, rgba(251, 241, 234, 0.84) 50%, rgba(253, 250, 245, 0.78) 100%);
+}
+.ed-banner-light.ed-banner-scrim-strong::after {
+  background: linear-gradient(180deg, rgba(253, 250, 245, 0.86) 0%, rgba(250, 238, 229, 0.92) 50%, rgba(253, 250, 245, 0.86) 100%);
+}
+.ed-banner-light .tp-section-title,
+.ed-banner-light .tp-section-subtitle {
+  color: var(--ed-blue-dark);
+}
+.ed-banner-light .tp-section-subtitle .borders {
+  background: var(--tp-theme-primary);
+}
+.ed-banner-light .ed-banner-cta-inner p {
+  color: var(--ed-body);
+}
+/* A white pill vanishes on a warm wash; outline it in the brand navy. */
+.ed-btn-outline-ink {
+  background: transparent;
+  border: 1.5px solid rgba(5, 20, 46, 0.35);
+}
+.ed-btn-outline-ink:hover {
+  background: var(--ed-blue-dark);
+  border-color: var(--ed-blue-dark);
+}
+.ed-btn-outline-ink:hover,
+.ed-btn-outline-ink:hover .btn-text,
+.ed-btn-outline-ink:hover svg {
+  color: #fff;
+}
+
 .ed-banner-cta-inner {
   position: absolute;
   inset: 0;
@@ -1258,74 +1301,54 @@ body:has(.ed-shero) .tp-header-area:not(.header-sticky) .tp-header-logo img {
   padding: 40px 0;
 }
 
-/* -------------------------------------------------------------- FAQ, dark
-   Near-black navy with a blue pixel mosaic blooming from the bottom-left and
-   a fine grid over the whole panel. The mosaic is a generated PNG rather than
-   stacked gradients: the reference's cells vary in both tint and opacity,
-   which CSS can only fake as a smooth ramp.
+/* ---------------------------------------------------------------- FAQ, warm
+   Was a near-black panel with a blue pixel mosaic. The brief is light and
+   warm, so the mosaic and the dark base are gone; the section now sits on
+   cream with white cards. The option is still called "dark" so existing
+   content keeps rendering — it simply no longer means black.
 
-   Everything inside has to flip to light. The accent is the lighter tint, not
-   the logo blue — #0655ED on this base is 3.5:1, under AA. */
+   Everything inverts back: navy questions, brand blue when open, body grey
+   for answers. All of it sits on white or cream, so the contrast work the
+   dark version needed no longer applies. */
 .ed-faq-dark {
   position: relative;
-  isolation: isolate;
-  background-color: #04070f;
-  background-image:
-    url("/images/brand/faq-mosaic.png"),
-    radial-gradient(820px 560px at 4% 95%, rgba(6, 85, 237, 0.26), rgba(6, 85, 237, 0) 68%);
-  background-position: left bottom, left bottom;
-  background-size: cover, auto;
-  background-repeat: no-repeat;
-}
-/* The grid is a texture, not a feature — at 0.04 across the whole panel it was
-   doing as much of the visual noise as the mosaic. */
-.ed-faq-dark::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image:
-    repeating-linear-gradient(to right, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 32px),
-    repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 32px);
+  background:
+    radial-gradient(820px 460px at 6% 6%, rgba(6, 85, 237, 0.06), rgba(6, 85, 237, 0) 60%),
+    radial-gradient(760px 440px at 94% 88%, rgba(232, 193, 155, 0.26), rgba(232, 193, 155, 0) 62%),
+    linear-gradient(180deg, var(--ed-cream) 0%, var(--ed-blush) 100%);
 }
 .ed-faq-dark .tp-section-title,
 .ed-faq-dark .tp-section-subtitle {
-  color: #fff;
+  color: var(--ed-blue-dark);
 }
 .ed-faq-dark .tp-section-subtitle .borders {
-  background: var(--ed-blue-light);
+  background: var(--tp-theme-primary);
 }
-/* Panels stay largely opaque so the mosaic can't wash out the text. Against
-   the calmed mosaic the brightest composite is rgb(29,60,116); at 0.7 the
-   worst backdrop behind any text is rgb(12,23,45) — blue 4.69:1, white
-   17.9:1, answer grey 11.2:1. */
 .ed-faq-dark .tp-faq-wrap .accordion-item,
 .ed-faq-dark .tp-faq-wrap .accordion-item:not(:first-of-type) {
-  background: rgba(4, 7, 15, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #fff;
+  border: 1px solid var(--ed-line);
   border-radius: 12px;
 }
-/* Matching :not(:first-of-type) above, so the open state wins on items 2-n
-   instead of losing the border to the inactive rule's higher specificity. */
 .ed-faq-dark .tp-faq-wrap .accordion-item.tp-faq-active,
 .ed-faq-dark .tp-faq-wrap .accordion-item.tp-faq-active:not(:first-of-type) {
-  background: rgba(9, 17, 38, 0.78);
-  border-color: rgba(61, 127, 242, 0.45);
+  background: #fff;
+  border-color: rgba(6, 85, 237, 0.4);
+  box-shadow: 0 18px 40px rgba(5, 20, 46, 0.07);
 }
 .ed-faq-dark .tp-faq-wrap .tp-faq-btn {
-  color: #fff;
+  color: var(--ed-blue-dark);
 }
 .ed-faq-dark .tp-faq-wrap .tp-faq-active .tp-faq-btn,
 .ed-faq-dark .tp-faq-wrap .tp-faq-active .accordion-btn {
-  color: var(--ed-blue-light);
+  color: var(--tp-theme-primary);
 }
 .ed-faq-dark .tp-faq-wrap .accordion-btn {
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(5, 20, 46, 0.4);
 }
 .ed-faq-dark .tp-faq-details-para p,
 .ed-faq-dark .tp-faq-details-para ul li {
-  color: #c7cdd8;
+  color: var(--ed-body);
 }
 
 /* ----------------------------------------------------------- Service cards
